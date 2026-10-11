@@ -32,13 +32,16 @@ class MPSService:
         rows = []
         for product in products:
             supply = supplies.get(product.id, [])
+            safety = product.deep_safety_stock or plan.safety_stock
             beginning = plan._deep_available_stock(product) + sum(
                 quantity for date, quantity in supply if date < plan.start_date
             )
             for period in periods:
                 selected = demands.filtered(
-                    lambda d: d.product_id == product
-                    and period.start_date <= d.required_date <= period.end_date
+                    lambda d: (
+                        d.product_id == product
+                        and period.start_date <= d.required_date <= period.end_date
+                    )
                 )
                 firm = sum(d.quantity for d in selected if d.category in ("firm", "project"))
                 forecast = sum(d.quantity for d in selected if d.category == "forecast")
@@ -55,7 +58,14 @@ class MPSService:
                     for date, quantity in supply
                     if period.start_date <= date <= period.end_date
                 )
-                planned, balance = bucket(beginning, receipts, total, plan.safety_stock)
+                planned, balance = bucket(
+                    beginning,
+                    receipts,
+                    total,
+                    safety,
+                    product.deep_lot_minimum,
+                    product.deep_lot_multiple,
+                )
                 rows.append(
                     {
                         "plan_id": plan.id,

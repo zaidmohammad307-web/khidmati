@@ -242,6 +242,63 @@ class TestManufacturingFlow(TransactionCase):
         with self.assertRaises(UserError):
             plan.safety_stock = 20
 
+    def test_mps_product_safety_stock_and_lot_sizing(self):
+        uom = self.env.ref("uom.product_uom_unit")
+        component = self.env["product.product"].create(
+            {
+                "name": "Lot Sized Propeller",
+                "is_storable": True,
+                "uom_id": uom.id,
+                "deep_make_buy": "buy",
+                "deep_lot_minimum": 50,
+                "deep_lot_multiple": 25,
+            }
+        )
+        finished = self.env["product.product"].create(
+            {
+                "name": "Lot Sized Drone",
+                "is_storable": True,
+                "uom_id": uom.id,
+                "deep_make_buy": "make",
+                "deep_safety_stock": 2,
+                "deep_lot_multiple": 10,
+            }
+        )
+        self.env["mrp.bom"].create(
+            {
+                "product_tmpl_id": finished.product_tmpl_id.id,
+                "product_qty": 1,
+                "bom_line_ids": [Command.create({"product_id": component.id, "product_qty": 2})],
+            }
+        )
+        plan = self.env["deep.mps.plan"].create(
+            {
+                "name": "Lot Policy Plan",
+                "warehouse_id": self.warehouse.id,
+                "start_date": fields.Date.today() + timedelta(days=60),
+                "bucket_count": 1,
+                "safety_stock": 40,
+            }
+        )
+        self.env["deep.demand"].create(
+            {
+                "name": "Firm",
+                "plan_id": plan.id,
+                "product_id": finished.id,
+                "quantity": 21,
+                "required_date": plan.start_date,
+                "category": "firm",
+            }
+        )
+        plan.action_calculate()
+        # Item safety stock (2) overrides the plan default (40); 23 rounds up to a multiple of 10.
+        self.assertEqual(plan.line_ids.planned, 30)
+        self.assertEqual(plan.line_ids.balance, 9)
+        buy = plan.requirement_ids.filtered(lambda row: row.product_id == component)
+        # 60 propellers needed: above the 50 minimum, then rounded up to the 25-pack.
+        self.assertEqual(buy.gross, 60)
+        self.assertEqual(buy.net, 75)
+
     def test_import_dryrun_atomic_and_duplicates(self):
         header = "code,description,category,uom,make_buy,tracking,family,standard_cost,active\n"
         row = "TEST-IMPORT,Import Item,,Units,buy,none,,2,true\n"

@@ -1,6 +1,7 @@
 """Pure planning arithmetic: executable without an Odoo server."""
 
 import calendar
+import math
 from datetime import timedelta
 
 
@@ -28,6 +29,23 @@ def demand_total(firm, forecast, manual, confidence, strategy):
     return nominal, weighted
 
 
-def bucket(beginning, receipts, demand, safety):
-    planned = max(0, demand + safety - beginning - receipts)
+def lot_size(net, minimum=0, multiple=0):
+    """Round a positive net requirement up to the product's order policy.
+
+    ``minimum`` is the smallest order (MOQ); ``multiple`` is the pack or batch
+    increment applied after the minimum. Zero disables either rule.
+    """
+    if minimum < 0 or multiple < 0:
+        raise ValueError("Lot sizes cannot be negative.")
+    if net <= 0:
+        return 0
+    quantity = max(net, minimum)
+    if multiple:
+        # Round the ratio first so float noise (e.g. 0.30000000000000004) does not add a lot.
+        quantity = math.ceil(round(quantity / multiple, 9)) * multiple
+    return quantity
+
+
+def bucket(beginning, receipts, demand, safety, minimum=0, multiple=0):
+    planned = lot_size(max(0, demand + safety - beginning - receipts), minimum, multiple)
     return planned, beginning + receipts + planned - demand

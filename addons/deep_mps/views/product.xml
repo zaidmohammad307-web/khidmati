@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="product_planning_policy" model="ir.ui.view">
+    <field name="name">product.deep.planning.policy</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="deep_core.product_form_extension"/>
+    <field name="arch" type="xml">
+      <field name="deep_make_buy" position="after">
+        <field name="deep_safety_stock"/>
+        <field name="deep_lot_minimum"/>
+        <field name="deep_lot_multiple"/>
+      </field>
+    </field>
+  </record>
+</odoo>

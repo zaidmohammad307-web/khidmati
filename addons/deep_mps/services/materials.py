@@ -2,6 +2,7 @@ from datetime import timedelta
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.addons.deep_core.security import internal, lock
+from .math import lot_size
 
 
 class MaterialService:
@@ -42,10 +43,12 @@ class MaterialService:
         bom = self.boms[product.id]
         kind = "make" if bom or product.deep_make_buy == "make" else "buy"
         seller = product.seller_ids.filtered(
-            lambda s: (not s.company_id or s.company_id == plan.company_id)
-            and (not s.product_id or s.product_id == product)
-            and (not s.date_start or s.date_start <= when)
-            and (not s.date_end or s.date_end >= when)
+            lambda s: (
+                (not s.company_id or s.company_id == plan.company_id)
+                and (not s.product_id or s.product_id == product)
+                and (not s.date_start or s.date_start <= when)
+                and (not s.date_end or s.date_end >= when)
+            )
         ).sorted(lambda s: (s.sequence, s.delay))[:1]
         lead = bom.produce_delay if bom else seller.delay if seller else 0
         eta = fields.Date.context_today(plan) + timedelta(days=lead)
@@ -65,6 +68,12 @@ class MaterialService:
                 self.warnings.add(product.display_name + ": BUY shortage " + str(round(net, 4)))
             if warning:
                 self.warnings.add(product.display_name + ": " + warning)
+            if not root:
+                # MPS already lot-sized root lines; dependent orders follow the item policy and
+                # the excess over this requirement is left in the ledger for later demand.
+                ordered = lot_size(net, product.deep_lot_minimum, product.deep_lot_multiple)
+                self.stock[product.id] += ordered - net
+                net = ordered
         self.rows.append(
             {
                 "plan_id": plan.id,
@@ -156,8 +165,9 @@ class MaterialService:
             )
             for requirement in requirements:
                 parents = requirements.filtered(
-                    lambda parent: parent != requirement
-                    and requirement.path.startswith(parent.path + " / ")
+                    lambda parent: (
+                        parent != requirement and requirement.path.startswith(parent.path + " / ")
+                    )
                 ).sorted(lambda parent: len(parent.path), reverse=True)
                 if parents:
                     requirement.production_id.deep_parent_id = parents[0].production_id
