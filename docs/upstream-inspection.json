@@ -1,0 +1,68 @@
+[
+  {
+    "file": "mrp_manifest.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/addons/mrp/__manifest__.py",
+    "bytes": 2637,
+    "sha256": "fa9632ee3a09caca311529c84a994c1ff4239b966b68f9d8dd77d1bb64754054"
+  },
+  {
+    "file": "mrp_workorder.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/addons/mrp/models/mrp_workorder.py",
+    "bytes": 50360,
+    "sha256": "32b6d06e0de87c5a32a0b4018a0a32dc6f9365f0719a1153a8857848cbe60701"
+  },
+  {
+    "file": "mrp_bom.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/addons/mrp/models/mrp_bom.py",
+    "bytes": 48454,
+    "sha256": "648ae91700f2844ef3084e12a98ca2918a5921c9120919645101f21b519ced08"
+  },
+  {
+    "file": "mrp_workcenter.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/addons/mrp/models/mrp_workcenter.py",
+    "bytes": 35542,
+    "sha256": "1e68a9ce1b7f3196cf83bc233ebf5380e66b64acdb8c55c44cd1c697a009daeb"
+  },
+  {
+    "file": "docker_entrypoint.sh",
+    "url": "https://raw.githubusercontent.com/odoo/docker/master/19.0/entrypoint.sh",
+    "bytes": 1340,
+    "sha256": "18ea7deeebfb22ea625c72b45f84ff3356644443f89942f1a82cb73a8f10c205"
+  },
+  {
+    "file": "docker_Dockerfile",
+    "url": "https://raw.githubusercontent.com/odoo/docker/master/19.0/Dockerfile",
+    "bytes": 3759,
+    "sha256": "dca6218b6fdf069db2a0296f50ee42ad806879a40284b2a277d8062e7cc13369"
+  },
+  {
+    "file": "requirements.txt",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/requirements.txt",
+    "bytes": 6926,
+    "sha256": "f788198a2368e4f38e6a2bdaee2f35af096bcc23943b6c753a9f0192a2dda9f8"
+  },
+  {
+    "file": "cli_server.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/odoo/cli/server.py",
+    "bytes": 4386,
+    "sha256": "d8379c69994f8c9175ea8efa799178d89420e8fb199eff7d6b1eb90eb9ce3cfb"
+  },
+  {
+    "file": "config.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/odoo/tools/config.py",
+    "bytes": 56329,
+    "sha256": "0985052dbe1864f96acdfd743c614726093ff67d81e5fd6f812ad13740fe0794"
+  },
+  {
+    "file": "web_session.py",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/addons/web/controllers/session.py",
+    "bytes": 3764,
+    "sha256": "0e72f36d6bbf75654cc24946d8dc4227d7089f042b1b5750f71dbb77134934d8"
+  },
+  {
+    "file": "web_login.xml",
+    "url": "https://raw.githubusercontent.com/odoo/odoo/19.0/addons/web/views/webclient_templates.xml",
+    "bytes": 18814,
+    "sha256": "075e913c055a049b1b4c4647dc4cac15b4ec500ac27c66d351372ab93a359458"
+  }
+]

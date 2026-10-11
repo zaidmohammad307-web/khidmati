@@ -1,0 +1,24 @@
+{
+    admin off
+    auto_https disable_redirects
+    servers {
+        protocols h1 h2
+    }
+}
+https://{$DEEP_HOSTNAME}:443 {
+    tls /run/tls/web.crt /run/tls/web.key {
+        protocols tls1.2 tls1.3
+    }
+    header {
+        Strict-Transport-Security "max-age=31536000"
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+        X-Frame-Options SAMEORIGIN
+        -Server
+    }
+    @database path /web/database /web/database/*
+    respond @database "Database management is available only through the server CLI." 403
+    reverse_proxy 127.0.0.1:8069 {
+        header_down Set-Cookie "^(session_id=.*)$" "$1; Secure; SameSite=Lax"
+    }
+}

@@ -1,0 +1,69 @@
+# Compose 2.24.4+. Only TLS is published; the proxy shares Odoo's network namespace.
+services:
+  db:
+    command: ["sh", "/opt/deep/db-tls.sh"]
+    environment:
+      DEEP_REQUIRE_DB_TLS: "1"
+      PGSSLMODE: require
+    volumes:
+      - ${DEEP_ENCRYPTED_DATA_DIR:?Set DEEP_ENCRYPTED_DATA_DIR to an encrypted host storage directory}/postgres:/var/lib/postgresql/data
+      - ${DEEP_ENCRYPTED_DATA_DIR:?Set DEEP_ENCRYPTED_DATA_DIR}/db-tls:/var/lib/postgresql/tls
+      - ./secrets/db.key:/run/tls/db.key:ro
+      - ./secrets/db.crt:/run/tls/db.crt:ro
+      - ./runtime/db-tls.sh:/opt/deep/db-tls.sh:ro
+  storage-init:
+    image: ${COMPOSE_PROJECT_NAME:-drone_odoo}-app:19-foundation
+    build:
+      context: .
+      args:
+        ODOO_IMAGE: ${ODOO_IMAGE:-odoo:19.0-20260926}
+    user: root
+    entrypoint: ["sh", "/opt/drone-runtime/prepare-storage.sh"]
+    volumes:
+      - ${DEEP_ENCRYPTED_DATA_DIR:?Set DEEP_ENCRYPTED_DATA_DIR}/odoo:/var/lib/odoo
+      - ./secrets/sap-password.txt:/run/source-secret/sap-password.txt:ro
+    restart: "no"
+  odoo-init:
+    tmpfs: ["/tmp:mode=1777"]
+    depends_on:
+      storage-init:
+        condition: service_completed_successfully
+    environment:
+      ODOO_DB_SSLMODE: verify-full
+      PGSSLROOTCERT: /run/tls/ca.crt
+      ODOO_HTTP_INTERFACE: 127.0.0.1
+      ODOO_PROXY_MODE: "1"
+      SAP_B1_PASSWORD_FILE: /var/lib/odoo/deep-secrets/sap-password.txt
+    volumes:
+      - ${DEEP_ENCRYPTED_DATA_DIR:?Set DEEP_ENCRYPTED_DATA_DIR}/odoo:/var/lib/odoo
+      - ./secrets/ca.crt:/run/tls/ca.crt:ro
+  odoo:
+    tmpfs: ["/tmp:mode=1777"]
+    environment:
+      ODOO_DB_SSLMODE: verify-full
+      PGSSLROOTCERT: /run/tls/ca.crt
+      ODOO_HTTP_INTERFACE: 127.0.0.1
+      ODOO_PROXY_MODE: "1"
+      SAP_B1_PASSWORD_FILE: /var/lib/odoo/deep-secrets/sap-password.txt
+    ports: !override
+      - "${DEEP_BIND_ADDRESS:-127.0.0.1}:${DEEP_HTTPS_PORT:-8443}:443"
+    volumes:
+      - ${DEEP_ENCRYPTED_DATA_DIR:?Set DEEP_ENCRYPTED_DATA_DIR}/odoo:/var/lib/odoo
+      - ./secrets/ca.crt:/run/tls/ca.crt:ro
+  gateway:
+    image: ${CADDY_IMAGE:-caddy:2.11.7-alpine}
+    network_mode: service:odoo
+    environment:
+      DEEP_HOSTNAME: ${DEEP_HOSTNAME:-localhost}
+    volumes:
+      - ./config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./secrets/web.crt:/run/tls/web.crt:ro
+      - ./secrets/web.key:/run/tls/web.key:ro
+      - ${DEEP_ENCRYPTED_DATA_DIR:?Set DEEP_ENCRYPTED_DATA_DIR}/gateway:/data
+    read_only: true
+    tmpfs: [/tmp, /config]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      odoo:
+        condition: service_healthy
+    restart: unless-stopped

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_module" name="Rework" parent="deep_core.menu_root" sequence="40"/>
+  <record id="deep_rework_order_list" model="ir.ui.view">
+    <field name="name">deep_rework_order.list</field>
+    <field name="model">deep.rework.order</field>
+    <field name="arch" type="xml">
+      <list string="Product Rework" create="0" delete="0">
+        <field name="name"/>
+        <field name="unit_id"/>
+        <field name="technician_id"/>
+        <field name="priority"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_rework_order_form" model="ir.ui.view">
+    <field name="name">deep_rework_order.form</field>
+    <field name="model">deep.rework.order</field>
+    <field name="arch" type="xml">
+      <form string="Product Rework" create="0" delete="0">
+        <header>
+          <button name="action_assign" type="object" string="Assign" class="btn-secondary"/>
+          <button name="action_diagnose" type="object" string="Diagnose" class="btn-secondary"/>
+          <button name="action_wait_parts" type="object" string="Wait Parts" class="btn-secondary"/>
+          <button name="action_repair" type="object" string="Repair" class="btn-secondary"/>
+          <button name="action_ready" type="object" string="Ready for Retest" class="btn-secondary"/>
+          <button name="action_scrap" type="object" string="Scrap WIP" class="btn-secondary"/>
+          <button name="action_export" type="object" string="Export Rework" class="btn-secondary"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="unit_id"/>
+            <field name="technician_id"/>
+            <field name="priority"/>
+            <field name="state"/>
+            <field name="session_id"/>
+            <field name="description"/>
+            <field name="root_cause"/>
+            <field name="corrective_action"/>
+            <field name="disposition"/>
+            <field name="started_at"/>
+            <field name="completed_at"/>
+            <field name="retest_id"/>
+            <field name="attachment_ids" widget="many2many_tags"/>
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page string="Part">
+              <field name="part_ids">
+                <list editable="bottom">
+                  <field name="product_id"/>
+                  <field name="direction"/>
+                  <field name="quantity"/>
+                  <field name="lot_id"/>
+                  <field name="move_id"/>
+                  <button name="action_transfer" type="object" string="Transfer"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_rework_order_action" model="ir.actions.act_window">
+    <field name="name">Product Rework</field>
+    <field name="res_model">deep.rework.order</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_rework_order_menu" name="Product Rework" parent="menu_module" action="deep_rework_order_action"/>
+  <record id="deep_rework_part_list" model="ir.ui.view">
+    <field name="name">deep_rework_part.list</field>
+    <field name="model">deep.rework.part</field>
+    <field name="arch" type="xml">
+      <list string="Replacement Part Movements">
+        <field name="rework_id"/>
+        <field name="product_id"/>
+        <field name="direction"/>
+        <field name="quantity"/>
+        <field name="lot_id"/>
+        <field name="move_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_rework_part_form" model="ir.ui.view">
+    <field name="name">deep_rework_part.form</field>
+    <field name="model">deep.rework.part</field>
+    <field name="arch" type="xml">
+      <form string="Replacement Part Movements">
+        <header>
+          <button name="action_transfer" type="object" string="Transfer Actual Part" class="btn-secondary"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="rework_id"/>
+            <field name="product_id"/>
+            <field name="direction"/>
+            <field name="quantity"/>
+            <field name="lot_id"/>
+            <field name="move_id"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_rework_part_action" model="ir.actions.act_window">
+    <field name="name">Replacement Part Movements</field>
+    <field name="res_model">deep.rework.part</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_rework_part_menu" name="Replacement Part Movements" parent="menu_module" action="deep_rework_part_action"/>
+</odoo>

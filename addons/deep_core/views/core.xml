@@ -1,0 +1,296 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_root" name="Production Planning" sequence="5" groups="deep_core.group_user"/>
+  <record id="deep_product_family_list" model="ir.ui.view">
+    <field name="name">deep_product_family.list</field>
+    <field name="model">deep.product.family</field>
+    <field name="arch" type="xml">
+      <list string="Product Families">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="company_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_product_family_form" model="ir.ui.view">
+    <field name="name">deep_product_family.form</field>
+    <field name="model">deep.product.family</field>
+    <field name="arch" type="xml">
+      <form string="Product Families">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="code"/>
+            <field name="company_id"/>
+            <field name="sequence_id"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_product_family_action" model="ir.actions.act_window">
+    <field name="name">Product Families</field>
+    <field name="res_model">deep.product.family</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_product_family_menu" name="Product Families" parent="deep_core.menu_root" action="deep_product_family_action"/>
+  <record id="deep_production_batch_list" model="ir.ui.view">
+    <field name="name">deep_production_batch.list</field>
+    <field name="model">deep.production.batch</field>
+    <field name="arch" type="xml">
+      <list string="Production Batches">
+        <field name="name"/>
+        <field name="production_id"/>
+        <field name="shift_name"/>
+        <field name="start"/>
+        <field name="end"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_production_batch_form" model="ir.ui.view">
+    <field name="name">deep_production_batch.form</field>
+    <field name="model">deep.production.batch</field>
+    <field name="arch" type="xml">
+      <form string="Production Batches">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="production_id"/>
+            <field name="shift_name"/>
+            <field name="start"/>
+            <field name="end"/>
+            <field name="lot_id"/>
+            <field name="employee_ids" widget="many2many_tags"/>
+            <field name="material_arrival"/>
+            <field name="completed_at"/>
+            <field name="flow_hours"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_production_batch_action" model="ir.actions.act_window">
+    <field name="name">Production Batches</field>
+    <field name="res_model">deep.production.batch</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_production_batch_menu" name="Production Batches" parent="deep_core.menu_root" action="deep_production_batch_action"/>
+  <record id="deep_production_unit_list" model="ir.ui.view">
+    <field name="name">deep_production_unit.list</field>
+    <field name="model">deep.production.unit</field>
+    <field name="arch" type="xml">
+      <list string="Serial Traceability" create="0" delete="0">
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="production_id"/>
+        <field name="state"/>
+        <field name="physical_zone"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_production_unit_form" model="ir.ui.view">
+    <field name="name">deep_production_unit.form</field>
+    <field name="model">deep.production.unit</field>
+    <field name="arch" type="xml">
+      <form string="Serial Traceability" create="0" delete="0">
+        <header>
+          <button name="action_print" type="object" string="Print QR" class="btn-secondary"/>
+          <button name="action_release" type="object" string="Validate Release" class="btn-secondary"/>
+          <button name="action_export" type="object" string="Export Genealogy" class="btn-secondary"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="product_id"/>
+            <field name="production_id"/>
+            <field name="state"/>
+            <field name="physical_zone"/>
+            <field name="lot_id"/>
+            <field name="workorder_id"/>
+            <field name="batch_id"/>
+            <field name="operator_id"/>
+            <field name="created_at"/>
+            <field name="release_at"/>
+            <field name="print_count"/>
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page string="Audit">
+              <field name="audit_ids">
+                <list create="0" edit="0" delete="0">
+                  <field name="at"/>
+                  <field name="user_id"/>
+                  <field name="action"/>
+                  <field name="before"/>
+                  <field name="after"/>
+                  <field name="reason"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_production_unit_action" model="ir.actions.act_window">
+    <field name="name">Serial Traceability</field>
+    <field name="res_model">deep.production.unit</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_production_unit_menu" name="Serial Traceability" parent="deep_core.menu_root" action="deep_production_unit_action"/>
+  <record id="deep_audit_event_list" model="ir.ui.view">
+    <field name="name">deep_audit_event.list</field>
+    <field name="model">deep.audit.event</field>
+    <field name="arch" type="xml">
+      <list string="Audit Trail" create="0" delete="0">
+        <field name="at"/>
+        <field name="user_id"/>
+        <field name="model"/>
+        <field name="res_id"/>
+        <field name="action"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_audit_event_form" model="ir.ui.view">
+    <field name="name">deep_audit_event.form</field>
+    <field name="model">deep.audit.event</field>
+    <field name="arch" type="xml">
+      <form string="Audit Trail" create="0" delete="0">
+        <sheet>
+          <group>
+            <field name="at"/>
+            <field name="user_id"/>
+            <field name="model"/>
+            <field name="res_id"/>
+            <field name="action"/>
+            <field name="before"/>
+            <field name="after"/>
+            <field name="reason"/>
+            <field name="unit_id"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_audit_event_action" model="ir.actions.act_window">
+    <field name="name">Audit Trail</field>
+    <field name="res_model">deep.audit.event</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_audit_event_menu" name="Audit Trail" parent="deep_core.menu_root" action="deep_audit_event_action"/>
+  <record id="deep_serial_request_list" model="ir.ui.view">
+    <field name="name">deep_serial_request.list</field>
+    <field name="model">deep.serial.request</field>
+    <field name="arch" type="xml">
+      <list string="Serialization Requests" create="0" delete="0">
+        <field name="production_id"/>
+        <field name="key"/>
+        <field name="quantity"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_serial_request_form" model="ir.ui.view">
+    <field name="name">deep_serial_request.form</field>
+    <field name="model">deep.serial.request</field>
+    <field name="arch" type="xml">
+      <form string="Serialization Requests" create="0" delete="0">
+        <sheet>
+          <group>
+            <field name="production_id"/>
+            <field name="key"/>
+            <field name="quantity"/>
+            <field name="unit_ids" widget="many2many_tags"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_serial_request_action" model="ir.actions.act_window">
+    <field name="name">Serialization Requests</field>
+    <field name="res_model">deep.serial.request</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="deep_material_issue_list" model="ir.ui.view">
+    <field name="name">deep_material_issue.list</field>
+    <field name="model">deep.material.issue</field>
+    <field name="arch" type="xml">
+      <list string="Actual Material Issue">
+        <field name="production_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_material_issue_form" model="ir.ui.view">
+    <field name="name">deep.material.issue.form</field>
+    <field name="model">deep.material.issue</field>
+    <field name="arch" type="xml">
+      <form string="Actual Material Movement">
+        <group>
+          <field name="mode" readonly="1"/>
+          <field name="production_id"/>
+        </group>
+        <field name="line_ids">
+          <list editable="bottom" create="0" delete="0">
+            <field name="product_id" readonly="1"/>
+            <field name="planned"/>
+            <field name="quantity"/>
+            <field name="lot_id"/>
+          </list>
+        </field>
+        <footer>
+          <button name="action_issue" type="object" string="Record Actual Quantities" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+  <record id="deep_material_issue_action" model="ir.actions.act_window">
+    <field name="name">Actual Material Issue</field>
+    <field name="res_model">deep.material.issue</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="deep_material_issue_line_list" model="ir.ui.view">
+    <field name="name">deep_material_issue_line.list</field>
+    <field name="model">deep.material.issue.line</field>
+    <field name="arch" type="xml">
+      <list string="Issue Lines">
+        <field name="product_id"/>
+        <field name="planned"/>
+        <field name="quantity"/>
+        <field name="lot_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_material_issue_line_form" model="ir.ui.view">
+    <field name="name">deep_material_issue_line.form</field>
+    <field name="model">deep.material.issue.line</field>
+    <field name="arch" type="xml">
+      <form string="Issue Lines">
+        <sheet>
+          <group>
+            <field name="product_id"/>
+            <field name="planned"/>
+            <field name="quantity"/>
+            <field name="lot_id"/>
+            <field name="raw_id"/>
+            <field name="wizard_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_material_issue_line_action" model="ir.actions.act_window">
+    <field name="name">Issue Lines</field>
+    <field name="res_model">deep.material.issue.line</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

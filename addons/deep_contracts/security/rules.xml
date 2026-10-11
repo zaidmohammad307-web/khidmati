@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_customer_contract" model="ir.rule">
+    <field name="name">Customer contracts company isolation</field>
+    <field name="model_id" ref="model_deep_customer_contract"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_contract_milestone" model="ir.rule">
+    <field name="name">Delivery milestones company isolation</field>
+    <field name="model_id" ref="model_deep_contract_milestone"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+</odoo>

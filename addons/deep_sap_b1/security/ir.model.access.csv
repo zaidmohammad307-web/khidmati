@@ -1,0 +1,33 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+planner_model_deep_sap_job,SAP job planner,model_deep_sap_job,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_job,SAP job procurement,model_deep_sap_job,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_job,SAP job manager,model_deep_sap_job,deep_core.group_manager,1,1,0,0
+planner_model_deep_sap_item,SAP item planner,model_deep_sap_item,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_item,SAP item procurement,model_deep_sap_item,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_item,SAP item manager,model_deep_sap_item,deep_core.group_manager,1,1,0,0
+planner_model_deep_sap_partner,SAP partner planner,model_deep_sap_partner,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_partner,SAP partner procurement,model_deep_sap_partner,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_partner,SAP partner manager,model_deep_sap_partner,deep_core.group_manager,1,1,0,0
+planner_model_deep_sap_stock,SAP stock planner,model_deep_sap_stock,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_stock,SAP stock procurement,model_deep_sap_stock,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_stock,SAP stock manager,model_deep_sap_stock,deep_core.group_manager,1,1,0,0
+planner_model_deep_sap_purchase_line,SAP purchase.line planner,model_deep_sap_purchase_line,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_purchase_line,SAP purchase.line procurement,model_deep_sap_purchase_line,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_purchase_line,SAP purchase.line manager,model_deep_sap_purchase_line,deep_core.group_manager,1,1,0,0
+planner_model_deep_sap_sales_line,SAP sales.line planner,model_deep_sap_sales_line,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_sales_line,SAP sales.line procurement,model_deep_sap_sales_line,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_sales_line,SAP sales.line manager,model_deep_sap_sales_line,deep_core.group_manager,1,1,0,0
+planner_model_deep_sap_bom_snapshot,SAP bom.snapshot planner,model_deep_sap_bom_snapshot,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_bom_snapshot,SAP bom.snapshot procurement,model_deep_sap_bom_snapshot,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_bom_snapshot,SAP bom.snapshot manager,model_deep_sap_bom_snapshot,deep_core.group_manager,1,1,0,0
+user_model_deep_sap_profile,SAP connection summary,model_deep_sap_profile,deep_core.group_user,1,0,0,0
+planner_model_deep_sap_profile,SAP profile planner,model_deep_sap_profile,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_profile,SAP profile procurement,model_deep_sap_profile,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_profile,SAP profile manager,model_deep_sap_profile,deep_core.group_manager,1,1,1,0
+planner_model_deep_sap_warehouse_map,SAP warehouse.map planner,model_deep_sap_warehouse_map,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_warehouse_map,SAP warehouse.map procurement,model_deep_sap_warehouse_map,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_warehouse_map,SAP warehouse.map manager,model_deep_sap_warehouse_map,deep_core.group_manager,1,1,1,1
+planner_model_deep_sap_uom_map,SAP uom.map planner,model_deep_sap_uom_map,deep_core.group_planner,1,1,0,0
+procurement_model_deep_sap_uom_map,SAP uom.map procurement,model_deep_sap_uom_map,deep_core.group_procurement,1,1,0,0
+manager_model_deep_sap_uom_map,SAP uom.map manager,model_deep_sap_uom_map,deep_core.group_manager,1,1,1,1
+stock_count_manager,SAP verified stock count,model_deep_sap_stock_count,deep_core.group_manager,1,1,1,1

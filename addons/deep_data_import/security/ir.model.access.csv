@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_import_batch,Controlled Imports,model_deep_import_batch,deep_core.group_user,1,0,0,0
+planner_deep_import_batch,Controlled Imports,model_deep_import_batch,deep_core.group_planner,1,1,1,1
+manager_deep_import_batch,Controlled Imports,model_deep_import_batch,deep_core.group_manager,1,1,1,1

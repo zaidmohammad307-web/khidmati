@@ -1,0 +1,3 @@
+Ruff 0.12.12: all checks passed; all 152 Python files formatted.
+Compose 2.39.4: secure merged configuration validates; only HTTPS is published.
+Caddy 2.11.7: configuration validates; real HTTPS browser checks passed.

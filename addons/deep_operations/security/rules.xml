@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_production_department" model="ir.rule">
+    <field name="name">Departments company isolation</field>
+    <field name="model_id" ref="model_deep_production_department"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_material_kit" model="ir.rule">
+    <field name="name">Department material kits company isolation</field>
+    <field name="model_id" ref="model_deep_material_kit"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_shift_report" model="ir.rule">
+    <field name="name">Shift reports company isolation</field>
+    <field name="model_id" ref="model_deep_shift_report"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_wip_handover" model="ir.rule">
+    <field name="name">WIP handovers company isolation</field>
+    <field name="model_id" ref="model_deep_wip_handover"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_work_instruction" model="ir.rule">
+    <field name="name">Work instructions company isolation</field>
+    <field name="model_id" ref="model_deep_work_instruction"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_instruction_ack" model="ir.rule">
+    <field name="name">Instruction acknowledgements company isolation</field>
+    <field name="model_id" ref="model_deep_instruction_ack"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_material_kit_line" model="ir.rule">
+    <field name="name">deep.material.kit.line company isolation</field>
+    <field name="model_id" ref="model_deep_material_kit_line"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+</odoo>

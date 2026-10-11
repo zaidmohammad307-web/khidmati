@@ -1,0 +1,1 @@
+{"screenshots":9,"secureCookie":true,"databaseManagerBlocked":true,"hsts":true,"actionExport":true,"recordNavigation":true,"sapDiagnostic":true,"instructionModal":true,"scenario":true,"mobile":true,"pageErrors":0}

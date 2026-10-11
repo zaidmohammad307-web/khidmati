@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_downtime_reason,Downtime reasons,model_deep_downtime_reason,deep_core.group_user,1,0,0,0
+supervisor_deep_downtime_reason,Downtime reasons,model_deep_downtime_reason,deep_core.group_supervisor,1,1,1,1
+technician_deep_downtime_reason,Downtime reasons,model_deep_downtime_reason,deep_core.group_technician,1,1,1,1
+manager_deep_downtime_reason,Downtime reasons,model_deep_downtime_reason,deep_core.group_manager,1,1,1,1
+read_deep_downtime_event,Downtime and breakdowns,model_deep_downtime_event,deep_core.group_user,1,0,0,0
+operator_deep_downtime_event,Downtime and breakdowns,model_deep_downtime_event,deep_core.group_operator,1,1,1,1
+technician_deep_downtime_event,Downtime and breakdowns,model_deep_downtime_event,deep_core.group_technician,1,1,1,1
+supervisor_deep_downtime_event,Downtime and breakdowns,model_deep_downtime_event,deep_core.group_supervisor,1,1,1,1
+manager_deep_downtime_event,Downtime and breakdowns,model_deep_downtime_event,deep_core.group_manager,1,1,1,1
+read_deep_preventive_plan,Preventive schedules,model_deep_preventive_plan,deep_core.group_user,1,0,0,0
+technician_deep_preventive_plan,Preventive schedules,model_deep_preventive_plan,deep_core.group_technician,1,1,1,1
+supervisor_deep_preventive_plan,Preventive schedules,model_deep_preventive_plan,deep_core.group_supervisor,1,1,1,1
+manager_deep_preventive_plan,Preventive schedules,model_deep_preventive_plan,deep_core.group_manager,1,1,1,1

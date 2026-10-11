@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_quality_template,Quality Templates,model_deep_quality_template,deep_core.group_user,1,0,0,0
+manager_deep_quality_template,Quality Templates,model_deep_quality_template,deep_core.group_manager,1,1,1,1
+read_deep_quality_point,Quality Test Points,model_deep_quality_point,deep_core.group_user,1,0,0,0
+manager_deep_quality_point,Quality Test Points,model_deep_quality_point,deep_core.group_manager,1,1,1,1
+read_deep_scan_event,Scan History,model_deep_scan_event,deep_core.group_user,1,0,0,0
+read_deep_quality_session,Quality Sessions,model_deep_quality_session,deep_core.group_user,1,0,0,0
+qa_deep_quality_session,Quality Sessions,model_deep_quality_session,deep_core.group_qa,1,1,1,0
+manager_deep_quality_session,Quality Sessions,model_deep_quality_session,deep_core.group_manager,1,1,1,0
+read_deep_quality_result,Quality Results,model_deep_quality_result,deep_core.group_user,1,0,0,0

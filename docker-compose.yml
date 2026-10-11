@@ -1,0 +1,84 @@
+x-odoo-environment: &odoo-environment
+  DEEP_DEMO_ENABLED: ${DEEP_DEMO_ENABLED:-1}
+  ODOO_DB_HOST: ${ODOO_DB_HOST:-db}
+  ODOO_DB_PORT: ${ODOO_DB_PORT:-5432}
+  ODOO_DB_NAME: ${ODOO_DB_NAME:-deep_pilot}
+  ODOO_DB_USER: ${ODOO_DB_USER:-odoo_app}
+  ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?Run python scripts/manage.py setup first}
+  ODOO_ADMIN_PASSWD: ${ODOO_ADMIN_PASSWD:?Run python scripts/manage.py setup first}
+  SAP_B1_BASE_URL: ${SAP_B1_BASE_URL:-}
+  SAP_B1_ALLOWED_ENDPOINTS: ${SAP_B1_ALLOWED_ENDPOINTS:-}
+  SAP_B1_COMPANY_DB: ${SAP_B1_COMPANY_DB:-}
+  SAP_B1_USERNAME: ${SAP_B1_USERNAME:-}
+  SAP_B1_PASSWORD_FILE: ${SAP_B1_PASSWORD_FILE:-}
+  SAP_B1_CA_BUNDLE: ${SAP_B1_CA_BUNDLE:-}
+  ODOO_BOOTSTRAP_MODULES: ${ODOO_BOOTSTRAP_MODULES:-base,web,mrp,purchase_stock,hr,deep_sap_b1}
+
+x-odoo-service: &odoo-service
+  image: ${COMPOSE_PROJECT_NAME:-drone_odoo}-app:19-foundation
+  build:
+    context: .
+    args:
+      ODOO_IMAGE: ${ODOO_IMAGE:-odoo:19.0-20260926}
+  volumes:
+    - odoo-data:/var/lib/odoo
+    - ./addons:/mnt/extra-addons:ro
+    - ./certificates:/mnt/sap-ca:ro
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  init: true
+
+services:
+  db:
+    image: ${POSTGRES_IMAGE:-postgres:16-bookworm}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python scripts/manage.py setup first}
+      ODOO_DB_USER: ${ODOO_DB_USER:-odoo_app}
+      ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?Run python scripts/manage.py setup first}
+      ODOO_DB_NAME: ${ODOO_DB_NAME:-deep_pilot}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./runtime/init-db.sh:/docker-entrypoint-initdb.d/10-odoo-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 10s
+    restart: unless-stopped
+
+  odoo-init:
+    <<: *odoo-service
+    environment:
+      <<: *odoo-environment
+      ODOO_LOGIN: ${ODOO_LOGIN:-admin}
+      ODOO_LOGIN_PASSWORD: ${ODOO_LOGIN_PASSWORD:?Run python scripts/manage.py setup first}
+    command: ["init"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  odoo:
+    <<: *odoo-service
+    environment: *odoo-environment
+    ports:
+      - "127.0.0.1:${ODOO_HTTP_PORT:-8069}:8069"
+    depends_on:
+      db:
+        condition: service_healthy
+      odoo-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python3", "/opt/drone-runtime/healthcheck.py"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 120s
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  odoo-data:

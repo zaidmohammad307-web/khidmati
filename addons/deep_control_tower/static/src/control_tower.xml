@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="deep.TowerActivityTable">
+    <div class="table-responsive">
+      <table class="table deep-tower-table">
+        <thead><tr><th t-foreach="props.columns" t-as="column" t-key="column[0]" t-esc="column[1]"/><th>Record</th></tr></thead>
+        <tbody>
+          <tr t-foreach="props.rows" t-as="row" t-key="row.id">
+            <td t-foreach="props.columns" t-as="column" t-key="column[0]"><span t-att-class="column[0] === 'state' ? 'deep-state' : ''" t-esc="this.value(row, column[0])"/></td>
+            <td><button class="btn btn-sm btn-outline-primary" t-on-click="() =&gt; props.open(props.model, row.id)">Open</button></td>
+          </tr>
+          <tr t-if="!props.rows.length"><td t-att-colspan="props.columns.length + 1" class="text-muted py-4">No records in this queue. Use the full list to create or review records.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </t>
+  <t t-name="deep.ControlTower">
+    <div class="deep-app deep-tower h-100 overflow-auto p-4">
+      <div class="deep-tower-header">
+        <div><div class="deep-eyebrow">DEEP ELEMENTS · MANUFACTURING</div><h1>Operations control tower</h1><p>Materials, people, quality and delivery — one live view of the floor.</p></div>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <label class="d-flex gap-2 align-items-center small"><input type="checkbox" t-model="state.auto"/>Live refresh</label>
+          <button class="btn btn-outline-primary" t-on-click="refresh" t-att-disabled="state.busy">Refresh</button>
+          <button class="btn btn-primary" t-on-click="() =&gt; this.route('deep_shopfloor.action_shopfloor')">Open shop floor</button>
+        </div>
+      </div>
+      <div t-if="state.error" class="alert alert-danger" role="alert" t-esc="state.error"/>
+      <div t-if="!state.data" class="deep-panel">Loading operations…</div>
+      <t t-if="state.data">
+        <div class="deep-tower-kpis">
+          <button class="deep-kpi" t-on-click="() =&gt; this.open('mrp.production')"><span>Active MOs</span><strong t-esc="state.data.active_mos"/><small>Confirmed production</small></button>
+          <button class="deep-kpi" t-on-click="() =&gt; state.tab = 'kits'"><span>Open material racks</span><strong t-esc="state.data.open_kits"/><small>Prepare, stage and issue</small></button>
+          <button class="deep-kpi" t-on-click="() =&gt; state.tab = 'shifts'"><span>Good units · 7 days</span><strong t-esc="state.data.reported_good"/><small>Supervisor-approved shift reports</small></button>
+          <button class="deep-kpi deep-kpi-alert" t-on-click="() =&gt; state.tab = 'maintenance'"><span>Open downtime</span><strong t-esc="state.data.open_breakdowns"/><small>Native maintenance requests</small></button>
+          <button class="deep-kpi deep-kpi-alert" t-on-click="() =&gt; state.tab = 'quality'"><span>Blocking quality cases</span><strong t-esc="state.data.blocking_cases"/><small>QA closure required</small></button>
+          <button class="deep-kpi" t-on-click="() =&gt; this.open('deep.wip.handover')"><span>Handovers awaiting receipt</span><strong t-esc="state.data.waiting_handovers"/><small>Designated receiver acknowledgement</small></button>
+        </div>
+        <nav class="deep-tower-tabs" aria-label="Operations views">
+          <button t-foreach="tabs" t-as="tab" t-key="tab[0]" t-att-class="state.tab === tab[0] ? 'active' : ''" t-on-click="() =&gt; state.tab = tab[0]" t-esc="tab[1]"/>
+        </nav>
+        <t t-if="state.tab === 'overview'">
+          <div class="row g-4">
+            <section class="col-xl-7"><div class="deep-panel">
+              <div class="d-flex justify-content-between align-items-center"><h3>Attention queue</h3><button class="btn btn-sm btn-outline-primary" t-on-click="exportActions">Export action list</button></div>
+              <p class="text-muted small">Open a record to assign an owner and act. This queue reflects current records.</p>
+              <button t-foreach="state.data.alerts" t-as="alert" t-key="alert.key" class="deep-tower-alert" t-on-click="() =&gt; this.open(alert.model, alert.id)">
+                <span t-att-class="'deep-alert-dot ' + alert.severity"/><span class="flex-grow-1"><strong t-esc="alert.title"/><small t-esc="alert.detail"/></span><span aria-hidden="true">→</span>
+              </button>
+              <p t-if="!state.data.alerts.length" class="text-muted py-4">No urgent actions in the current queues.</p>
+            </div></section>
+            <aside class="col-xl-5">
+              <div class="deep-panel"><h3>Serial WIP by physical zone</h3><div t-foreach="state.data.zones" t-as="zone" t-key="zone.name" class="deep-zone"><span t-esc="zone.name"/><strong t-esc="zone.quantity"/></div><p class="text-muted small mt-3">Serial genealogy and native inventory determine release and finished goods.</p></div>
+              <div class="deep-panel mt-4"><h3>Seven-day reported actuals</h3><div class="deep-zone"><span>Attainment</span><strong t-esc="state.data.reported_attainment === null ? 'No approved reports' : state.data.reported_attainment + '%'"/></div><div class="deep-zone"><span>Rework / scrap</span><strong><t t-esc="state.data.reported_rework"/> / <t t-esc="state.data.reported_scrap || 0"/></strong></div><div class="deep-zone"><span>Downtime minutes</span><strong t-esc="state.data.reported_downtime"/></div><div class="deep-zone"><span>Reports awaiting approval</span><strong t-esc="state.data.waiting_shifts"/></div></div>
+            </aside>
+          </div>
+          <div t-if="state.data.sap &amp;&amp; state.data.sap.length" class="deep-panel mt-4"><h3>SAP Business One</h3><div t-foreach="state.data.sap" t-as="profile" t-key="profile.id" class="deep-zone"><span><strong t-esc="profile.name"/><small class="d-block text-muted" t-esc="profile.message"/></span><button class="btn btn-sm btn-outline-primary" t-on-click="() =&gt; this.open('deep.sap.profile', profile.id)">Review connection</button></div></div>
+          <div class="deep-panel mt-4"><h3>Planning and improvement</h3><div class="deep-tower-shortcuts">
+            <button class="btn btn-outline-primary" t-on-click="() =&gt; this.route('deep_manufacturing_dashboard.action_cockpit')">Planning cockpit</button>
+            <button class="btn btn-outline-primary" t-on-click="() =&gt; this.open('deep.plan.scenario')">What-if scenarios</button>
+            <button class="btn btn-outline-primary" t-on-click="() =&gt; this.open('deep.engineering.change')">BOM revision approvals</button>
+            <button class="btn btn-outline-primary" t-on-click="() =&gt; this.open('deep.stock.policy')">Reorder proposals</button>
+            <button class="btn btn-outline-primary" t-on-click="() =&gt; this.open('deep.work.instruction')">Work instructions</button>
+            <button class="btn btn-outline-primary" t-on-click="() =&gt; this.open('deep.customer.contract')">Customer contracts</button>
+          </div></div>
+        </t>
+        <section t-else="" class="deep-panel">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h3 t-esc="tabs.find(tab =&gt; tab[0] === state.tab)[1]"/><button class="btn btn-outline-primary" t-on-click="() =&gt; this.open(currentTable.model)">Open full list</button></div>
+          <ActivityTable rows="state.data[state.tab]" columns="currentTable.columns" model="currentTable.model" open="open"/>
+          <p class="text-muted small mb-0">Recent activity and open queues. Open the full list for all records, filters and saved searches.</p>
+        </section>
+        <footer class="deep-tower-footer"><span t-esc="state.data.company"/><span>Updated <t t-esc="state.data.updated"/> UTC</span><span>Procurement proposals follow your SAP / Odoo company setting.</span></footer>
+      </t>
+    </div>
+  </t>
+</templates>

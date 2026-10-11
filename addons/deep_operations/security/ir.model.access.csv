@@ -1,0 +1,35 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_production_department,Departments,model_deep_production_department,deep_core.group_user,1,0,0,0
+planner_deep_production_department,Departments,model_deep_production_department,deep_core.group_planner,1,1,1,1
+supervisor_deep_production_department,Departments,model_deep_production_department,deep_core.group_supervisor,1,1,1,1
+manager_deep_production_department,Departments,model_deep_production_department,deep_core.group_manager,1,1,1,1
+read_deep_material_kit,Department material kits,model_deep_material_kit,deep_core.group_user,1,0,0,0
+planner_deep_material_kit,Department material kits,model_deep_material_kit,deep_core.group_planner,1,1,1,1
+supervisor_deep_material_kit,Department material kits,model_deep_material_kit,deep_core.group_supervisor,1,1,1,1
+warehouse_deep_material_kit,Department material kits,model_deep_material_kit,deep_core.group_warehouse,1,1,1,1
+manager_deep_material_kit,Department material kits,model_deep_material_kit,deep_core.group_manager,1,1,1,1
+read_deep_shift_report,Shift reports,model_deep_shift_report,deep_core.group_user,1,0,0,0
+operator_deep_shift_report,Shift reports,model_deep_shift_report,deep_core.group_operator,1,1,1,1
+supervisor_deep_shift_report,Shift reports,model_deep_shift_report,deep_core.group_supervisor,1,1,1,1
+manager_deep_shift_report,Shift reports,model_deep_shift_report,deep_core.group_manager,1,1,1,1
+read_deep_wip_handover,WIP handovers,model_deep_wip_handover,deep_core.group_user,1,0,0,0
+operator_deep_wip_handover,WIP handovers,model_deep_wip_handover,deep_core.group_operator,1,1,1,1
+supervisor_deep_wip_handover,WIP handovers,model_deep_wip_handover,deep_core.group_supervisor,1,1,1,1
+manager_deep_wip_handover,WIP handovers,model_deep_wip_handover,deep_core.group_manager,1,1,1,1
+read_deep_work_instruction,Work instructions,model_deep_work_instruction,deep_core.group_user,1,0,0,0
+planner_deep_work_instruction,Work instructions,model_deep_work_instruction,deep_core.group_planner,1,1,1,1
+supervisor_deep_work_instruction,Work instructions,model_deep_work_instruction,deep_core.group_supervisor,1,1,1,1
+manager_deep_work_instruction,Work instructions,model_deep_work_instruction,deep_core.group_manager,1,1,1,1
+read_deep_instruction_ack,Instruction acknowledgements,model_deep_instruction_ack,deep_core.group_user,1,0,0,0
+read_deep_material_kit_line,deep.material.kit.line,model_deep_material_kit_line,deep_core.group_user,1,0,0,0
+planner_deep_material_kit_line,deep.material.kit.line,model_deep_material_kit_line,deep_core.group_planner,1,1,1,1
+warehouse_deep_material_kit_line,deep.material.kit.line,model_deep_material_kit_line,deep_core.group_warehouse,1,1,1,1
+supervisor_deep_material_kit_line,deep.material.kit.line,model_deep_material_kit_line,deep_core.group_supervisor,1,1,1,1
+manager_deep_material_kit_line,deep.material.kit.line,model_deep_material_kit_line,deep_core.group_manager,1,1,1,1
+read_deep_kit_return,deep.kit.return,model_deep_kit_return,deep_core.group_user,1,0,0,0
+warehouse_deep_kit_return,deep.kit.return,model_deep_kit_return,deep_core.group_warehouse,1,1,1,1
+manager_deep_kit_return,deep.kit.return,model_deep_kit_return,deep_core.group_manager,1,1,1,1
+read_deep_instruction_ack_wizard,deep.instruction.ack.wizard,model_deep_instruction_ack_wizard,deep_core.group_user,1,0,0,0
+operator_deep_instruction_ack_wizard,deep.instruction.ack.wizard,model_deep_instruction_ack_wizard,deep_core.group_operator,1,1,1,1
+supervisor_deep_instruction_ack_wizard,deep.instruction.ack.wizard,model_deep_instruction_ack_wizard,deep_core.group_supervisor,1,1,1,1
+manager_deep_instruction_ack_wizard,deep.instruction.ack.wizard,model_deep_instruction_ack_wizard,deep_core.group_manager,1,1,1,1

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templates xml:space="preserve">
+  <t t-name="deep.Shopfloor">
+    <div class="deep-app h-100 overflow-auto p-4">
+      <div class="d-flex justify-content-between mb-4">
+        <div>
+          <div class="deep-eyebrow">PRODUCTION / LIVE OPERATIONS</div>
+          <h1>Shop floor</h1>
+          <p class="text-muted">Station progress · Serial identities · Scanned quality release</p>
+        </div>
+        <button class="btn btn-outline-primary align-self-start" t-on-click="()=&gt;this.run(()=&gt;this.refresh())" t-att-disabled="state.busy">Refresh</button>
+      </div>
+      <div t-if="state.error" class="alert alert-danger" role="alert" t-esc="state.error"/>
+      <div class="d-flex gap-2 mb-3">
+        <button class="btn btn-light" t-on-click="()=&gt;this.page(-1)" t-att-disabled="!state.offset || state.busy">Previous 50</button>
+        <button class="btn btn-light" t-on-click="()=&gt;this.page(1)" t-att-disabled="state.orders.length&lt;50 || state.busy">Next 50</button>
+      </div>
+      <select class="form-select mb-4" t-model="state.selected">
+        <option value="0">Select manufacturing order</option>
+        <option t-foreach="state.orders" t-as="p" t-key="p.id" t-att-value="p.id">
+          <t t-esc="p.name"/> · <t t-esc="p.product"/> · <t t-esc="p.quantity"/> units</option>
+      </select>
+      <t t-if="order">
+        <div class="d-flex justify-content-between">
+          <h3 t-esc="order.name"/>
+          <button class="btn btn-link" t-on-click="()=&gt;this.open('mrp.production',order.id)">Open MO / issue materials</button>
+        </div>
+        <div class="deep-stations mb-4">
+          <div t-foreach="order.stations" t-as="w" t-key="w.id" t-att-class="'deep-panel deep-station deep-'+w.state">
+            <div class="deep-eyebrow" t-esc="w.code"/>
+            <h5 t-esc="w.name"/>
+            <p class="text-muted" t-esc="w.center"/>
+            <span class="badge text-bg-light" t-esc="w.state"/>
+            <div class="small mt-2">
+              <t t-esc="w.expected"/> min expected · <t t-esc="w.actual"/> min actual</div>
+            <button t-if="w.instruction_required" class="btn btn-outline-primary mt-2" t-on-click="()=&gt;this.run(()=&gt;this.acknowledge(w))" t-att-disabled="state.busy">Read and acknowledge SOP</button>
+            <div class="d-flex gap-2 mt-3">
+              <button t-if="w.state==='ready'" class="btn btn-primary" t-on-click="()=&gt;this.station(w,'start')" t-att-disabled="state.busy">Start</button>
+              <button t-if="w.checkpoint==='serialize' &amp;&amp; ['ready','progress'].includes(w.state)" class="btn btn-primary" t-on-click="()=&gt;this.station(w,'serialize')" t-att-disabled="state.busy">Create serials</button>
+              <button t-if="w.checkpoint!=='release' &amp;&amp; ['ready','progress'].includes(w.state)" class="btn btn-outline-primary" t-on-click="()=&gt;this.station(w,'finish')" t-att-disabled="state.busy">Finish</button>
+            </div>
+          </div>
+        </div>
+        <div class="row g-4">
+          <section class="col-lg-7">
+            <div class="deep-panel">
+              <h3>S12 · Scan and test</h3>
+              <Scanner onScan="scan" busy="state.busy"/>
+              <QualityTest t-if="state.session" t-key="state.session.id" session="state.session" onSubmit="submit" busy="state.busy"/>
+              <p t-else="" class="text-muted">The scanner acts as a keyboard. Each test starts with a server-recorded serial scan. A failed result opens product rework automatically.</p>
+            </div>
+          </section>
+          <section class="col-lg-5">
+            <div class="deep-panel">
+              <h3>Serial units</h3>
+              <div t-foreach="order.units" t-as="u" t-key="u.id" class="deep-unit d-flex align-items-center gap-3">
+                <input type="checkbox" t-att-checked="state.checked[u.id]" t-on-change="e=&gt;state.checked[u.id]=e.target.checked" t-att-aria-label="'Select '+u.name"/>
+                <div class="flex-grow-1">
+                  <button class="btn btn-link p-0" t-on-click="()=&gt;this.open('deep.production.unit',u.id)" t-esc="u.name"/>
+                  <div class="small text-muted" t-esc="u.zone"/>
+                </div>
+                <span class="badge text-bg-light" t-esc="u.state"/>
+              </div>
+              <p t-if="!order.units.length" class="text-muted">Create serial identities at S9.</p>
+              <div class="d-flex gap-2 mt-3">
+                <button class="btn btn-outline-primary" t-on-click="print" t-att-disabled="state.busy">Print QR</button>
+                <button class="btn btn-primary" t-on-click="release" t-att-disabled="state.busy">Release passing units</button>
+              </div>
+              <label class="form-label mt-3">Quantity to serialize at S9</label>
+              <input class="form-control" type="number" min="1" t-model="state.quantity"/>
+            </div>
+          </section>
+        </div>
+        <div class="deep-panel mt-4">
+          <h3>Planned vs actual material movement</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Planned</th>
+                  <th>Reserved</th>
+                  <th>Issued</th>
+                  <th>Consumed</th>
+                  <th>Returned</th>
+                  <th>Scrapped</th>
+                  <th>Remaining</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr t-foreach="order.materials" t-as="m" t-key="m.id">
+                  <td t-esc="m.item"/>
+                  <td t-esc="m.planned"/>
+                  <td t-esc="m.reserved"/>
+                  <td t-esc="m.issued"/>
+                  <td t-esc="m.consumed"/>
+                  <td t-esc="m.returned"/>
+                  <td t-esc="m.scrapped"/>
+                  <td t-esc="m.remaining"/>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </t>
+      <div t-else="" class="deep-panel text-muted">No confirmed manufacturing orders. Confirm a released draft MO to begin.</div>
+    </div>
+  </t>
+</templates>

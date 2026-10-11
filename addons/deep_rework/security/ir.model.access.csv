@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_rework_order,Product Rework,model_deep_rework_order,deep_core.group_user,1,0,0,0
+technician_deep_rework_order,Product Rework,model_deep_rework_order,deep_core.group_technician,1,1,1,0
+supervisor_deep_rework_order,Product Rework,model_deep_rework_order,deep_core.group_supervisor,1,1,1,0
+manager_deep_rework_order,Product Rework,model_deep_rework_order,deep_core.group_manager,1,1,1,0
+read_deep_rework_part,Replacement Part Movements,model_deep_rework_part,deep_core.group_user,1,0,0,0
+technician_deep_rework_part,Replacement Part Movements,model_deep_rework_part,deep_core.group_technician,1,1,1,1
+supervisor_deep_rework_part,Replacement Part Movements,model_deep_rework_part,deep_core.group_supervisor,1,1,1,1
+manager_deep_rework_part,Replacement Part Movements,model_deep_rework_part,deep_core.group_manager,1,1,1,1

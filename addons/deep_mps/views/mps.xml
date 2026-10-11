@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_module" name="Mps" parent="deep_core.menu_root" sequence="10"/>
+  <record id="deep_demand_list" model="ir.ui.view">
+    <field name="name">deep_demand.list</field>
+    <field name="model">deep.demand</field>
+    <field name="arch" type="xml">
+      <list string="Customer / Forecast Demand">
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="category"/>
+        <field name="required_date"/>
+        <field name="quantity"/>
+        <field name="confidence"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_demand_form" model="ir.ui.view">
+    <field name="name">deep_demand.form</field>
+    <field name="model">deep.demand</field>
+    <field name="arch" type="xml">
+      <form string="Customer / Forecast Demand">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="product_id"/>
+            <field name="category"/>
+            <field name="required_date"/>
+            <field name="quantity"/>
+            <field name="confidence"/>
+            <field name="plan_id"/>
+            <field name="contract"/>
+            <field name="milestone"/>
+            <field name="external_id"/>
+            <field name="released_plan_id"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_demand_action" model="ir.actions.act_window">
+    <field name="name">Customer / Forecast Demand</field>
+    <field name="res_model">deep.demand</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_demand_menu" name="Customer / Forecast Demand" parent="menu_module" action="deep_demand_action"/>
+  <record id="deep_mps_plan_list" model="ir.ui.view">
+    <field name="name">deep_mps_plan.list</field>
+    <field name="model">deep.mps.plan</field>
+    <field name="arch" type="xml">
+      <list string="MPS Plans">
+        <field name="name"/>
+        <field name="start_date"/>
+        <field name="horizon"/>
+        <field name="state"/>
+        <field name="calculated_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_mps_plan_form" model="ir.ui.view">
+    <field name="name">deep_mps_plan.form</field>
+    <field name="model">deep.mps.plan</field>
+    <field name="arch" type="xml">
+      <form string="MPS Plans">
+        <header>
+          <button name="action_calculate" type="object" string="Calculate" class="btn-primary"/>
+          <button name="action_review" type="object" string="Review" class="btn-secondary"/>
+          <button name="action_approve" type="object" string="Approve" class="btn-secondary"/>
+          <button name="action_firm" type="object" string="Firm" class="btn-secondary"/>
+          <button name="action_release" type="object" string="Release Draft MOs" class="btn-secondary"/>
+          <button name="action_requirements" type="object" string="Requirements" class="btn-secondary"/>
+          <button name="action_export" type="object" string="Export MPS" class="btn-secondary"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="start_date"/>
+            <field name="horizon"/>
+            <field name="state"/>
+            <field name="calculated_at"/>
+            <field name="warehouse_id"/>
+            <field name="product_ids" widget="many2many_tags"/>
+            <field name="bucket_count"/>
+            <field name="strategy"/>
+            <field name="safety_stock"/>
+            <field name="frozen_until"/>
+            <field name="warnings"/>
+            <field name="warnings_acknowledged"/>
+            <field name="approval_reason"/>
+            <field name="approved_by"/>
+            <field name="approved_at"/>
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page string="Demand">
+              <field name="demand_ids">
+                <list editable="bottom">
+                  <field name="name"/>
+                  <field name="product_id"/>
+                  <field name="category"/>
+                  <field name="required_date"/>
+                  <field name="quantity"/>
+                  <field name="confidence"/>
+                </list>
+              </field>
+            </page>
+            <page string="Line">
+              <field name="line_ids">
+                <list create="0" edit="0" delete="0">
+                  <field name="product_id"/>
+                  <field name="period_id"/>
+                  <field name="planned"/>
+                  <field name="actual"/>
+                  <field name="balance"/>
+                  <field name="variance"/>
+                </list>
+              </field>
+            </page>
+            <page string="Requirement">
+              <field name="requirement_ids">
+                <list create="0" edit="0" delete="0">
+                  <field name="product_id"/>
+                  <field name="kind"/>
+                  <field name="required_date"/>
+                  <field name="net"/>
+                  <field name="shortage"/>
+                  <field name="warning"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_mps_plan_action" model="ir.actions.act_window">
+    <field name="name">MPS Plans</field>
+    <field name="res_model">deep.mps.plan</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_mps_plan_menu" name="MPS Plans" parent="menu_module" action="deep_mps_plan_action"/>
+  <record id="deep_mps_period_list" model="ir.ui.view">
+    <field name="name">deep_mps_period.list</field>
+    <field name="model">deep.mps.period</field>
+    <field name="arch" type="xml">
+      <list string="Planning Periods" create="0" delete="0">
+        <field name="name"/>
+        <field name="start_date"/>
+        <field name="end_date"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_mps_period_form" model="ir.ui.view">
+    <field name="name">deep_mps_period.form</field>
+    <field name="model">deep.mps.period</field>
+    <field name="arch" type="xml">
+      <form string="Planning Periods" create="0" delete="0">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="start_date"/>
+            <field name="end_date"/>
+            <field name="plan_id"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_mps_period_action" model="ir.actions.act_window">
+    <field name="name">Planning Periods</field>
+    <field name="res_model">deep.mps.period</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="deep_mps_line_list" model="ir.ui.view">
+    <field name="name">deep_mps_line.list</field>
+    <field name="model">deep.mps.line</field>
+    <field name="arch" type="xml">
+      <list string="MPS Balances" create="0" delete="0">
+        <field name="product_id"/>
+        <field name="period_id"/>
+        <field name="planned"/>
+        <field name="actual"/>
+        <field name="balance"/>
+        <field name="variance"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_mps_line_form" model="ir.ui.view">
+    <field name="name">deep_mps_line.form</field>
+    <field name="model">deep.mps.line</field>
+    <field name="arch" type="xml">
+      <form string="MPS Balances" create="0" delete="0">
+        <sheet>
+          <group>
+            <field name="product_id"/>
+            <field name="period_id"/>
+            <field name="planned"/>
+            <field name="actual"/>
+            <field name="balance"/>
+            <field name="variance"/>
+            <field name="plan_id"/>
+            <field name="firm"/>
+            <field name="forecast"/>
+            <field name="manual"/>
+            <field name="confidence"/>
+            <field name="total_demand"/>
+            <field name="weighted_demand"/>
+            <field name="beginning"/>
+            <field name="receipts"/>
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page string="Production">
+              <field name="production_ids">
+                <list create="0" edit="0" delete="0">
+                  <field name="name"/>
+                  <field name="product_id"/>
+                  <field name="product_qty"/>
+                  <field name="state"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_mps_line_action" model="ir.actions.act_window">
+    <field name="name">MPS Balances</field>
+    <field name="res_model">deep.mps.line</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_mps_line_menu" name="MPS Balances" parent="menu_module" action="deep_mps_line_action"/>
+  <record id="deep_material_requirement_list" model="ir.ui.view">
+    <field name="name">deep_material_requirement.list</field>
+    <field name="model">deep.material.requirement</field>
+    <field name="arch" type="xml">
+      <list string="Make / Buy Requirements" create="0" delete="0">
+        <field name="product_id"/>
+        <field name="kind"/>
+        <field name="required_date"/>
+        <field name="gross"/>
+        <field name="stock_allocated"/>
+        <field name="receipt_allocated"/>
+        <field name="net"/>
+        <field name="shortage"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_material_requirement_form" model="ir.ui.view">
+    <field name="name">deep_material_requirement.form</field>
+    <field name="model">deep.material.requirement</field>
+    <field name="arch" type="xml">
+      <form string="Make / Buy Requirements" create="0" delete="0">
+        <header>
+          <button name="action_create_rfq" type="object" string="Create Approved RFQ" class="btn-secondary"/>
+          <button name="action_export" type="object" string="Export Requirements" class="btn-secondary"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="product_id"/>
+            <field name="kind"/>
+            <field name="required_date"/>
+            <field name="gross"/>
+            <field name="stock_allocated"/>
+            <field name="receipt_allocated"/>
+            <field name="net"/>
+            <field name="shortage"/>
+            <field name="plan_id"/>
+            <field name="line_id"/>
+            <field name="path"/>
+            <field name="bom_id"/>
+            <field name="supplier_id"/>
+            <field name="lead_days"/>
+            <field name="expected_date"/>
+            <field name="warning"/>
+            <field name="production_id"/>
+            <field name="purchase_id"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_material_requirement_action" model="ir.actions.act_window">
+    <field name="name">Make / Buy Requirements</field>
+    <field name="res_model">deep.material.requirement</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_material_requirement_menu" name="Make / Buy Requirements" parent="menu_module" action="deep_material_requirement_action"/>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_skill" model="ir.rule">
+    <field name="name">Skills — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_skill"/>
+  </record>
+  <record id="company_deep_skill_level" model="ir.rule">
+    <field name="name">Skill Levels — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_skill_level"/>
+  </record>
+  <record id="company_deep_employee_skill" model="ir.rule">
+    <field name="name">Employee Qualifications — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_employee_skill"/>
+  </record>
+  <record id="company_deep_operation_skill" model="ir.rule">
+    <field name="name">Operation Skill Requirements — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_operation_skill"/>
+  </record>
+  <record id="company_deep_labor_shift" model="ir.rule">
+    <field name="name">Labor Shift Allocations — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_labor_shift"/>
+  </record>
+  <record id="company_deep_capacity_snapshot" model="ir.rule">
+    <field name="name">Capacity / Labor Load — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_capacity_snapshot"/>
+  </record>
+</odoo>

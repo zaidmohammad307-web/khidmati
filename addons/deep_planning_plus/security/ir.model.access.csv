@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_plan_scenario,Planning scenarios,model_deep_plan_scenario,deep_core.group_user,1,0,0,0
+planner_deep_plan_scenario,Planning scenarios,model_deep_plan_scenario,deep_core.group_planner,1,1,1,1
+manager_deep_plan_scenario,Planning scenarios,model_deep_plan_scenario,deep_core.group_manager,1,1,1,1
+read_deep_engineering_change,Engineering changes,model_deep_engineering_change,deep_core.group_user,1,0,0,0
+planner_deep_engineering_change,Engineering changes,model_deep_engineering_change,deep_core.group_planner,1,1,1,1
+manager_deep_engineering_change,Engineering changes,model_deep_engineering_change,deep_core.group_manager,1,1,1,1
+read_deep_material_alternative,Qualified alternatives,model_deep_material_alternative,deep_core.group_user,1,0,0,0
+planner_deep_material_alternative,Qualified alternatives,model_deep_material_alternative,deep_core.group_planner,1,1,1,1
+procurement_deep_material_alternative,Qualified alternatives,model_deep_material_alternative,deep_core.group_procurement,1,1,1,1
+manager_deep_material_alternative,Qualified alternatives,model_deep_material_alternative,deep_core.group_manager,1,1,1,1
+read_deep_stock_policy,Reorder proposals,model_deep_stock_policy,deep_core.group_user,1,0,0,0
+planner_deep_stock_policy,Reorder proposals,model_deep_stock_policy,deep_core.group_planner,1,1,1,1
+procurement_deep_stock_policy,Reorder proposals,model_deep_stock_policy,deep_core.group_procurement,1,1,1,1
+manager_deep_stock_policy,Reorder proposals,model_deep_stock_policy,deep_core.group_manager,1,1,1,1

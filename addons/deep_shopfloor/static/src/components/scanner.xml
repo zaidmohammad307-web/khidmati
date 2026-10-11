@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templates xml:space="preserve">
+  <t t-name="deep.Scanner">
+    <form t-on-submit.prevent="submit" class="input-group mb-3">
+      <input t-ref="scan" class="form-control" autocomplete="off" placeholder="Scan QR / enter serial" aria-label="Serial scanner" t-model="state.value"/>
+      <button class="btn btn-primary" t-att-disabled="props.busy">Start scanned test</button>
+    </form>
+  </t>
+</templates>

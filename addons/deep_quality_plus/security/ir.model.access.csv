@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_nonconformance,Nonconformance and CAPA,model_deep_nonconformance,deep_core.group_user,1,0,0,0
+qa_deep_nonconformance,Nonconformance and CAPA,model_deep_nonconformance,deep_core.group_qa,1,1,1,1
+manager_deep_nonconformance,Nonconformance and CAPA,model_deep_nonconformance,deep_core.group_manager,1,1,1,1
+read_deep_capa_action,Assigned CAPA actions,model_deep_capa_action,deep_core.group_user,1,0,0,0
+qa_deep_capa_action,Assigned CAPA actions,model_deep_capa_action,deep_core.group_qa,1,1,1,1
+technician_deep_capa_action,Assigned CAPA actions,model_deep_capa_action,deep_core.group_technician,1,1,1,1
+supervisor_deep_capa_action,Assigned CAPA actions,model_deep_capa_action,deep_core.group_supervisor,1,1,1,1
+manager_deep_capa_action,Assigned CAPA actions,model_deep_capa_action,deep_core.group_manager,1,1,1,1

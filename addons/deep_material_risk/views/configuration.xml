@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="product_risk_configuration" model="ir.ui.view">
+    <field name="name">product.deep.risk.configuration</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="deep_core.product_form_extension"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='deep_qa_required']" position="after">
+        <field name="deep_sourcing"/>
+        <field name="deep_restricted"/>
+        <field name="deep_maturity"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

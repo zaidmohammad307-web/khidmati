@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templates xml:space="preserve">
+  <t t-name="deep.QualityTest">
+    <div>
+      <h4>
+        <t t-esc="props.session.serial"/>
+      </h4>
+      <p>
+        <t t-esc="props.session.template"/> · Version <t t-esc="props.session.version"/>
+      </p>
+      <div t-foreach="props.session.points" t-as="p" t-key="p.id" class="mb-3">
+        <label class="form-label">
+          <t t-esc="p.name"/>
+          <span t-if="p.mandatory"> *</span>
+        </label>
+        <div class="small text-muted" t-esc="p.instruction"/>
+        <input t-if="p.kind==='numeric'" class="form-control" type="number" step="any" t-on-input="e=&gt;this.answer(p,e)"/>
+        <div t-if="p.kind==='numeric'" class="small text-muted">
+          <t t-esc="p.minimum"/>–<t t-esc="p.maximum"/>
+          <t t-esc="p.unit"/>
+        </div>
+        <select t-if="['boolean','pass_fail'].includes(p.kind)" class="form-select" t-on-change="e=&gt;this.answer(p,e)">
+          <option value="">Choose result</option>
+          <option value="true">PASS / Yes</option>
+          <option value="false">FAIL / No</option>
+        </select>
+        <select t-if="p.kind==='selection'" class="form-select" t-on-change="e=&gt;this.answer(p,e)">
+          <option value="">Choose result</option>
+          <option t-foreach="p.options" t-as="o" t-key="o" t-esc="o"/>
+        </select>
+        <input t-if="p.kind==='text'" class="form-control" t-on-input="e=&gt;this.answer(p,e)"/>
+      </div>
+      <textarea class="form-control mb-3" placeholder="Notes / hold reason" t-model="state.notes"/>
+      <label class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" t-model="state.hold"/> Place on quality hold</label>
+      <button class="btn btn-primary" t-on-click="submit" t-att-disabled="props.busy">Submit and lock results</button>
+    </div>
+  </t>
+</templates>

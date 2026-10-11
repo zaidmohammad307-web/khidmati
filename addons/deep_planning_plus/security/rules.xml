@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_plan_scenario" model="ir.rule">
+    <field name="name">Planning scenarios company isolation</field>
+    <field name="model_id" ref="model_deep_plan_scenario"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_engineering_change" model="ir.rule">
+    <field name="name">Engineering changes company isolation</field>
+    <field name="model_id" ref="model_deep_engineering_change"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_material_alternative" model="ir.rule">
+    <field name="name">Qualified alternatives company isolation</field>
+    <field name="model_id" ref="model_deep_material_alternative"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_stock_policy" model="ir.rule">
+    <field name="name">Reorder proposals company isolation</field>
+    <field name="model_id" ref="model_deep_stock_policy"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+</odoo>

@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_root" name="Advanced planning" parent="deep_core.menu_root" sequence="35" groups="deep_core.group_user"/>
+  <record id="deep_plan_scenario_list" model="ir.ui.view">
+    <field name="name">deep.plan.scenario.list</field>
+    <field name="model">deep.plan.scenario</field>
+    <field name="arch" type="xml">
+      <list string="Planning scenarios">
+        <field name="name"/>
+        <field name="base_plan_id"/>
+        <field name="demand_factor"/>
+        <field name="date_shift_days"/>
+        <field name="base_planned"/>
+        <field name="scenario_planned"/>
+        <field name="shortage_lines"/>
+        <field name="overload_hours"/>
+        <field name="calculated_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_plan_scenario_form" model="ir.ui.view">
+    <field name="name">deep.plan.scenario.form</field>
+    <field name="model">deep.plan.scenario</field>
+    <field name="arch" type="xml">
+      <form string="Planning scenarios">
+        <header>
+          <button name="action_calculate" string="Recalculate preview" type="object" groups="deep_core.group_planner" class="oe_highlight"/>
+          <button name="action_open_preview" string="Open MPS preview" type="object" groups="deep_core.group_planner"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="base_plan_id"/>
+              <field name="demand_factor"/>
+              <field name="date_shift_days"/>
+              <field name="overtime_per_center"/>
+              <field name="base_planned"/>
+            </group>
+            <group>
+              <field name="scenario_planned"/>
+              <field name="shortage_lines"/>
+              <field name="overload_hours"/>
+              <field name="calculated_at"/>
+              <field name="preview_plan_id"/>
+              <field name="notes"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_plan_scenario" model="ir.actions.act_window">
+    <field name="name">Planning scenarios</field>
+    <field name="res_model">deep.plan.scenario</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_plan_scenario" name="Planning scenarios" parent="menu_root" action="action_deep_plan_scenario" sequence="10"/>
+  <record id="deep_engineering_change_list" model="ir.ui.view">
+    <field name="name">deep.engineering.change.list</field>
+    <field name="model">deep.engineering.change</field>
+    <field name="arch" type="xml">
+      <list string="Engineering changes">
+        <field name="name"/>
+        <field name="source_bom_id"/>
+        <field name="revision"/>
+        <field name="effective_date"/>
+        <field name="approved_by"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_engineering_change_form" model="ir.ui.view">
+    <field name="name">deep.engineering.change.form</field>
+    <field name="model">deep.engineering.change</field>
+    <field name="arch" type="xml">
+      <form string="Engineering changes">
+        <header>
+          <button name="action_clone" string="Clone proposed BOM" type="object" groups="deep_core.group_planner" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_open_bom" string="Open proposed BOM" type="object" groups="deep_core.group_planner"/>
+          <button name="action_submit" string="Submit change" type="object" groups="deep_core.group_planner" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_approve" string="Approve revision" type="object" groups="deep_core.group_manager" invisible="state not in ['review']" class="oe_highlight"/>
+          <button name="action_apply" string="Apply effective revision" type="object" groups="deep_core.group_manager" invisible="state not in ['approved']" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="source_bom_id" readonly="state != 'draft'"/>
+              <field name="proposed_bom_id"/>
+              <field name="revision" readonly="state != 'draft'"/>
+              <field name="effective_date" readonly="state != 'draft'"/>
+            </group>
+            <group>
+              <field name="reason" readonly="state != 'draft'"/>
+              <field name="impact" readonly="state != 'draft'"/>
+              <field name="approved_by"/>
+              <field name="approved_digest"/>
+              <field name="company_id" readonly="state != 'draft'"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Attachment">
+              <field name="attachment_ids" widget="many2many_binary"/>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_engineering_change" model="ir.actions.act_window">
+    <field name="name">Engineering changes</field>
+    <field name="res_model">deep.engineering.change</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_engineering_change" name="Engineering changes" parent="menu_root" action="action_deep_engineering_change" sequence="20"/>
+  <record id="deep_material_alternative_list" model="ir.ui.view">
+    <field name="name">deep.material.alternative.list</field>
+    <field name="model">deep.material.alternative</field>
+    <field name="arch" type="xml">
+      <list string="Qualified alternatives">
+        <field name="product_id"/>
+        <field name="alternative_id"/>
+        <field name="quantity_factor"/>
+        <field name="valid_until"/>
+        <field name="approved_by"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_material_alternative_form" model="ir.ui.view">
+    <field name="name">deep.material.alternative.form</field>
+    <field name="model">deep.material.alternative</field>
+    <field name="arch" type="xml">
+      <form string="Qualified alternatives">
+        <header>
+          <button name="action_approve" string="Approve qualification" type="object" groups="deep_core.group_manager" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_obsolete" string="Mark obsolete" type="object" groups="deep_core.group_manager" invisible="state not in ['approved']"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="state != 'draft'"/>
+              <field name="product_id" readonly="state != 'draft'"/>
+              <field name="alternative_id" readonly="state != 'draft'"/>
+              <field name="quantity_factor" readonly="state != 'draft'"/>
+            </group>
+            <group>
+              <field name="qualification" readonly="state != 'draft'"/>
+              <field name="valid_until" readonly="state != 'draft'"/>
+              <field name="approved_by"/>
+              <field name="company_id" readonly="state != 'draft'"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Attachment">
+              <field name="attachment_ids" widget="many2many_binary" readonly="state != 'draft'"/>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_material_alternative" model="ir.actions.act_window">
+    <field name="name">Qualified alternatives</field>
+    <field name="res_model">deep.material.alternative</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_material_alternative" name="Qualified alternatives" parent="menu_root" action="action_deep_material_alternative" sequence="30"/>
+  <record id="deep_stock_policy_list" model="ir.ui.view">
+    <field name="name">deep.stock.policy.list</field>
+    <field name="model">deep.stock.policy</field>
+    <field name="arch" type="xml">
+      <list string="Reorder proposals">
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="warehouse_id"/>
+        <field name="criticality"/>
+        <field name="daily_mean"/>
+        <field name="safety_qty"/>
+        <field name="reorder_qty"/>
+        <field name="maximum_qty"/>
+        <field name="calculated_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_stock_policy_form" model="ir.ui.view">
+    <field name="name">deep.stock.policy.form</field>
+    <field name="model">deep.stock.policy</field>
+    <field name="arch" type="xml">
+      <form string="Reorder proposals">
+        <header>
+          <button name="action_calculate" string="Calculate from actual consumption" type="object" groups="deep_core.group_planner,deep_core.group_procurement" class="oe_highlight"/>
+          <button name="action_export" string="Export SAP proposal XLSX" type="object" groups="deep_core.group_procurement,deep_core.group_planner"/>
+          <button name="action_apply_orderpoint" string="Apply manual Odoo reorder rule" type="object" groups="deep_core.group_manager" class="oe_highlight"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="product_id"/>
+              <field name="warehouse_id"/>
+              <field name="criticality"/>
+              <field name="z_score"/>
+              <field name="history_days"/>
+              <field name="lead_days"/>
+              <field name="coverage_days"/>
+            </group>
+            <group>
+              <field name="daily_mean"/>
+              <field name="daily_std"/>
+              <field name="safety_qty"/>
+              <field name="reorder_qty"/>
+              <field name="maximum_qty"/>
+              <field name="calculated_at"/>
+              <field name="orderpoint_id"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_stock_policy" model="ir.actions.act_window">
+    <field name="name">Reorder proposals</field>
+    <field name="res_model">deep.stock.policy</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_stock_policy" name="Reorder proposals" parent="menu_root" action="action_deep_stock_policy" sequence="40"/>
+</odoo>

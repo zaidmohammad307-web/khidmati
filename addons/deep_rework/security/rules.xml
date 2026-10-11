@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_rework_order" model="ir.rule">
+    <field name="name">Product Rework — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)] if (user.has_group('deep_core.group_manager') or user.has_group('deep_core.group_supervisor') or user.has_group('deep_core.group_qa') or user.has_group('deep_core.group_planner')) else [('company_id','in',company_ids),('technician_id','=',user.id)]</field>
+    <field name="model_id" ref="model_deep_rework_order"/>
+  </record>
+  <record id="company_deep_rework_part" model="ir.rule">
+    <field name="name">Replacement Part Movements — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)] if (user.has_group('deep_core.group_manager') or user.has_group('deep_core.group_supervisor') or user.has_group('deep_core.group_qa') or user.has_group('deep_core.group_planner')) else [('company_id','in',company_ids),('rework_id.technician_id','=',user.id)]</field>
+    <field name="model_id" ref="model_deep_rework_part"/>
+  </record>
+</odoo>

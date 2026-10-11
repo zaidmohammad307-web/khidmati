@@ -1,0 +1,69 @@
+.deep-app {
+  background: #f4f7fa;
+  color: #19354a;
+  h1 {
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+  .deep-eyebrow {
+    color: #237b68;
+    letter-spacing: 1.5px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .deep-panel {
+    background: white;
+    border: 1px solid #dce5ec;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 4px #19354a05;
+  }
+  .deep-stations {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .deep-station {
+    border-top: 4px solid #c9d5de;
+  }
+  .deep-progress {
+    border-top-color: #237b68;
+  }
+  .deep-done {
+    border-top-color: #80b8a6;
+  }
+  .deep-unit {
+    padding: 14px 0;
+    border-bottom: 1px solid #e8eef2;
+  }
+  .btn-primary {
+    background: #237b68;
+    border-color: #237b68;
+  }
+  .form-control,
+  .form-select,
+  .btn {
+    min-height: 44px;
+  }
+  .form-control,
+  .form-select {
+    font-size: 16px;
+  }
+  .deep-kpi {
+    font-size: 40px;
+    font-weight: 700;
+  }
+  .deep-timeline {
+    min-width: 800px;
+  }
+  .deep-gantt {
+    height: 22px;
+    border-radius: 4px;
+    background: #237b68;
+    color: white;
+    font-size: 11px;
+    min-width: 3px;
+    position: absolute;
+    white-space: nowrap;
+  }
+}

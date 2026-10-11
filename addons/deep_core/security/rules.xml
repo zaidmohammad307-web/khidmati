@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_product_family" model="ir.rule">
+    <field name="name">Product Families — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_product_family"/>
+  </record>
+  <record id="company_deep_production_batch" model="ir.rule">
+    <field name="name">Production Batches — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_production_batch"/>
+  </record>
+  <record id="company_deep_production_unit" model="ir.rule">
+    <field name="name">Serial Traceability — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_production_unit"/>
+  </record>
+  <record id="company_deep_audit_event" model="ir.rule">
+    <field name="name">Audit Trail — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_audit_event"/>
+  </record>
+  <record id="company_deep_serial_request" model="ir.rule">
+    <field name="name">Serialization Requests — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_serial_request"/>
+  </record>
+</odoo>

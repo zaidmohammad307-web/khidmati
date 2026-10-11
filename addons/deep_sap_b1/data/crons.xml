@@ -1,0 +1,5 @@
+<odoo noupdate="1">
+<record id="session_idle_policy" model="ir.config_parameter"><field name="key">sessions.max_inactivity_seconds</field><field name="value">1800</field></record>
+<record id="cron_sap_queue" model="ir.cron"><field name="name">SAP B1: queue enabled profiles</field><field name="model_id" ref="model_deep_sap_profile"/><field name="state">code</field><field name="code">model._cron_queue()</field><field name="interval_number">1</field><field name="interval_type">minutes</field><field name="active">True</field></record>
+<record id="cron_sap_run" model="ir.cron"><field name="name">SAP B1: run pending refresh</field><field name="model_id" ref="model_deep_sap_job"/><field name="state">code</field><field name="code">model._cron_run()</field><field name="interval_number">1</field><field name="interval_type">minutes</field><field name="active">True</field></record>
+</odoo>

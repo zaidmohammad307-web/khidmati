@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_downtime_reason" model="ir.rule">
+    <field name="name">Downtime reasons company isolation</field>
+    <field name="model_id" ref="model_deep_downtime_reason"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_downtime_event" model="ir.rule">
+    <field name="name">Downtime and breakdowns company isolation</field>
+    <field name="model_id" ref="model_deep_downtime_event"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+  <record id="company_deep_preventive_plan" model="ir.rule">
+    <field name="name">Preventive schedules company isolation</field>
+    <field name="model_id" ref="model_deep_preventive_plan"/>
+    <field name="domain_force">[('company_id','in',company_ids)]</field>
+  </record>
+</odoo>

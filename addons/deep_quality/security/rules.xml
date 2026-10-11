@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_quality_template" model="ir.rule">
+    <field name="name">Quality Templates — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_quality_template"/>
+  </record>
+  <record id="company_deep_quality_point" model="ir.rule">
+    <field name="name">Quality Test Points — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_quality_point"/>
+  </record>
+  <record id="company_deep_scan_event" model="ir.rule">
+    <field name="name">Scan History — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_scan_event"/>
+  </record>
+  <record id="company_deep_quality_session" model="ir.rule">
+    <field name="name">Quality Sessions — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_quality_session"/>
+  </record>
+  <record id="company_deep_quality_result" model="ir.rule">
+    <field name="name">Quality Results — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_quality_result"/>
+  </record>
+</odoo>

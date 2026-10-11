@@ -1,0 +1,23 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_product_family,Product Families,model_deep_product_family,deep_core.group_user,1,0,0,0
+planner_deep_product_family,Product Families,model_deep_product_family,deep_core.group_planner,1,1,1,1
+manager_deep_product_family,Product Families,model_deep_product_family,deep_core.group_manager,1,1,1,1
+read_deep_production_batch,Production Batches,model_deep_production_batch,deep_core.group_user,1,0,0,0
+operator_deep_production_batch,Production Batches,model_deep_production_batch,deep_core.group_operator,1,1,1,1
+supervisor_deep_production_batch,Production Batches,model_deep_production_batch,deep_core.group_supervisor,1,1,1,1
+manager_deep_production_batch,Production Batches,model_deep_production_batch,deep_core.group_manager,1,1,1,1
+read_deep_production_unit,Serial Traceability,model_deep_production_unit,deep_core.group_user,1,0,0,0
+operator_deep_production_unit,Serial Traceability,model_deep_production_unit,deep_core.group_operator,1,1,1,0
+qa_deep_production_unit,Serial Traceability,model_deep_production_unit,deep_core.group_qa,1,1,1,0
+manager_deep_production_unit,Serial Traceability,model_deep_production_unit,deep_core.group_manager,1,1,1,0
+read_deep_audit_event,Audit Trail,model_deep_audit_event,deep_core.group_user,1,0,0,0
+read_deep_serial_request,Serialization Requests,model_deep_serial_request,deep_core.group_user,1,0,0,0
+read_deep_material_issue,Actual Material Issue,model_deep_material_issue,deep_core.group_user,1,0,0,0
+warehouse_deep_material_issue,Actual Material Issue,model_deep_material_issue,deep_core.group_warehouse,1,1,1,1
+manager_deep_material_issue,Actual Material Issue,model_deep_material_issue,deep_core.group_manager,1,1,1,1
+read_deep_material_issue_line,Issue Lines,model_deep_material_issue_line,deep_core.group_user,1,0,0,0
+warehouse_deep_material_issue_line,Issue Lines,model_deep_material_issue_line,deep_core.group_warehouse,1,1,1,1
+manager_deep_material_issue_line,Issue Lines,model_deep_material_issue_line,deep_core.group_manager,1,1,1,1
+
+operator_deep_issue,Actual Movement,model_deep_material_issue,deep_core.group_operator,1,1,1,1
+operator_deep_issue_line,Actual Movement Lines,model_deep_material_issue_line,deep_core.group_operator,1,1,1,1

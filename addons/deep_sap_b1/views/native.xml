@@ -1,0 +1,1 @@
+<odoo><record id="plan_sap_source" model="ir.ui.view"><field name="name">MPS SAP source</field><field name="model">deep.mps.plan</field><field name="inherit_id" ref="deep_mps.deep_mps_plan_form"/><field name="arch" type="xml"><xpath expr="//field[@name='warehouse_id']" position="after"><field name="deep_sap_profile_id" readonly="state != 'draft'"/></xpath></field></record></odoo>

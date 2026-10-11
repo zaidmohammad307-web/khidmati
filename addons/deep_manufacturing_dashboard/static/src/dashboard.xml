@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templates xml:space="preserve">
+  <t t-name="deep.Cockpit">
+    <div class="deep-app p-4 h-100 overflow-auto">
+      <div class="d-flex justify-content-between mb-4">
+        <div>
+          <div class="deep-eyebrow">PRODUCTION PLANNING / CONTROL TOWER</div>
+          <h1>Manufacturing overview</h1>
+          <p class="text-muted">Demand to finished stock · Native Odoo transactions</p>
+        </div>
+        <button class="btn btn-outline-primary align-self-start" t-on-click="refresh" t-att-disabled="state.busy">Refresh</button>
+      </div>
+      <div t-if="state.error" class="alert alert-danger" t-esc="state.error"/>
+      <t t-if="state.data">
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <button class="btn btn-primary" t-on-click="floor">Shop floor</button>
+          <button class="btn btn-outline-primary" t-on-click="()=&gt;this.navigate('deep.mps.plan')">MPS plans</button>
+          <button class="btn btn-outline-primary" t-on-click="()=&gt;this.navigate('deep.material.requirement')">Material requirements</button>
+          <button class="btn btn-outline-primary" t-on-click="()=&gt;this.navigate('deep.import.batch')">Imports</button>
+          <button class="btn btn-outline-primary" t-on-click="()=&gt;this.navigate('deep.production.unit')">Serial traceability</button>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="deep-panel">
+              <div class="text-muted">Active manufacturing orders</div>
+              <div class="deep-kpi" t-esc="state.data.active"/>
+              <div>
+                <t t-esc="state.data.planned_units"/> planned units</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="deep-panel">
+              <div class="text-muted">Material shortages</div>
+              <div class="deep-kpi" t-esc="state.data.shortages"/>
+              <div>
+                <t t-esc="state.data.late_materials"/> arrive late</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="deep-panel">
+              <div class="text-muted">Quality hold / rework</div>
+              <div class="deep-kpi">
+                <t t-esc="state.data.hold"/> / <t t-esc="state.data.rework"/>
+              </div>
+              <button class="btn btn-link p-0" t-on-click="()=&gt;this.navigate('deep.rework.order')">Open repair queue</button>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="deep-panel">
+              <div class="text-muted">First pass yield</div>
+              <div class="deep-kpi" t-esc="state.data.first_pass_yield===null?'—':state.data.first_pass_yield+'%'"/>
+              <div>
+                <t t-esc="state.data.completed_today"/> MOs completed today</div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mb-4">
+          <button class="btn btn-light" t-on-click="()=&gt;state.tab='overview'">Capacity / quality</button>
+          <button class="btn btn-light" t-on-click="()=&gt;state.tab='mps'">MPS matrix</button>
+          <button class="btn btn-light" t-on-click="()=&gt;state.tab='schedule'">Schedule / timeline</button>
+          <button class="btn btn-light" t-on-click="()=&gt;state.tab='wip'">WIP by work center</button>
+        </div>
+        <t t-if="state.tab==='overview'">
+          <div class="deep-panel mb-4">
+            <h3>Capacity and qualified labor</h3>
+            <p class="text-muted" t-esc="state.data.plan"/>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Work center</th>
+                  <th>Period</th>
+                  <th>Required / available</th>
+                  <th style="width:25%">Load</th>
+                  <th>Overload / overtime needed</th>
+                  <th>Labor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr t-foreach="state.data.capacity" t-as="c" t-key="c.id">
+                  <td t-esc="c.center"/>
+                  <td t-esc="c.period"/>
+                  <td>
+                    <t t-esc="c.required"/> / <t t-esc="c.available"/> h</td>
+                  <td>
+                    <div class="progress" style="height:10px">
+                      <div class="progress-bar" t-att-style="load(c)"/>
+                    </div>
+                    <small t-esc="c.available?c.load+'%':'No capacity'"/>
+                  </td>
+                  <td>
+                    <t t-esc="c.overload"/> h</td>
+                  <td t-esc="c.labor_shortage?'Shortage':'Covered'"/>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="deep-panel">
+                <h3>Plan vs actual</h3>
+                <p>MPS attainment: <strong t-esc="state.data.attainment===null?'—':state.data.attainment+'%'"/>
+                </p>
+                <p>Late open orders: <strong t-esc="state.data.late_orders"/>
+                </p>
+                <p>Retest success: <strong t-esc="state.data.retest_success===null?'—':state.data.retest_success+'%'"/>
+                </p>
+                <p>Scrapped WIP identities: <strong t-esc="state.data.scrap"/>
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="deep-panel">
+                <h3>Defect Pareto</h3>
+                <table class="table">
+                  <tbody>
+                    <tr t-foreach="state.data.pareto" t-as="p" t-key="p.code">
+                      <td t-esc="p.code"/>
+                      <td t-esc="p.count"/>
+                    </tr>
+                  </tbody>
+                </table>
+                <p t-if="!state.data.pareto.length" class="text-muted">No failed test points recorded.</p>
+              </div>
+            </div>
+          </div>
+        </t>
+        <div t-if="state.tab==='mps'" class="deep-panel">
+          <h3 t-esc="state.data.plan"/>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th t-foreach="state.data.matrix.periods" t-as="p" t-key="p" t-esc="p"/>
+                </tr>
+              </thead>
+              <tbody>
+                <tr t-foreach="state.data.matrix.products" t-as="p" t-key="p.id">
+                  <td t-esc="p.name"/>
+                  <td t-foreach="p.cells" t-as="c" t-key="c_index">
+                    <strong>
+                      <t t-esc="c.planned"/> planned</strong>
+                    <div class="small">
+                      <t t-esc="c.actual"/> actual · <t t-esc="c.balance"/> projected stock</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary" t-if="state.data.plan_id" t-on-click="()=&gt;this.navigate('deep.mps.plan',state.data.plan_id)">Open plan / calculate / approve / release</button>
+        </div>
+        <div t-if="state.tab==='schedule'" class="deep-panel">
+          <h3>Work-order timeline</h3>
+          <p class="text-muted">UTC · Earliest start to latest finish · First 100 open work orders</p>
+          <div class="table-responsive">
+            <table class="table deep-timeline">
+              <thead>
+                <tr>
+                  <th style="width:25%">Order / operation</th>
+                  <th>Scheduled interval</th>
+                  <th>Start / end (UTC)</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr t-foreach="state.data.schedule" t-as="w" t-key="w.id">
+                  <td>
+                    <button class="btn btn-link p-0" t-on-click="()=&gt;this.navigate('mrp.workorder',w.id)">
+                      <t t-esc="w.mo"/> · <t t-esc="w.name"/>
+                    </button>
+                    <div class="small text-muted" t-esc="w.center"/>
+                  </td>
+                  <td style="position:relative;width:40%">
+                    <div class="deep-gantt" t-att-style="position(w)" t-att-title="w.start+' → '+w.end"/>
+                  </td>
+                  <td class="small">
+                    <t t-esc="w.start"/>
+                    <br/>
+                    <t t-esc="w.end"/>
+                  </td>
+                  <td>
+                    <button class="btn btn-light" t-on-click="()=&gt;this.reschedule(w)">Reschedule</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div t-if="state.tab==='wip'" class="deep-panel">
+          <h3>Ready / running work-order load</h3>
+          <p class="text-muted">Order quantities by current work center; individual serial identities begin at S9.</p>
+          <div class="deep-stations">
+            <div t-foreach="state.data.wip" t-as="w" t-key="w.id" class="deep-panel">
+              <h5 t-esc="w.name"/>
+              <div class="deep-kpi" t-esc="w.quantity"/>
+              <p>
+                <t t-esc="w.orders"/> ready / running orders</p>
+              <button class="btn btn-link" t-on-click="()=&gt;this.navigate('mrp.workorder',false,[['workcenter_id','=',w.id],['state','in',['ready','progress']]])">Open work orders</button>
+            </div>
+          </div>
+        </div>
+      </t>
+    </div>
+  </t>
+</templates>

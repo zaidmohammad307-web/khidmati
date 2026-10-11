@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_module" name="Capacity" parent="deep_core.menu_root" sequence="20"/>
+  <record id="deep_skill_list" model="ir.ui.view">
+    <field name="name">deep_skill.list</field>
+    <field name="model">deep.skill</field>
+    <field name="arch" type="xml">
+      <list string="Skills">
+        <field name="name"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_skill_form" model="ir.ui.view">
+    <field name="name">deep_skill.form</field>
+    <field name="model">deep.skill</field>
+    <field name="arch" type="xml">
+      <form string="Skills">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_skill_action" model="ir.actions.act_window">
+    <field name="name">Skills</field>
+    <field name="res_model">deep.skill</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_skill_menu" name="Skills" parent="menu_module" action="deep_skill_action"/>
+  <record id="deep_skill_level_list" model="ir.ui.view">
+    <field name="name">deep_skill_level.list</field>
+    <field name="model">deep.skill.level</field>
+    <field name="arch" type="xml">
+      <list string="Skill Levels">
+        <field name="name"/>
+        <field name="rank"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_skill_level_form" model="ir.ui.view">
+    <field name="name">deep_skill_level.form</field>
+    <field name="model">deep.skill.level</field>
+    <field name="arch" type="xml">
+      <form string="Skill Levels">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="rank"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_skill_level_action" model="ir.actions.act_window">
+    <field name="name">Skill Levels</field>
+    <field name="res_model">deep.skill.level</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_skill_level_menu" name="Skill Levels" parent="menu_module" action="deep_skill_level_action"/>
+  <record id="deep_employee_skill_list" model="ir.ui.view">
+    <field name="name">deep_employee_skill.list</field>
+    <field name="model">deep.employee.skill</field>
+    <field name="arch" type="xml">
+      <list string="Employee Qualifications">
+        <field name="employee_id"/>
+        <field name="skill_id"/>
+        <field name="level_id"/>
+        <field name="valid_until"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_employee_skill_form" model="ir.ui.view">
+    <field name="name">deep_employee_skill.form</field>
+    <field name="model">deep.employee.skill</field>
+    <field name="arch" type="xml">
+      <form string="Employee Qualifications">
+        <sheet>
+          <group>
+            <field name="employee_id"/>
+            <field name="skill_id"/>
+            <field name="level_id"/>
+            <field name="valid_until"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_employee_skill_action" model="ir.actions.act_window">
+    <field name="name">Employee Qualifications</field>
+    <field name="res_model">deep.employee.skill</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_employee_skill_menu" name="Employee Qualifications" parent="menu_module" action="deep_employee_skill_action"/>
+  <record id="deep_operation_skill_list" model="ir.ui.view">
+    <field name="name">deep_operation_skill.list</field>
+    <field name="model">deep.operation.skill</field>
+    <field name="arch" type="xml">
+      <list string="Operation Skill Requirements">
+        <field name="operation_id"/>
+        <field name="skill_id"/>
+        <field name="level_id"/>
+        <field name="operator_count"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_operation_skill_form" model="ir.ui.view">
+    <field name="name">deep_operation_skill.form</field>
+    <field name="model">deep.operation.skill</field>
+    <field name="arch" type="xml">
+      <form string="Operation Skill Requirements">
+        <sheet>
+          <group>
+            <field name="operation_id"/>
+            <field name="skill_id"/>
+            <field name="level_id"/>
+            <field name="operator_count"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_operation_skill_action" model="ir.actions.act_window">
+    <field name="name">Operation Skill Requirements</field>
+    <field name="res_model">deep.operation.skill</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="deep_labor_shift_list" model="ir.ui.view">
+    <field name="name">deep_labor_shift.list</field>
+    <field name="model">deep.labor.shift</field>
+    <field name="arch" type="xml">
+      <list string="Labor Shift Allocations">
+        <field name="name"/>
+        <field name="workcenter_id"/>
+        <field name="start"/>
+        <field name="end"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_labor_shift_form" model="ir.ui.view">
+    <field name="name">deep_labor_shift.form</field>
+    <field name="model">deep.labor.shift</field>
+    <field name="arch" type="xml">
+      <form string="Labor Shift Allocations">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="workcenter_id"/>
+            <field name="start"/>
+            <field name="end"/>
+            <field name="employee_ids" widget="many2many_tags"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_labor_shift_action" model="ir.actions.act_window">
+    <field name="name">Labor Shift Allocations</field>
+    <field name="res_model">deep.labor.shift</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_labor_shift_menu" name="Labor Shift Allocations" parent="menu_module" action="deep_labor_shift_action"/>
+  <record id="deep_capacity_snapshot_list" model="ir.ui.view">
+    <field name="name">deep_capacity_snapshot.list</field>
+    <field name="model">deep.capacity.snapshot</field>
+    <field name="arch" type="xml">
+      <list string="Capacity / Labor Load" create="0" delete="0">
+        <field name="workcenter_id"/>
+        <field name="period_id"/>
+        <field name="available_hours"/>
+        <field name="required_hours"/>
+        <field name="utilization"/>
+        <field name="overload_hours"/>
+        <field name="labor_shortage"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_capacity_snapshot_form" model="ir.ui.view">
+    <field name="name">deep_capacity_snapshot.form</field>
+    <field name="model">deep.capacity.snapshot</field>
+    <field name="arch" type="xml">
+      <form string="Capacity / Labor Load" create="0" delete="0">
+        <header>
+          <button name="action_export" type="object" string="Export Capacity" class="btn-secondary"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="workcenter_id"/>
+            <field name="period_id"/>
+            <field name="available_hours"/>
+            <field name="required_hours"/>
+            <field name="utilization"/>
+            <field name="overload_hours"/>
+            <field name="labor_shortage"/>
+            <field name="plan_id"/>
+            <field name="labor_hours"/>
+            <field name="qualified_hours"/>
+            <field name="unavailable"/>
+            <field name="at"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_capacity_snapshot_action" model="ir.actions.act_window">
+    <field name="name">Capacity / Labor Load</field>
+    <field name="res_model">deep.capacity.snapshot</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_capacity_snapshot_menu" name="Capacity / Labor Load" parent="menu_module" action="deep_capacity_snapshot_action"/>
+</odoo>

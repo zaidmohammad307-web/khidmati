@@ -1,0 +1,424 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_sap" name="SAP Business One" parent="deep_core.menu_root" sequence="90" groups="deep_core.group_planner,deep_core.group_procurement,deep_core.group_manager"/>
+  <record id="view_deep_sap_profile_list" model="ir.ui.view">
+    <field name="name">deep.sap.profile.list</field>
+    <field name="model">deep.sap.profile</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="company_id"/>
+        <field name="connection_state"/>
+        <field name="last_success"/>
+        <field name="automatic_sync"/>
+        <field name="status_message"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_profile_form" model="ir.ui.view">
+    <field name="name">deep.sap.profile.form</field>
+    <field name="model">deep.sap.profile</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_test_connection" type="object" string="Test VPN connection" class="btn-secondary" groups="deep_core.group_procurement,deep_core.group_manager"/>
+          <button name="action_queue_sync" type="object" string="Refresh SAP data" class="btn-primary" groups="deep_core.group_planner,deep_core.group_procurement,deep_core.group_manager"/>
+          <field name="connection_state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <div class="alert alert-info">Credentials are read from private server secrets. Use the VPN hostname on the SAP certificate. Native stock reconciliation and BOM activation require separate approval.</div>
+          <group>
+            <field name="name"/>
+            <field name="company_id"/>
+            <field name="base_url"/>
+            <field name="environment_prefix"/>
+            <field name="automatic_sync"/>
+            <field name="interval_minutes"/>
+            <field name="max_age_minutes"/>
+            <field name="max_records"/>
+            <field name="sync_partners"/>
+            <field name="sync_purchase"/>
+            <field name="sync_sales"/>
+            <field name="sync_boms"/>
+          </group>
+          <group>
+            <field name="last_success"/>
+            <field name="last_check"/>
+            <field name="sap_version"/>
+            <field name="status_message"/>
+          </group>
+          <notebook>
+            <page string="Warehouses">
+              <field name="warehouse_ids">
+                <list editable="bottom">
+                  <field name="sap_code"/>
+                  <field name="warehouse_id"/>
+                  <field name="location_id"/>
+                </list>
+              </field>
+            </page>
+            <page string="Inventory units">
+              <field name="uom_ids">
+                <list editable="bottom">
+                  <field name="sap_name"/>
+                  <field name="uom_id"/>
+                  <field name="quantity_factor"/>
+                </list>
+              </field>
+            </page>
+            <page string="Refresh history">
+              <field name="job_ids">
+                <list create="0" delete="0">
+                  <field name="id"/>
+                  <field name="state"/>
+                  <field name="queued_at"/>
+                  <field name="finished_at"/>
+                  <field name="attempts"/>
+                  <field name="message"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_job_list" model="ir.ui.view">
+    <field name="name">deep.sap.job.list</field>
+    <field name="model">deep.sap.job</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="company_id"/>
+        <field name="state"/>
+        <field name="attempts"/>
+        <field name="queued_at"/>
+        <field name="finished_at"/>
+        <field name="message"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_job_form" model="ir.ui.view">
+    <field name="name">deep.sap.job.form</field>
+    <field name="model">deep.sap.job</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header>
+          <button name="action_run" type="object" string="Run refresh now" class="btn-primary" invisible="state not in ['queued','retry']"/>
+          <button name="action_cancel" type="object" string="Cancel pending refresh" invisible="state not in ['queued','retry']" groups="deep_core.group_manager"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="requested_by"/>
+            <field name="state"/>
+            <field name="attempts"/>
+            <field name="queued_at"/>
+            <field name="started_at"/>
+            <field name="finished_at"/>
+            <field name="next_attempt"/>
+            <field name="error_code"/>
+            <field name="message"/>
+            <field name="counts_json"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_item_list" model="ir.ui.view">
+    <field name="name">deep.sap.item.list</field>
+    <field name="model">deep.sap.item</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="sap_code"/>
+        <field name="product_id"/>
+        <field name="sap_uom"/>
+        <field name="quantity_factor"/>
+        <field name="last_seen"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_item_form" model="ir.ui.view">
+    <field name="name">deep.sap.item.form</field>
+    <field name="model">deep.sap.item</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header/>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="sap_code"/>
+            <field name="product_id"/>
+            <field name="sap_uom"/>
+            <field name="quantity_factor"/>
+            <field name="last_seen"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_partner_list" model="ir.ui.view">
+    <field name="name">deep.sap.partner.list</field>
+    <field name="model">deep.sap.partner</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="sap_code"/>
+        <field name="partner_id"/>
+        <field name="kind"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_partner_form" model="ir.ui.view">
+    <field name="name">deep.sap.partner.form</field>
+    <field name="model">deep.sap.partner</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header/>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="sap_code"/>
+            <field name="partner_id"/>
+            <field name="kind"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_stock_list" model="ir.ui.view">
+    <field name="name">deep.sap.stock.list</field>
+    <field name="model">deep.sap.stock</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="product_id"/>
+        <field name="mapping_id"/>
+        <field name="on_hand"/>
+        <field name="committed"/>
+        <field name="ordered"/>
+        <field name="observed_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_stock_form" model="ir.ui.view">
+    <field name="name">deep.sap.stock.form</field>
+    <field name="model">deep.sap.stock</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header>
+          <button name="action_reconcile_stock" type="object" string="Review native stock count" groups="deep_core.group_manager"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="item_id"/>
+            <field name="product_id"/>
+            <field name="mapping_id"/>
+            <field name="on_hand"/>
+            <field name="committed"/>
+            <field name="ordered"/>
+            <field name="observed_at"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_purchase_line_list" model="ir.ui.view">
+    <field name="name">deep.sap.purchase.line.list</field>
+    <field name="model">deep.sap.purchase.line</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="doc_number"/>
+        <field name="line_number"/>
+        <field name="vendor_code"/>
+        <field name="product_id"/>
+        <field name="mapping_id"/>
+        <field name="quantity"/>
+        <field name="due_date"/>
+        <field name="current"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_purchase_line_form" model="ir.ui.view">
+    <field name="name">deep.sap.purchase.line.form</field>
+    <field name="model">deep.sap.purchase.line</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header/>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="doc_entry"/>
+            <field name="doc_number"/>
+            <field name="line_number"/>
+            <field name="vendor_code"/>
+            <field name="product_id"/>
+            <field name="mapping_id"/>
+            <field name="quantity"/>
+            <field name="due_date"/>
+            <field name="current"/>
+            <field name="observed_at"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_sales_line_list" model="ir.ui.view">
+    <field name="name">deep.sap.sales.line.list</field>
+    <field name="model">deep.sap.sales.line</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="doc_number"/>
+        <field name="line_number"/>
+        <field name="customer_code"/>
+        <field name="product_id"/>
+        <field name="quantity"/>
+        <field name="due_date"/>
+        <field name="demand_id"/>
+        <field name="current"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_sales_line_form" model="ir.ui.view">
+    <field name="name">deep.sap.sales.line.form</field>
+    <field name="model">deep.sap.sales.line</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header/>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="doc_entry"/>
+            <field name="doc_number"/>
+            <field name="line_number"/>
+            <field name="customer_code"/>
+            <field name="product_id"/>
+            <field name="quantity"/>
+            <field name="due_date"/>
+            <field name="demand_id"/>
+            <field name="current"/>
+            <field name="observed_at"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_deep_sap_bom_snapshot_list" model="ir.ui.view">
+    <field name="name">deep.sap.bom.snapshot.list</field>
+    <field name="model">deep.sap.bom.snapshot</field>
+    <field name="arch" type="xml">
+      <list create="0" delete="0">
+        <field name="profile_id"/>
+        <field name="product_id"/>
+        <field name="quantity"/>
+        <field name="observed_at"/>
+        <field name="change_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_deep_sap_bom_snapshot_form" model="ir.ui.view">
+    <field name="name">deep.sap.bom.snapshot.form</field>
+    <field name="model">deep.sap.bom.snapshot</field>
+    <field name="arch" type="xml">
+      <form create="0" edit="0" delete="0">
+        <header>
+          <button name="action_prepare_change" type="object" string="Prepare engineering change" groups="deep_core.group_planner,deep_core.group_manager"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="profile_id"/>
+            <field name="company_id"/>
+            <field name="product_id"/>
+            <field name="quantity"/>
+            <field name="observed_at"/>
+            <field name="fingerprint"/>
+            <field name="components"/>
+            <field name="change_id"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_profile" model="ir.actions.act_window">
+    <field name="name">Connections</field>
+    <field name="res_model">deep.sap.profile</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_profile" name="Connections" parent="menu_sap" action="action_profile"/>
+  <record id="action_job" model="ir.actions.act_window">
+    <field name="name">Refresh history</field>
+    <field name="res_model">deep.sap.job</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_job" name="Refresh history" parent="menu_sap" action="action_job"/>
+  <record id="action_item" model="ir.actions.act_window">
+    <field name="name">Item bindings</field>
+    <field name="res_model">deep.sap.item</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_item" name="Item bindings" parent="menu_sap" action="action_item"/>
+  <record id="action_partner" model="ir.actions.act_window">
+    <field name="name">Partner bindings</field>
+    <field name="res_model">deep.sap.partner</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_partner" name="Partner bindings" parent="menu_sap" action="action_partner"/>
+  <record id="action_stock" model="ir.actions.act_window">
+    <field name="name">Warehouse stock</field>
+    <field name="res_model">deep.sap.stock</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_stock" name="Warehouse stock" parent="menu_sap" action="action_stock"/>
+  <record id="action_purchase_line" model="ir.actions.act_window">
+    <field name="name">Open purchase supply</field>
+    <field name="res_model">deep.sap.purchase.line</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_purchase_line" name="Open purchase supply" parent="menu_sap" action="action_purchase_line"/>
+  <record id="action_sales_line" model="ir.actions.act_window">
+    <field name="name">Customer order demand</field>
+    <field name="res_model">deep.sap.sales.line</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_sales_line" name="Customer order demand" parent="menu_sap" action="action_sales_line"/>
+  <record id="action_bom_snapshot" model="ir.actions.act_window">
+    <field name="name">BOM review snapshots</field>
+    <field name="res_model">deep.sap.bom.snapshot</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_bom_snapshot" name="BOM review snapshots" parent="menu_sap" action="action_bom_snapshot"/>
+  <record id="view_deep_sap_stock_count_form" model="ir.ui.view">
+    <field name="name">deep.sap.stock.count.form</field>
+    <field name="model">deep.sap.stock.count</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="snapshot_id"/>
+            <field name="product_id"/>
+            <field name="location_id"/>
+            <field name="sap_quantity"/>
+            <field name="observed_at"/>
+            <field name="reason"/>
+            <field name="verified"/>
+          </group>
+        </sheet>
+        <footer>
+          <button name="action_apply" type="object" string="Apply verified native count" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

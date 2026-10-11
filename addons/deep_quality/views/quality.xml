@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_module" name="Quality" parent="deep_core.menu_root" sequence="30"/>
+  <record id="deep_quality_template_list" model="ir.ui.view">
+    <field name="name">deep_quality_template.list</field>
+    <field name="model">deep.quality.template</field>
+    <field name="arch" type="xml">
+      <list string="Quality Templates">
+        <field name="name"/>
+        <field name="version"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_quality_template_form" model="ir.ui.view">
+    <field name="name">deep_quality_template.form</field>
+    <field name="model">deep.quality.template</field>
+    <field name="arch" type="xml">
+      <form string="Quality Templates">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="version"/>
+            <field name="active"/>
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page string="Point">
+              <field name="point_ids">
+                <list editable="bottom">
+                  <field name="sequence"/>
+                  <field name="code"/>
+                  <field name="name"/>
+                  <field name="kind"/>
+                  <field name="mandatory"/>
+                  <field name="minimum"/>
+                  <field name="maximum"/>
+                  <field name="unit"/>
+                  <field name="expected_boolean"/>
+                  <field name="failure_code"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_quality_template_action" model="ir.actions.act_window">
+    <field name="name">Quality Templates</field>
+    <field name="res_model">deep.quality.template</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_quality_template_menu" name="Quality Templates" parent="menu_module" action="deep_quality_template_action"/>
+  <record id="deep_quality_point_list" model="ir.ui.view">
+    <field name="name">deep_quality_point.list</field>
+    <field name="model">deep.quality.point</field>
+    <field name="arch" type="xml">
+      <list string="Quality Test Points">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="kind"/>
+        <field name="mandatory"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_quality_point_form" model="ir.ui.view">
+    <field name="name">deep_quality_point.form</field>
+    <field name="model">deep.quality.point</field>
+    <field name="arch" type="xml">
+      <form string="Quality Test Points">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="code"/>
+            <field name="kind"/>
+            <field name="mandatory"/>
+            <field name="template_id"/>
+            <field name="sequence"/>
+            <field name="instruction"/>
+            <field name="minimum"/>
+            <field name="maximum"/>
+            <field name="unit"/>
+            <field name="expected_boolean"/>
+            <field name="options"/>
+            <field name="expected_text"/>
+            <field name="failure_code"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_quality_point_action" model="ir.actions.act_window">
+    <field name="name">Quality Test Points</field>
+    <field name="res_model">deep.quality.point</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="deep_scan_event_list" model="ir.ui.view">
+    <field name="name">deep_scan_event.list</field>
+    <field name="model">deep.scan.event</field>
+    <field name="arch" type="xml">
+      <list string="Scan History" create="0" delete="0">
+        <field name="unit_id"/>
+        <field name="workorder_id"/>
+        <field name="operator_id"/>
+        <field name="at"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_scan_event_form" model="ir.ui.view">
+    <field name="name">deep_scan_event.form</field>
+    <field name="model">deep.scan.event</field>
+    <field name="arch" type="xml">
+      <form string="Scan History" create="0" delete="0">
+        <sheet>
+          <group>
+            <field name="unit_id"/>
+            <field name="workorder_id"/>
+            <field name="operator_id"/>
+            <field name="at"/>
+            <field name="request_key"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_scan_event_action" model="ir.actions.act_window">
+    <field name="name">Scan History</field>
+    <field name="res_model">deep.scan.event</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_scan_event_menu" name="Scan History" parent="menu_module" action="deep_scan_event_action"/>
+  <record id="deep_quality_session_list" model="ir.ui.view">
+    <field name="name">deep_quality_session.list</field>
+    <field name="model">deep.quality.session</field>
+    <field name="arch" type="xml">
+      <list string="Quality Sessions" create="0" delete="0">
+        <field name="name"/>
+        <field name="workorder_id"/>
+        <field name="tester_id"/>
+        <field name="started_at"/>
+        <field name="outcome"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_quality_session_form" model="ir.ui.view">
+    <field name="name">deep_quality_session.form</field>
+    <field name="model">deep.quality.session</field>
+    <field name="arch" type="xml">
+      <form string="Quality Sessions" create="0" delete="0">
+        <header>
+          <button name="action_export" type="object" string="Export Results" class="btn-secondary"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="workorder_id"/>
+            <field name="tester_id"/>
+            <field name="started_at"/>
+            <field name="outcome"/>
+            <field name="state"/>
+            <field name="unit_id"/>
+            <field name="scan_id"/>
+            <field name="template_id"/>
+            <field name="version"/>
+            <field name="ended_at"/>
+            <field name="notes"/>
+            <field name="failure_category"/>
+            <field name="attachment_ids" widget="many2many_tags"/>
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page string="Result">
+              <field name="result_ids">
+                <list create="0" edit="0" delete="0">
+                  <field name="point_id"/>
+                  <field name="kind"/>
+                  <field name="numeric_value"/>
+                  <field name="boolean_value"/>
+                  <field name="text_value"/>
+                  <field name="passed"/>
+                  <field name="failure_code"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_quality_session_action" model="ir.actions.act_window">
+    <field name="name">Quality Sessions</field>
+    <field name="res_model">deep.quality.session</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_quality_session_menu" name="Quality Sessions" parent="menu_module" action="deep_quality_session_action"/>
+  <record id="deep_quality_result_list" model="ir.ui.view">
+    <field name="name">deep_quality_result.list</field>
+    <field name="model">deep.quality.result</field>
+    <field name="arch" type="xml">
+      <list string="Quality Results" create="0" delete="0">
+        <field name="session_id"/>
+        <field name="point_id"/>
+        <field name="kind"/>
+        <field name="passed"/>
+        <field name="failure_code"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_quality_result_form" model="ir.ui.view">
+    <field name="name">deep_quality_result.form</field>
+    <field name="model">deep.quality.result</field>
+    <field name="arch" type="xml">
+      <form string="Quality Results" create="0" delete="0">
+        <sheet>
+          <group>
+            <field name="session_id"/>
+            <field name="point_id"/>
+            <field name="kind"/>
+            <field name="passed"/>
+            <field name="failure_code"/>
+            <field name="numeric_value"/>
+            <field name="boolean_value"/>
+            <field name="text_value"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_quality_result_action" model="ir.actions.act_window">
+    <field name="name">Quality Results</field>
+    <field name="res_model">deep.quality.result</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_quality_summary,Quality Analytics,model_deep_quality_summary,deep_core.group_user,1,0,0,0
+read_deep_schedule_change,Reschedule Work Order,model_deep_schedule_change,deep_core.group_user,1,0,0,0
+planner_deep_schedule_change,Reschedule Work Order,model_deep_schedule_change,deep_core.group_planner,1,1,1,1
+supervisor_deep_schedule_change,Reschedule Work Order,model_deep_schedule_change,deep_core.group_supervisor,1,1,1,1
+manager_deep_schedule_change,Reschedule Work Order,model_deep_schedule_change,deep_core.group_manager,1,1,1,1

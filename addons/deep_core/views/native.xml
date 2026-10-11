@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="product_form_extension" model="ir.ui.view">
+    <field name="name">product.deep.manufacturing</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet/notebook" position="inside">
+        <page string="Manufacturing Planning">
+          <group>
+            <field name="deep_family_id"/>
+            <field name="deep_make_buy"/>
+            <field name="deep_qa_required"/>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+  <record id="production_form_extension" model="ir.ui.view">
+    <field name="name">production.deep.manufacturing</field>
+    <field name="model">mrp.production</field>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="action_deep_consume" string="Record Actual Consumption" type="object" groups="deep_core.group_operator,deep_core.group_supervisor,deep_core.group_manager" invisible="state in ('draft','done','cancel')"/>
+        <button name="action_deep_issue" string="Actual Warehouse Issue" type="object" groups="deep_core.group_warehouse,deep_core.group_manager" invisible="state in ('draft','done','cancel')"/>
+      </xpath>
+      <xpath expr="//sheet/notebook" position="inside">
+        <page string="Serial Genealogy">
+          <field name="deep_parent_id"/>
+          <field name="deep_unit_ids" readonly="1">
+            <list>
+              <field name="name"/>
+              <field name="state"/>
+              <field name="physical_zone"/>
+              <field name="lot_id"/>
+              <field name="created_at"/>
+              <field name="release_at"/>
+            </list>
+          </field>
+        </page>
+        <page string="Batch / Shift">
+          <field name="deep_batch_ids">
+            <list editable="bottom">
+              <field name="name"/>
+              <field name="shift_name"/>
+              <field name="start"/>
+              <field name="end"/>
+              <field name="material_arrival"/>
+              <field name="completed_at"/>
+            </list>
+          </field>
+        </page>
+      </xpath>
+    </field>
+  </record>
+  <record id="bom_form_extension" model="ir.ui.view">
+    <field name="name">bom.deep.revision</field>
+    <field name="model">mrp.bom</field>
+    <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet/notebook" position="before">
+        <group>
+          <field name="deep_revision"/>
+          <field name="deep_effective_date"/>
+        </group>
+      </xpath>
+      <xpath expr="//field[@name='bom_line_ids']/list" position="inside">
+        <field name="deep_scrap_pct" optional="hide"/>
+      </xpath>
+    </field>
+  </record>
+  <record id="operation_planning_form" model="ir.ui.view">
+    <field name="name">operation.deep.planning</field>
+    <field name="model">mrp.routing.workcenter</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="bom_id"/>
+            <field name="workcenter_id"/>
+            <field name="sequence"/>
+            <field name="time_mode"/>
+            <field name="time_cycle_manual"/>
+            <field name="blocked_by_operation_ids" widget="many2many_tags"/>
+            <field name="deep_code"/>
+            <field name="deep_checkpoint"/>
+            <field name="deep_batch_size"/>
+            <field name="deep_setup"/>
+            <field name="deep_cleanup"/>
+            <field name="deep_operator_count"/>
+            <field name="deep_yield"/>
+            <field name="deep_minimum_batch"/>
+            <field name="deep_maximum_batch"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="operation_planning_action" model="ir.actions.act_window">
+    <field name="name">Routing / Checkpoints</field>
+    <field name="res_model">mrp.routing.workcenter</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="operations_menu" name="Routing / Checkpoints" parent="menu_root" action="operation_planning_action" groups="deep_core.group_planner,deep_core.group_manager"/>
+  <menuitem id="mo_menu" name="Manufacturing Orders" parent="menu_root" action="mrp.mrp_production_action"/>
+  <menuitem id="bom_menu" name="Bills of Materials" parent="menu_root" action="mrp.mrp_bom_form_action" groups="deep_core.group_planner,deep_core.group_manager"/>
+  <menuitem id="centers_menu" name="Work Centers / Calendars" parent="menu_root" action="mrp.mrp_workcenter_action" groups="deep_core.group_planner,deep_core.group_manager"/>
+</odoo>

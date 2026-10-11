@@ -1,0 +1,1 @@
+{"databaseTLS": "verify-full", "nonTLSRejected": true, "encryptedBackup": true, "nativePGRestore": true, "restoredKitRows": 1, "filestoreRestored": true, "liveDataUnmodified": true}

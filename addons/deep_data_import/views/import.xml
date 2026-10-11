@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_module" name="Import" parent="deep_core.menu_root" sequence="50"/>
+  <record id="deep_import_batch_list" model="ir.ui.view">
+    <field name="name">deep_import_batch.list</field>
+    <field name="model">deep.import.batch</field>
+    <field name="arch" type="xml">
+      <list string="Controlled Imports">
+        <field name="name"/>
+        <field name="kind"/>
+        <field name="mode"/>
+        <field name="state"/>
+        <field name="filename"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_import_batch_form" model="ir.ui.view">
+    <field name="name">deep_import_batch.form</field>
+    <field name="model">deep.import.batch</field>
+    <field name="arch" type="xml">
+      <form string="Controlled Imports">
+        <header>
+          <button name="action_template" type="object" string="Download Template" class="btn-secondary"/>
+          <button name="action_validate" type="object" string="Dry Run" class="btn-primary"/>
+          <button name="action_approve" type="object" string="Approve" class="btn-secondary"/>
+          <button name="action_apply" type="object" string="Apply Atomically" class="btn-primary"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="kind"/>
+            <field name="mode"/>
+            <field name="state"/>
+            <field name="filename"/>
+            <field name="file"/>
+            <field name="digest"/>
+            <field name="report"/>
+            <field name="approved_by"/>
+            <field name="applied_at"/>
+            <field name="company_id"/>
+          </group>
+          <notebook/>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="deep_import_batch_action" model="ir.actions.act_window">
+    <field name="name">Controlled Imports</field>
+    <field name="res_model">deep.import.batch</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="deep_import_batch_menu" name="Controlled Imports" parent="menu_module" action="deep_import_batch_action"/>
+</odoo>

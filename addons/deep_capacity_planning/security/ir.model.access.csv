@@ -1,0 +1,20 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_skill,Skills,model_deep_skill,deep_core.group_user,1,0,0,0
+planner_deep_skill,Skills,model_deep_skill,deep_core.group_planner,1,1,1,1
+manager_deep_skill,Skills,model_deep_skill,deep_core.group_manager,1,1,1,1
+read_deep_skill_level,Skill Levels,model_deep_skill_level,deep_core.group_user,1,0,0,0
+planner_deep_skill_level,Skill Levels,model_deep_skill_level,deep_core.group_planner,1,1,1,1
+manager_deep_skill_level,Skill Levels,model_deep_skill_level,deep_core.group_manager,1,1,1,1
+read_deep_employee_skill,Employee Qualifications,model_deep_employee_skill,deep_core.group_user,1,0,0,0
+planner_deep_employee_skill,Employee Qualifications,model_deep_employee_skill,deep_core.group_planner,1,1,1,1
+manager_deep_employee_skill,Employee Qualifications,model_deep_employee_skill,deep_core.group_manager,1,1,1,1
+read_deep_operation_skill,Operation Skill Requirements,model_deep_operation_skill,deep_core.group_user,1,0,0,0
+planner_deep_operation_skill,Operation Skill Requirements,model_deep_operation_skill,deep_core.group_planner,1,1,1,1
+manager_deep_operation_skill,Operation Skill Requirements,model_deep_operation_skill,deep_core.group_manager,1,1,1,1
+read_deep_labor_shift,Labor Shift Allocations,model_deep_labor_shift,deep_core.group_user,1,0,0,0
+planner_deep_labor_shift,Labor Shift Allocations,model_deep_labor_shift,deep_core.group_planner,1,1,1,1
+supervisor_deep_labor_shift,Labor Shift Allocations,model_deep_labor_shift,deep_core.group_supervisor,1,1,1,1
+manager_deep_labor_shift,Labor Shift Allocations,model_deep_labor_shift,deep_core.group_manager,1,1,1,1
+read_deep_capacity_snapshot,Capacity / Labor Load,model_deep_capacity_snapshot,deep_core.group_user,1,0,0,0
+planner_deep_capacity_snapshot,Capacity / Labor Load,model_deep_capacity_snapshot,deep_core.group_planner,1,1,1,0
+manager_deep_capacity_snapshot,Capacity / Labor Load,model_deep_capacity_snapshot,deep_core.group_manager,1,1,1,0

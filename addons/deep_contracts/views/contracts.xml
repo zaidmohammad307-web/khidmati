@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_root" name="Contracts and delivery" parent="deep_core.menu_root" sequence="35" groups="deep_core.group_user"/>
+  <record id="deep_customer_contract_list" model="ir.ui.view">
+    <field name="name">deep.customer.contract.list</field>
+    <field name="model">deep.customer.contract</field>
+    <field name="arch" type="xml">
+      <list string="Customer contracts">
+        <field name="reference"/>
+        <field name="name"/>
+        <field name="customer_id"/>
+        <field name="owner_id"/>
+        <field name="priority"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_customer_contract_form" model="ir.ui.view">
+    <field name="name">deep.customer.contract.form</field>
+    <field name="model">deep.customer.contract</field>
+    <field name="arch" type="xml">
+      <form string="Customer contracts">
+        <header>
+          <button name="action_confirm" string="Confirm milestone demand" type="object" groups="deep_core.group_planner" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_close" string="Close completed contract" type="object" groups="deep_core.group_planner" invisible="state not in ['confirmed']" class="oe_highlight"/>
+          <button name="action_export" string="Export delivery status XLSX" type="object" groups="deep_core.group_user"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="parent.state != 'draft'"/>
+              <field name="reference"/>
+              <field name="customer_id"/>
+            </group>
+            <group>
+              <field name="owner_id"/>
+              <field name="priority"/>
+              <field name="notes"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Line">
+              <field name="line_ids">
+                <list editable="bottom">
+                  <field name="name" readonly="parent.state != 'draft'"/>
+                  <field name="product_id" readonly="parent.state != 'draft'"/>
+                  <field name="quantity" readonly="parent.state != 'draft'"/>
+                  <field name="due_date" readonly="parent.state != 'draft'"/>
+                  <field name="demand_id"/>
+                  <field name="delivered_qty"/>
+                  <field name="remaining_qty"/>
+                  <field name="delivery_status"/>
+                  <button name="action_prepare_delivery" string="Prepare delivery" type="object" groups="deep_core.group_warehouse"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_customer_contract" model="ir.actions.act_window">
+    <field name="name">Customer contracts</field>
+    <field name="res_model">deep.customer.contract</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_customer_contract" name="Customer contracts" parent="menu_root" action="action_deep_customer_contract" sequence="10"/>
+  <record id="deep_contract_milestone_list" model="ir.ui.view">
+    <field name="name">deep.contract.milestone.list</field>
+    <field name="model">deep.contract.milestone</field>
+    <field name="arch" type="xml">
+      <list string="Delivery milestones">
+        <field name="name"/>
+        <field name="contract_id"/>
+        <field name="product_id"/>
+        <field name="quantity"/>
+        <field name="delivered_qty"/>
+        <field name="remaining_qty"/>
+        <field name="due_date"/>
+        <field name="delivery_status"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_contract_milestone_form" model="ir.ui.view">
+    <field name="name">deep.contract.milestone.form</field>
+    <field name="model">deep.contract.milestone</field>
+    <field name="arch" type="xml">
+      <form string="Delivery milestones">
+        <header>
+          <button name="action_prepare_delivery" string="Prepare native delivery" type="object" groups="deep_core.group_warehouse" class="oe_highlight"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="contract_id"/>
+              <field name="product_id"/>
+              <field name="quantity"/>
+              <field name="due_date"/>
+            </group>
+            <group>
+              <field name="demand_id"/>
+              <field name="delivered_qty"/>
+              <field name="remaining_qty"/>
+              <field name="delivery_status"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Picking">
+              <field name="picking_ids">
+                <list>
+                  <field name="name"/>
+                  <field name="scheduled_date"/>
+                  <field name="state"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_contract_milestone" model="ir.actions.act_window">
+    <field name="name">Delivery milestones</field>
+    <field name="res_model">deep.contract.milestone</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_contract_milestone" name="Delivery milestones" parent="menu_root" action="action_deep_contract_milestone" sequence="20"/>
+</odoo>

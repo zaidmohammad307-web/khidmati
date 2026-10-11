@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="product_quality_configuration" model="ir.ui.view">
+    <field name="name">product.deep.quality.configuration</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="deep_core.product_form_extension"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='deep_qa_required']" position="after">
+        <field name="deep_quality_template_id"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="company_deep_demand" model="ir.rule">
+    <field name="name">Customer / Forecast Demand — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_demand"/>
+  </record>
+  <record id="company_deep_mps_plan" model="ir.rule">
+    <field name="name">MPS Plans — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_mps_plan"/>
+  </record>
+  <record id="company_deep_mps_period" model="ir.rule">
+    <field name="name">Planning Periods — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_mps_period"/>
+  </record>
+  <record id="company_deep_mps_line" model="ir.rule">
+    <field name="name">MPS Balances — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_mps_line"/>
+  </record>
+  <record id="company_deep_material_requirement" model="ir.rule">
+    <field name="name">Make / Buy Requirements — company isolation</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="model_id" ref="model_deep_material_requirement"/>
+  </record>
+</odoo>

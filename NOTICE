@@ -1,0 +1,8 @@
+Drone Odoo complete manufacturing application
+Copyright 2026
+
+This repository's original code is licensed under LGPL-3.0-or-later.
+The official Odoo Community distribution remains owned by Odoo S.A. and its
+contributors and is supplied through the official Odoo Docker image.
+Its licenses and notices remain in that distribution. No Odoo core code is vendored.
+PostgreSQL and other image dependencies retain their respective licenses.

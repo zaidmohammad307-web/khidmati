@@ -1,0 +1,5 @@
+services:
+  odoo:
+    command: ["serve", "--dev=xml,reload"]
+    volumes:
+      - ./addons:/mnt/extra-addons:rw

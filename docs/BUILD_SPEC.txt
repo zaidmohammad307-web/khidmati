@@ -1,0 +1,2192 @@
+You are a senior Odoo architect, manufacturing systems engineer, PostgreSQL engineer,
+Python engineer, and frontend engineer.
+
+Your task is to BUILD, not merely describe, a complete locally runnable manufacturing
+planning and shop-floor system based on Odoo 19 Community.
+
+============================================================
+0. CORE RULE
+============================================================
+
+USE THE OFFICIAL ODOO 19 COMMUNITY CODEBASE AS THE FOUNDATION.
+
+DO NOT rewrite Inventory, MRP, Products, Purchase, Warehouses, Bills of Materials,
+Manufacturing Orders, Work Orders, stock moves, serial numbers, or Odoo ORM.
+
+Extend Odoo using clean custom addons.
+
+DO NOT modify Odoo core unless absolutely unavoidable.
+
+If core behavior must be extended:
+- inherit Odoo models
+- inherit XML views
+- use services/hooks
+- use OWL components
+- use PostgreSQL through Odoo ORM
+- use migrations when required
+
+Never copy large blocks of Odoo core code into custom modules.
+
+I do NOT want spaghetti code.
+
+The system must have:
+
+- proper separation of concerns
+- documented architecture
+- normalized data model
+- reusable services
+- meaningful model names
+- meaningful field names
+- unit/integration tests
+- migration support
+- logging
+- exception handling
+- SQL constraints
+- Python constraints
+- security groups
+- access control
+- record rules
+- indexes where justified
+- clean frontend components
+- no giant 2,000-line files
+- no duplicate business logic
+- no hardcoded product IDs
+- no hardcoded warehouse IDs
+- no hardcoded database IDs
+
+============================================================
+1. REQUIRED TECHNOLOGY STACK
+============================================================
+
+Backend:
+- Odoo 19 Community
+- Python
+- Odoo ORM
+- PostgreSQL
+- SQL only where appropriate:
+    - migrations
+    - indexes
+    - reporting SQL views
+    - seed utilities if justified
+- avoid raw SQL for normal transactional business logic
+
+Frontend:
+- Odoo Web Client
+- OWL
+- JavaScript
+- XML/QWeb
+- SCSS/CSS
+
+Infrastructure:
+- Docker
+- Docker Compose
+- PostgreSQL container
+- Odoo container
+- custom addons mounted separately
+- persistent PostgreSQL volume
+- persistent Odoo filestore volume
+
+Import/export:
+- CSV
+- XLSX
+- SQL migration/seed scripts
+- Odoo native imports
+- dedicated import wizard for master data
+
+Testing:
+- Python Odoo tests
+- frontend JS tests where appropriate
+- test data
+- demo manufacturing scenario
+
+Documentation:
+- README.md
+- ARCHITECTURE.md
+- DATABASE.md
+- INSTALLATION.md
+- USER_GUIDE.md
+- API.md if controllers are created
+
+============================================================
+2. PROJECT OBJECTIVE
+============================================================
+
+Build an integrated Production Planning and Manufacturing Execution pilot for a
+drone manufacturing company.
+
+The system must cover the full process:
+
+CUSTOMER / FORECAST DEMAND
+        ↓
+MASTER PRODUCTION SCHEDULE
+        ↓
+MRP / MATERIAL REQUIREMENTS
+        ↓
+PROCUREMENT REQUIREMENTS
+        ↓
+WAREHOUSE
+        ↓
+SUBASSEMBLY PRODUCTION
+        ↓
+FINAL ASSEMBLY
+        ↓
+SERIALIZATION AT FINAL ASSEMBLY STATION 9
+        ↓
+QR SCAN AND FUNCTIONAL TEST AT STATION 12
+        ↓
+PASS / FAIL
+        ↓
+FAIL → QUALITY HOLD → REWORK → RETEST
+        ↓
+PASS → STATION 13 → FINISHED GOODS
+
+============================================================
+3. MANUFACTURING ENVIRONMENT
+============================================================
+
+The company manufactures multiple drone families.
+
+Example products:
+
+FPV:
+- G5
+- G7
+- G10
+- G15
+
+Fixed wing:
+- Cruise
+- Cruise X
+
+VTOL:
+- Z45
+
+Demand is primarily:
+- customer contract based
+- project based
+- milestone based
+
+Demand is NOT primarily steady retail demand.
+
+The planning system must therefore emphasize:
+
+- firm customer demand
+- contract delivery date
+- milestone
+- forecast confidence
+- confirmed vs forecast demand
+- planned production
+- component shortages
+- procurement lead time
+- manufacturing capacity
+- work-center bottlenecks
+- late orders
+- production risk
+
+============================================================
+4. MANUFACTURING PRODUCT STRUCTURE
+============================================================
+
+Support multilevel Bills of Materials.
+
+Pilot finished product:
+
+G7 Finished Drone
+
+Example structure:
+
+G7
+│
+├── SA-01 Frame Assembly
+├── SA-02 Motor Assembly / Motor Set
+├── SA-03 Electronics Assembly
+├── 3D Printed Components
+├── Camera
+├── Antenna
+├── Wiring
+├── Fasteners
+└── other purchased components
+
+Each REAL subassembly must be modeled as:
+
+Product
+→ BOM
+→ Manufacturing Order
+→ Work Orders / Operations
+
+Do NOT model every production station as an inventory subassembly.
+
+============================================================
+5. THREE SUBASSEMBLIES
+============================================================
+
+The architecture must support at least three manufactured subassemblies.
+
+Example:
+
+SA-01 FRAME
+- CNC cutting
+- preparation/deburring
+- assembly
+- inspection
+
+SA-02 MOTOR
+- winding
+- magnet installation
+- mechanical assembly
+- balancing
+- electrical testing
+
+SA-03 ELECTRONICS
+- SMD
+- reflow
+- manual/THT
+- programming
+- electrical testing
+
+These examples must be configurable.
+
+DO NOT hardcode exactly these operations.
+
+Operations must be master-data driven.
+
+============================================================
+6. FINAL ASSEMBLY
+============================================================
+
+Finished products must support a configurable routing.
+
+Pilot requirement:
+
+13 final assembly stations.
+
+Create work centers:
+
+FA-S01
+FA-S02
+FA-S03
+FA-S04
+FA-S05
+FA-S06
+FA-S07
+FA-S08
+FA-S09
+FA-S10
+FA-S11
+FA-S12
+FA-S13
+
+Routing:
+
+S01
+ ↓
+S02
+ ↓
+S03
+ ↓
+S04
+ ↓
+S05
+ ↓
+S06
+ ↓
+S07
+ ↓
+S08
+ ↓
+S09
+ ↓
+S10
+ ↓
+S11
+ ↓
+S12
+ ↓
+S13
+
+Use Odoo work-order dependencies.
+
+Do NOT create 13 inventory products simply because there are 13 stations.
+
+============================================================
+7. WORK CENTER DATA
+============================================================
+
+Each work center must support:
+
+- code
+- name
+- calendar
+- shift
+- available hours
+- capacity
+- efficiency
+- target OEE
+- setup time
+- cleanup time
+- cost/hour
+- required operators
+- required skill
+- machine/resource category
+- alternative work center
+- active/inactive
+- notes
+
+Support operation-level data:
+
+- operation sequence
+- standard cycle time
+- batch size
+- setup time override
+- cleanup time override
+- minimum batch
+- maximum batch
+- yield
+- scrap %
+- operator requirement
+- skill requirement
+
+Important:
+
+Setup time and cycle time are DIFFERENT.
+
+Example:
+
+Batch = 20
+Setup = 30 minutes
+Cycle time = 12 min/unit
+
+Resource time:
+30 + (20 × 12)
+= 270 minutes
+
+The scheduling engine must not lose setup time.
+
+============================================================
+8. WAREHOUSE DESIGN
+============================================================
+
+Use ONE main warehouse for the pilot:
+
+WH
+
+Do NOT create a separate warehouse simply because there is a subassembly.
+
+Use Odoo's normal stock locations.
+
+Required conceptual flow:
+
+Supplier
+   ↓
+WH/Input
+   ↓
+WH/Quality Control
+   ↓
+WH/Stock
+   ↓
+WH/Pre-Production
+   ↓
+Production
+   ↓
+WH/Post-Production
+   ↓
+WH/Stock
+
+Additional custom locations:
+
+WH/Quality Hold
+WH/Rework
+
+Warehouse and Production transactions must be distinguishable.
+
+I specifically need visibility between:
+
+PLANNED MATERIAL
+vs
+ACTUALLY ISSUED BY WAREHOUSE
+vs
+ACTUALLY CONSUMED BY PRODUCTION
+
+Example problem:
+
+MO quantity = 60
+Warehouse actually issued components for 10 units.
+
+The system MUST preserve and display this difference.
+
+Never automatically pretend 60 were issued.
+
+============================================================
+9. MATERIAL STATUS MODEL
+============================================================
+
+For every Manufacturing Order show:
+
+Planned Requirement
+Reserved Quantity
+Warehouse Issued Quantity
+Production Consumed Quantity
+Returned Quantity
+Scrapped Quantity
+Remaining Required Quantity
+
+Display variance.
+
+Example:
+
+Component A
+Planned: 60
+Reserved: 60
+Issued: 10
+Consumed: 8
+Returned: 1
+Scrapped: 1
+Remaining: 50
+
+============================================================
+10. MASTER PRODUCTION SCHEDULE
+============================================================
+
+Build a CUSTOM MPS MODULE for Odoo Community.
+
+Module technical name:
+
+deep_mps
+
+Do not create a completely separate ERP.
+
+The MPS should generate/manage demand that feeds native Odoo manufacturing and
+procurement objects.
+
+Required MPS horizon:
+
+- daily
+- weekly
+- monthly
+
+Primary default:
+weekly
+
+MPS matrix example:
+
+Product | W40 | W41 | W42 | W43 | W44
+G5      | ...
+G7      | ...
+G10     | ...
+Cruise  | ...
+
+For each product-period store:
+
+- firm customer orders
+- forecast
+- forecast confidence %
+- beginning inventory
+- safety stock
+- planned receipts
+- planned production
+- actual production
+- projected available balance
+- ATP if implemented
+- variance
+- planner notes
+- status
+- freeze/firm flag
+
+Support states:
+
+Draft
+Reviewed
+Approved
+Firm
+Released
+
+============================================================
+11. MPS DEMAND LOGIC
+============================================================
+
+Demand categories:
+
+FIRM
+Confirmed contracts / orders
+
+FORECAST
+Expected future demand
+
+PROJECT
+Contract/project milestone demand
+
+MANUAL
+Planner-entered demand
+
+The system must NOT blindly double-count a forecast and a confirmed order.
+
+Provide configurable consumption logic.
+
+Example:
+
+Forecast = 100
+Confirmed contracts = 60
+
+Configurable strategy:
+Forecast Remaining = max(Forecast - Confirmed, 0)
+
+Support confidence weighting as an analysis view.
+
+Do not automatically turn uncertain forecasts into purchase orders without planner approval.
+
+============================================================
+12. MPS ACTIONS
+============================================================
+
+Buttons/actions:
+
+- Calculate MPS
+- Recalculate
+- Review shortages
+- Review capacity
+- Firm Plan
+- Release Plan
+- Generate Draft Manufacturing Orders
+- Generate Replenishment Requirements
+- Compare Plan vs Actual
+- Export XLSX
+
+Before releasing orders, show warnings for:
+
+- shortage
+- overloaded work center
+- late component
+- missing BOM
+- missing routing
+- missing supplier
+- missing lead time
+- frozen period conflicts
+
+============================================================
+13. MRP
+============================================================
+
+Use native Odoo MRP wherever possible.
+
+Do not rebuild BOM explosion from zero unless additional planning simulation requires it.
+
+The custom planning layer may calculate a simulation, but operational orders should
+use Odoo models.
+
+MRP must consider:
+
+- multilevel BOM
+- on hand inventory
+- reserved stock
+- scheduled receipts
+- existing manufacturing orders
+- purchase orders
+- safety stock
+- scrap/yield
+- supplier lead time
+- manufacturing lead time
+- quantity per
+- UoM conversion
+
+Required outputs:
+
+MAKE:
+subassemblies to manufacture
+
+BUY:
+raw materials/components to purchase
+
+SHORTAGE:
+components that cannot meet demand by required date
+
+EXCESS:
+optional surplus visibility
+
+============================================================
+14. CAPACITY PLANNING
+============================================================
+
+Create module:
+
+deep_capacity_planning
+
+Requirements:
+
+- load by work center
+- available hours
+- required hours
+- utilization %
+- overload hours
+- operation backlog
+- scheduled start
+- scheduled finish
+- bottleneck flag
+
+Views:
+
+Daily
+Weekly
+Monthly
+
+Example:
+
+Work Center | Available | Required | Utilization
+CNC-01      | 40 h      | 52 h     | 130%
+PCB-SMD     | 80 h      | 60 h     | 75%
+
+Do not hide overloads by automatically stretching efficiency.
+
+============================================================
+15. LABOR CAPACITY
+============================================================
+
+Create clean workforce planning extension.
+
+Do not turn every employee into a work center.
+
+Models:
+
+Skill
+Employee Skill
+Skill Level
+Operation Skill Requirement
+Labor Requirement
+Labor Capacity
+
+Example:
+
+Operation: CNC Cutting
+Required skill: CNC Operator
+Required number: 2
+Minimum level: 2
+
+Provide shortage warning:
+
+Machine available = YES
+Material available = YES
+Required labor = 2
+Available qualified labor = 1
+
+Result:
+LABOR CAPACITY SHORTAGE
+
+============================================================
+16. SERIALIZATION AT FINAL ASSEMBLY STATION 9
+============================================================
+
+Critical requirement.
+
+Finished drones are tracked by unique serial number.
+
+Station 9 must include a custom serialization action.
+
+At Station 9:
+
+Operator opens/scans the work order.
+
+System displays:
+
+MO
+Product
+Planned quantity
+Units completed before S9
+Units requiring serials
+
+Button:
+
+GENERATE SERIALS
+
+Generate unique serials.
+
+Configurable serial format.
+
+Example:
+
+G7-2026-000001
+G7-2026-000002
+G7-2026-000003
+
+Do not hardcode G7.
+
+Create configurable serial sequence by:
+- product family
+- year
+- company
+
+Use ir.sequence where appropriate.
+
+Every serial must be associated with:
+
+- product
+- MO
+- parent MO if applicable
+- S9 work order
+- creation timestamp
+- creating user/operator
+- production batch
+- status
+
+============================================================
+17. QR LABEL
+============================================================
+
+At Station 9 generate/print a QR label.
+
+QR payload should preferably contain a stable identifier, such as:
+
+G7-2026-000001
+
+or an internal token.
+
+Do not put sensitive system credentials into QR.
+
+Create printable QWeb label.
+
+Support common label printers.
+
+QR label must show:
+
+Serial
+Product
+Optional MO
+QR code
+Manufacturing date
+
+Button:
+
+PRINT QR
+
+Support reprint permissions/audit.
+
+============================================================
+18. SHOP-FLOOR SCANNING
+============================================================
+
+Create module:
+
+deep_shopfloor
+
+Build an OWL frontend optimized for:
+
+- tablets
+- touchscreen
+- USB barcode scanners
+- QR scanners
+- desktop browser
+
+Scanner must work as keyboard-wedge scanner with no proprietary hardware dependency.
+
+Main page:
+
+SCAN SERIAL / WORK ORDER
+
+After scanning:
+- validate serial
+- validate expected station
+- validate current status
+- load product
+- load MO
+- load work order
+- load previous operation
+- show operator
+- show instructions
+- show test/checklist when relevant
+
+============================================================
+19. STATION 12 QUALITY TESTING
+============================================================
+
+Critical requirement.
+
+At final assembly Station 12:
+
+Operator scans QR.
+
+System must immediately identify:
+
+Serial
+Product
+MO
+Current production status
+Previous station completion
+Previous test history
+Open rework records
+
+Then display configurable test checklist.
+
+Example tests:
+
+Power On
+Flight Controller Communication
+ESC
+Motor Test
+Camera
+Video Link
+Control Link
+GPS if applicable
+Firmware
+Other
+
+Do NOT hardcode these exact tests.
+
+Create master models:
+
+Quality Test Template
+Quality Test Point
+Product/Test Template Mapping
+
+Test point fields:
+
+- sequence
+- name
+- code
+- instruction
+- result type
+- mandatory
+- min value
+- max value
+- unit
+- pass/fail rule
+
+Result types:
+
+PASS_FAIL
+NUMERIC
+TEXT
+SELECTION
+BOOLEAN
+
+============================================================
+20. QUALITY RESULT
+============================================================
+
+For each test session record:
+
+Serial
+MO
+Work Order
+Station
+Tester
+Start time
+End time
+Test template version
+Individual test results
+Overall result
+Notes
+Attachments/photos
+Failure category
+Failure code
+
+Overall:
+
+PASS
+FAIL
+HOLD
+RETEST_REQUIRED
+
+Do not allow Station 13 release if required Station 12 test has not passed.
+
+Use server-side validation.
+Do not rely only on frontend JavaScript.
+
+============================================================
+21. FAILURE / REWORK PROCESS
+============================================================
+
+When Station 12 FAILS:
+
+Automatically create a REWORK / REPAIR record.
+
+Do not treat a defective drone as an equipment maintenance request.
+
+Equipment maintenance is separate.
+
+Rework record must contain:
+
+- unique rework number
+- serial
+- product
+- MO
+- failed work order
+- test session
+- failed test point(s)
+- failure category
+- failure code
+- description
+- attachments
+- priority
+- assigned technician/team
+- root cause
+- corrective action
+- parts removed
+- parts installed
+- start time
+- completion time
+- disposition
+
+Statuses:
+
+New
+Assigned
+In Diagnosis
+Waiting Parts
+Repairing
+Ready for Retest
+Retesting
+Closed
+Scrapped
+
+============================================================
+22. PHYSICAL FAILED UNIT FLOW
+============================================================
+
+FAIL:
+
+Station 12
+   ↓
+WH/Quality Hold
+   ↓
+WH/Rework
+   ↓
+Repair/Rework
+   ↓
+Station 12 Retest
+
+If PASS:
+continue to S13
+
+If FAIL:
+return to Rework or Scrap according to disposition.
+
+Maintain full stock move traceability.
+
+============================================================
+23. RETEST
+============================================================
+
+Retest uses the SAME serial number.
+
+Never create a new serial because a unit was repaired.
+
+Maintain revision/history:
+
+Test #1 FAIL
+Rework #RW0001
+Test #2 FAIL
+Rework #RW0002
+Test #3 PASS
+
+Display complete genealogy from serial record.
+
+============================================================
+24. SERIAL GENEALOGY
+============================================================
+
+Create a Serial Traceability page showing:
+
+Finished Serial
+↓
+Manufacturing Order
+↓
+Production date
+↓
+BOM revision
+↓
+Subassemblies
+↓
+Lots/serials of tracked components
+↓
+Warehouse issues
+↓
+Work orders
+↓
+Operators
+↓
+Station 12 tests
+↓
+Failures
+↓
+Rework
+↓
+Retests
+↓
+Final release
+
+This must be searchable by serial.
+
+============================================================
+25. FINAL RELEASE / STATION 13
+============================================================
+
+Station 13 must validate:
+
+- required previous work orders completed
+- serial exists
+- S12 test PASS
+- no open quality hold
+- no open rework
+- required components consumed
+- production quantity valid
+
+Only then allow final completion/release.
+
+============================================================
+26. PROCUREMENT
+============================================================
+
+Use Odoo Purchase and stock procurement as much as possible.
+
+Add planning views for:
+
+- required date
+- supplier lead time
+- expected arrival
+- shortage date
+- vendor
+- last price
+- average price
+- open PO quantity
+- overdue PO quantity
+- supplier count
+- sourcing risk
+
+Do not rebuild purchase orders from scratch.
+
+============================================================
+27. MATERIAL CRITICALITY
+============================================================
+
+Create optional module:
+
+deep_material_risk
+
+Per purchased item:
+
+- number of final BOMs used in
+- total BOM usage
+- average price
+- last purchase price
+- approved supplier count
+- sourcing difficulty
+- restricted/special-source flag
+- lead time
+- technology maturity
+- obsolescence/development risk
+- criticality score
+
+Do not automatically make sourcing-risk decisions based solely on price.
+
+============================================================
+28. REPORTING DASHBOARD
+============================================================
+
+Create module:
+
+deep_manufacturing_dashboard
+
+Dashboard KPIs:
+
+Planning:
+- MPS attainment
+- planned vs actual
+- late production orders
+- schedule adherence
+
+Materials:
+- shortage count
+- critical shortage count
+- late purchased materials
+- warehouse issue variance
+
+Capacity:
+- work-center utilization
+- overloaded work centers
+- bottleneck work center
+- required overtime
+
+Production:
+- WIP
+- completed today
+- units by station
+- cycle time
+- throughput
+
+Quality:
+- first pass yield
+- failed units
+- rework count
+- defect Pareto
+- retest success
+- scrap
+
+Serial:
+- current station
+- current status
+- last scan
+- quality state
+
+============================================================
+29. WIP VISUALIZATION
+============================================================
+
+Provide a WIP board:
+
+S01  10
+S02   8
+S03  12
+...
+S09   7
+S10   5
+S11   6
+S12   4
+S13   3
+Rework 2
+
+Clicking a station shows actual serials/work orders.
+
+Do not require scanning at all stations.
+
+Scanning must be configurable by operation.
+
+For example:
+
+S1-S8:
+normal Work Order processing
+
+S9:
+mandatory serialization
+
+S10-S11:
+normal
+
+S12:
+mandatory QR scan + quality testing
+
+S13:
+release
+
+============================================================
+30. DATABASE DESIGN
+============================================================
+
+Use PostgreSQL through Odoo models.
+
+Do not manually create redundant tables for entities Odoo already has.
+
+Reuse:
+
+product.product
+product.template
+mrp.bom
+mrp.bom.line
+mrp.production
+mrp.workorder
+mrp.workcenter
+stock.location
+stock.move
+stock.move.line
+stock.lot
+purchase.order
+purchase.order.line
+res.users
+hr.employee where installed
+
+Create custom models only where required.
+
+Example custom models:
+
+deep.mps.plan
+deep.mps.line
+deep.mps.period
+deep.capacity.snapshot
+deep.quality.template
+deep.quality.test.point
+deep.quality.session
+deep.quality.result
+deep.rework.order
+deep.rework.part
+deep.serial.event
+deep.scan.event
+deep.operation.skill.requirement
+deep.employee.skill
+
+============================================================
+31. DATABASE CONSTRAINTS
+============================================================
+
+Use SQL constraints where appropriate.
+
+Examples:
+
+- unique serial identifiers
+- unique MPS product/period/plan
+- valid percentages 0–100
+- no negative quantities where invalid
+- test result uniqueness within session/test point
+- unique rework number
+
+Use Python constraints for business rules requiring relational logic.
+
+============================================================
+32. DATABASE INDEXING
+============================================================
+
+Add indexes where performance requires them, especially:
+
+serial
+MO
+work order
+test session
+scan timestamp
+planning period
+product
+status
+
+Do not randomly index every field.
+
+Document every custom index in DATABASE.md.
+
+============================================================
+33. SQL VIEWS
+============================================================
+
+Use PostgreSQL/Odoo SQL views only for analytical reporting where appropriate.
+
+Potential read-only views:
+
+- MPS plan vs actual
+- material requirement status
+- work-center load
+- WIP by station
+- serial quality genealogy
+- warehouse issue variance
+
+Use _auto = False Odoo reporting models if appropriate.
+
+Do not update transactional data through reporting SQL views.
+
+============================================================
+34. SQL MIGRATIONS
+============================================================
+
+Provide:
+
+migrations/
+  19.0.x.x/
+      pre-migrate.py
+      post-migrate.py
+
+or the appropriate Odoo migration structure.
+
+Provide sample SQL where required for:
+- data cleanup
+- indexes
+- migration
+- backfill
+
+Never rely on someone manually editing the production database.
+
+============================================================
+35. IMPORT SYSTEM
+============================================================
+
+Create module:
+
+deep_data_import
+
+Provide dedicated import templates.
+
+Imports:
+
+1. Item Master
+2. BOM
+3. BOM Components
+4. Work Centers
+5. Routings
+6. Operation Times
+7. Supplier Master
+8. Inventory Opening Balance
+9. Demand / Forecast
+10. Existing Serial Numbers if required
+
+Support CSV and XLSX.
+
+============================================================
+36. ITEM MASTER IMPORT
+============================================================
+
+Fields:
+
+Item No
+Description
+Product Category
+UoM
+Product Type
+Make/Buy
+Tracking Method
+Supplier
+Supplier Lead Time
+Purchase Price
+Standard Cost
+Active
+
+Use Item No as Internal Reference.
+
+Do not create duplicates if Item No already exists.
+
+Provide:
+
+DRY RUN
+
+before commit.
+
+Import report must show:
+
+Created
+Updated
+Skipped
+Error
+
+============================================================
+37. BOM IMPORT
+============================================================
+
+Import structure must support multilevel BOM.
+
+Fields:
+
+Parent Item No
+Parent Description
+Component Item No
+Component Description
+Qty
+UoM
+Operation
+BOM Revision
+Effective Date
+
+Validation:
+
+- missing parent
+- missing component
+- circular BOM
+- zero/negative quantity
+- incompatible UoM
+- duplicate line
+- unknown item
+
+Generate error report.
+
+============================================================
+38. ROUTING IMPORT
+============================================================
+
+Fields:
+
+Product
+Operation Sequence
+Operation Code
+Operation Name
+Work Center
+Cycle Time
+Setup Time
+Cleanup Time
+Batch Size
+Operator Count
+Skill
+
+============================================================
+39. SQL IMPORT
+============================================================
+
+Provide an OPTIONAL developer-only SQL import process for initial lab/demo environments.
+
+It must NOT bypass Odoo accounting/stock/MRP business logic for transactional production data.
+
+Safe use:
+- lookup data
+- test/demo master data
+- migration
+- reporting seeds
+
+For business master data prefer ORM-based import scripts.
+
+For stock quantities, manufacturing orders, purchases, etc:
+use Odoo business objects and workflows.
+
+============================================================
+40. API / SERVICE LAYER
+============================================================
+
+Create reusable Python services instead of placing everything inside button methods.
+
+Example services:
+
+MPSService
+MRPAnalysisService
+CapacityService
+SerializationService
+QualityService
+ReworkService
+ImportService
+
+Keep controllers thin.
+
+Keep models understandable.
+
+============================================================
+41. PYTHON CODE QUALITY
+============================================================
+
+Requirements:
+
+- PEP8
+- type hints where practical
+- docstrings for complex logic
+- small functions
+- services
+- meaningful errors
+- transaction safety
+- context-aware ORM
+- batch create/write
+- avoid N+1 searches
+- avoid search() inside loops where possible
+- use mapped/read_group appropriately
+
+============================================================
+42. JAVASCRIPT / OWL CODE QUALITY
+============================================================
+
+Create reusable OWL components.
+
+Suggested structure:
+
+static/src/
+    components/
+        scanner/
+        mps_grid/
+        capacity_chart/
+        quality_test/
+        serial_card/
+        wip_board/
+    services/
+    views/
+    scss/
+
+Never create one giant dashboard.js.
+
+Use Odoo services.
+
+Implement:
+- notifications
+- ORM service calls
+- dialog
+- barcode keyboard handling
+- loading states
+- error states
+
+============================================================
+43. USER ROLES
+============================================================
+
+Create security groups:
+
+Production Planner
+Warehouse Operator
+Production Operator
+Quality Tester
+Rework Technician
+Production Supervisor
+Procurement User
+Manufacturing Manager
+System Administrator
+
+Permissions must follow least privilege.
+
+Examples:
+
+Operator:
+can execute own work orders
+cannot modify BOM
+
+Quality Tester:
+can create tests
+cannot edit a passed historical test after lock
+
+Planner:
+can manage MPS
+cannot change completed test results
+
+Rework Technician:
+can update assigned rework
+
+Manager:
+can override with audit reason
+
+============================================================
+44. AUDIT TRAIL
+============================================================
+
+Log important events:
+
+- MPS approval
+- MPS release
+- MO generation
+- manual schedule override
+- warehouse issue
+- serial generation
+- QR reprint
+- Station 12 scan
+- quality result
+- failure
+- rework assignment
+- rework close
+- retest
+- final release
+
+Store:
+- user
+- timestamp
+- record
+- action
+- previous state where relevant
+- new state
+- reason
+
+============================================================
+45. DEMO DATA
+============================================================
+
+Include DEMO DATA so the application works immediately after installation.
+
+Create:
+
+Product:
+G7 Demo Drone
+
+Subassemblies:
+SA-G7-FRAME
+SA-G7-MOTOR
+SA-G7-ELECTRONICS
+
+Raw materials:
+at least 15 sample items
+
+13 final assembly work centers
+
+3 subassembly routings
+
+Example BOMs
+
+Example stock
+
+Example suppliers
+
+Example MPS:
+100 G7 required
+
+Example shortage:
+one component insufficient
+
+Example work-center overload
+
+Example MO:
+10 G7 units
+
+============================================================
+46. END-TO-END DEMO SCENARIO
+============================================================
+
+Create a documented automated/manual acceptance test:
+
+STEP 1
+Planner enters demand:
+100 G7
+Required date: future date
+
+STEP 2
+MPS calculates production requirement.
+
+STEP 3
+MRP identifies:
+MAKE requirements
+BUY requirements
+shortages.
+
+STEP 4
+Planner releases orders.
+
+STEP 5
+Warehouse reserves components.
+
+STEP 6
+Warehouse issues materials.
+
+STEP 7
+Subassembly MOs are processed.
+
+STEP 8
+Final Assembly MO starts.
+
+STEP 9
+Work orders progress S01 → S08.
+
+STEP 10
+At S09:
+generate serials.
+
+Example:
+G7-2026-000001 through
+G7-2026-000010
+
+STEP 11
+Print QR.
+
+STEP 12
+S10 and S11 complete.
+
+STEP 13
+At S12:
+scan QR.
+
+STEP 14
+Enter test results.
+
+For one serial:
+PASS.
+
+For second serial:
+FAIL motor test.
+
+STEP 15
+Failed unit moves to Quality Hold.
+
+STEP 16
+Rework order automatically generated.
+
+STEP 17
+Technician records corrective action.
+
+STEP 18
+Unit moves to Ready for Retest.
+
+STEP 19
+Scan same QR at S12.
+
+STEP 20
+Retest PASS.
+
+STEP 21
+S13 releases product.
+
+STEP 22
+Finished serial appears in FG inventory.
+
+STEP 23
+Serial genealogy displays entire history.
+
+============================================================
+47. TESTING REQUIREMENTS
+============================================================
+
+Create tests for at least:
+
+MPS calculations
+forecast consumption
+MPS approval
+MO generation
+multilevel demand
+serial generation
+serial uniqueness
+station validation
+Station 12 mandatory scan
+quality fail
+automatic rework creation
+retest
+S13 blocking
+warehouse issue variance
+permissions
+import duplicate prevention
+BOM cycle prevention
+
+Use transactional test cases.
+
+============================================================
+48. REPOSITORY STRUCTURE
+============================================================
+
+The final repository should resemble:
+
+drone-odoo/
+│
+├── docker-compose.yml
+├── .env.example
+├── README.md
+├── INSTALLATION.md
+├── ARCHITECTURE.md
+├── DATABASE.md
+├── USER_GUIDE.md
+├── scripts/
+│   ├── init.sh
+│   ├── backup.sh
+│   ├── restore.sh
+│   ├── update_modules.sh
+│   └── import_demo.sh
+│
+├── config/
+│   └── odoo.conf
+│
+├── addons/
+│   ├── deep_core/
+│   ├── deep_mps/
+│   ├── deep_capacity_planning/
+│   ├── deep_shopfloor/
+│   ├── deep_quality/
+│   ├── deep_rework/
+│   ├── deep_data_import/
+│   ├── deep_material_risk/
+│   └── deep_manufacturing_dashboard/
+│
+├── sql/
+│   ├── indexes.sql
+│   ├── demo_seed.sql
+│   └── reporting_views.sql
+│
+└── tests/
+
+============================================================
+49. CUSTOM MODULE RESPONSIBILITIES
+============================================================
+
+deep_core
+Shared configuration, enums, common models/services.
+
+deep_mps
+Master Production Schedule.
+
+deep_capacity_planning
+Capacity/load analysis.
+
+deep_shopfloor
+Scanner/tablet UI.
+
+deep_quality
+Testing and Station 12 quality logic.
+
+deep_rework
+Failure/rework/retest.
+
+deep_data_import
+CSV/XLSX import.
+
+deep_material_risk
+Material criticality.
+
+deep_manufacturing_dashboard
+Management/planning dashboards.
+
+DO NOT create circular dependencies between addons.
+
+============================================================
+50. DOCKER LOCAL INSTALLATION
+============================================================
+
+Provide docker-compose.yml that can run locally.
+
+Expected workflow:
+
+git clone <project>
+
+cd drone-odoo
+
+copy:
+.env.example → .env
+
+run:
+docker compose up -d
+
+Then:
+
+http://localhost:8069
+
+Provide exact commands.
+
+Also provide:
+
+docker compose logs -f odoo
+
+docker compose stop
+
+docker compose start
+
+docker compose down
+
+Backup command.
+
+Restore command.
+
+============================================================
+51. DEVELOPMENT MODE
+============================================================
+
+Mount custom addons into the Odoo container.
+
+Enable dev workflow.
+
+Document how to update module:
+
+docker compose exec odoo \
+odoo -d <database> \
+-u deep_mps \
+--stop-after-init
+
+or the correct equivalent for the created environment.
+
+============================================================
+52. CONFIGURATION
+============================================================
+
+Do NOT store passwords in Git.
+
+Use environment variables:
+
+POSTGRES_DB
+POSTGRES_USER
+POSTGRES_PASSWORD
+ODOO_DB_HOST
+ODOO_DB_USER
+ODOO_DB_PASSWORD
+ODOO_ADMIN_PASSWD
+
+Provide .env.example only.
+
+============================================================
+53. BACKUPS
+============================================================
+
+Provide backup script covering:
+
+PostgreSQL database
++
+Odoo filestore
+
+Restore both.
+
+A database-only backup is not sufficient.
+
+============================================================
+54. DATA INTEGRITY
+============================================================
+
+Critical manufacturing transactions must be transactional.
+
+Examples:
+
+FAIL test
+→ Quality Hold transfer
+→ Rework creation
+
+must either all succeed or rollback appropriately.
+
+Serial generation must be race-safe.
+
+Two users clicking generate simultaneously must never create duplicate serials.
+
+============================================================
+55. PERFORMANCE
+============================================================
+
+System should support at least:
+
+10,000 products
+100,000 BOM lines
+10,000 manufacturing orders
+100,000 work orders
+100,000 serials
+1,000,000 scan/test/event records
+
+without obviously inefficient application logic.
+
+Use pagination.
+
+Use read_group for aggregate reporting.
+
+Use indexes deliberately.
+
+============================================================
+56. ERROR HANDLING
+============================================================
+
+Never expose raw Python tracebacks to normal shop-floor users.
+
+Provide meaningful messages:
+
+"Serial already passed Station 12."
+
+instead of:
+
+KeyError...
+
+Log technical details server-side.
+
+============================================================
+57. UI REQUIREMENTS
+============================================================
+
+Use a professional manufacturing UI.
+
+No childish UI.
+
+Primary screens:
+
+Planning Dashboard
+MPS
+Material Shortages
+Capacity
+Manufacturing Orders
+Work Center Schedule
+Warehouse Issue Status
+Shop Floor
+Station 9 Serialization
+Station 12 Testing
+Rework Board
+Serial Traceability
+Management Dashboard
+
+Shop-floor buttons must be large enough for touch screens.
+
+============================================================
+58. STATUS COLORS
+============================================================
+
+Use semantic statuses consistently:
+
+Normal / Complete
+Warning
+Late
+Blocked
+Failed
+Quality Hold
+Rework
+Passed
+
+Do not rely only on color; include status text/icons for accessibility.
+
+============================================================
+59. EXPORTS
+============================================================
+
+Support XLSX export for:
+
+MPS
+MRP shortage report
+Capacity report
+Purchase requirement
+WIP
+Production plan
+Quality results
+Rework
+Serial genealogy
+
+============================================================
+60. DEVELOPMENT PROCESS
+============================================================
+
+DO NOT try to generate the whole application as one giant response/file.
+
+Build in controlled phases.
+
+PHASE 1
+Repository + Docker + Odoo + PostgreSQL.
+
+PHASE 2
+deep_core.
+
+PHASE 3
+Demo products/BOM/work centers.
+
+PHASE 4
+MPS.
+
+PHASE 5
+MRP analysis.
+
+PHASE 6
+Capacity.
+
+PHASE 7
+Shop-floor.
+
+PHASE 8
+Serialization/QR.
+
+PHASE 9
+Quality.
+
+PHASE 10
+Rework.
+
+PHASE 11
+Imports.
+
+PHASE 12
+Dashboards.
+
+PHASE 13
+Automated tests.
+
+PHASE 14
+Documentation.
+
+At the end of EVERY phase:
+
+1. run tests
+2. start Odoo
+3. install/upgrade module
+4. inspect logs
+5. fix errors
+6. commit a clean checkpoint
+
+Do not continue if the previous phase is broken.
+
+============================================================
+61. REQUIRED OUTPUT FROM YOU
+============================================================
+
+You are not being asked for a tutorial only.
+
+CREATE THE ACTUAL PROJECT.
+
+For each phase:
+
+1. Show files created/changed.
+2. Write complete code.
+3. Do not use placeholders such as:
+   "implement logic here"
+4. Do not omit imports.
+5. Do not give pseudocode where executable code is required.
+6. Run tests.
+7. Report failing tests.
+8. Fix them.
+9. Show local startup command.
+10. State exactly what I can test in the UI.
+
+============================================================
+62. NO-SPAGHETTI RULES
+============================================================
+
+Strictly prohibit:
+
+- one giant custom module
+- one giant models.py
+- one giant controllers.py
+- one giant JavaScript file
+- business logic in XML
+- SQL business logic where ORM should be used
+- repeated code
+- hardcoded database IDs
+- direct UPDATE to Odoo transactional tables
+- modifying Odoo core for convenience
+- bypassing stock moves
+- bypassing serial traceability
+- duplicated MRP engines without justification
+- hidden side effects
+- undocumented cron jobs
+- silently swallowing exceptions
+
+============================================================
+63. SOURCE CONTROL
+============================================================
+
+Use Git.
+
+Provide commits by phase.
+
+Suggested branch structure:
+
+main
+develop
+feature/mps
+feature/quality
+feature/shopfloor
+feature/rework
+
+Include .gitignore for:
+
+.env
+.pyc
+__pycache__
+filestore
+PostgreSQL volume
+IDE files
+logs
+
+============================================================
+64. ACCEPTANCE DEFINITION
+============================================================
+
+The pilot is considered successful only when I can locally:
+
+1. Open http://localhost:8069.
+2. Log into Odoo.
+3. Open the Production Planning application.
+4. See G7 demo product.
+5. Enter demand.
+6. Create/review MPS.
+7. See MRP shortages.
+8. See required subassembly production.
+9. See work-center load.
+10. Release manufacturing orders.
+11. Issue materials from WH.
+12. Process three subassemblies.
+13. Start final assembly.
+14. Progress through 13 stations.
+15. Generate serial at S9.
+16. Print/read QR.
+17. Scan QR at S12.
+18. Enter test result.
+19. Fail a unit.
+20. Automatically generate Rework.
+21. Repair it.
+22. Retest same serial.
+23. Pass it.
+24. Release through S13.
+25. Receive into finished goods.
+26. Search serial.
+27. See its complete manufacturing/quality genealogy.
+28. Export relevant planning reports.
+
+============================================================
+65. STARTING INSTRUCTION
+============================================================
+
+Start by inspecting the official Odoo 19 Community architecture.
+
+Then produce:
+
+A. architecture decision
+B. addon dependency diagram
+C. database model diagram
+D. repository tree
+E. Docker Compose environment
+F. first runnable commit
+
+Then actually create PHASE 1.
+
+Do not jump straight into UI code.
+
+Do not ask me to manually create tables.
+
+Do not replace Odoo PostgreSQL ORM with an unrelated Node backend.
+
+Python/Odoo is the primary server.
+
+JavaScript/OWL is the frontend.
+
+PostgreSQL is the database.
+
+SQL is used deliberately for migration/reporting/indexing, not as an uncontrolled
+parallel application layer.
+
+The final result must be maintainable enough that another Odoo developer can open
+the repository six months later and understand it.

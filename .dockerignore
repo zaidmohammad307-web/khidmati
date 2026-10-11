@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+backups
+__pycache__
+**/__pycache__
+*.zip
+*.bundle
+tests
+docs
+upload

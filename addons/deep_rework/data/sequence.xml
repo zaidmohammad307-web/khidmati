@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo noupdate="1">
+  <record id="rework_sequence" model="ir.sequence">
+    <field name="name">Product Rework</field>
+    <field name="code">deep.rework</field>
+    <field name="prefix">RW-%(year)s-</field>
+    <field name="padding">6</field>
+  </record>
+</odoo>

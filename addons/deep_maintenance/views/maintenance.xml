@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_root" name="Equipment and maintenance" parent="deep_core.menu_root" sequence="35" groups="deep_core.group_user"/>
+  <record id="deep_downtime_reason_list" model="ir.ui.view">
+    <field name="name">deep.downtime.reason.list</field>
+    <field name="model">deep.downtime.reason</field>
+    <field name="arch" type="xml">
+      <list string="Downtime reasons">
+        <field name="code"/>
+        <field name="name"/>
+        <field name="planned"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_downtime_reason_form" model="ir.ui.view">
+    <field name="name">deep.downtime.reason.form</field>
+    <field name="model">deep.downtime.reason</field>
+    <field name="arch" type="xml">
+      <form string="Downtime reasons">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="code"/>
+            </group>
+            <group>
+              <field name="planned"/>
+              <field name="active"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_downtime_reason" model="ir.actions.act_window">
+    <field name="name">Downtime reasons</field>
+    <field name="res_model">deep.downtime.reason</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_downtime_reason" name="Downtime reasons" parent="menu_root" action="action_deep_downtime_reason" sequence="10"/>
+  <record id="deep_downtime_event_list" model="ir.ui.view">
+    <field name="name">deep.downtime.event.list</field>
+    <field name="model">deep.downtime.event</field>
+    <field name="arch" type="xml">
+      <list string="Downtime and breakdowns">
+        <field name="name"/>
+        <field name="workcenter_id"/>
+        <field name="reason_id"/>
+        <field name="start"/>
+        <field name="expected_end"/>
+        <field name="end"/>
+        <field name="duration_hours"/>
+        <field name="technician_id"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_downtime_event_form" model="ir.ui.view">
+    <field name="name">deep.downtime.event.form</field>
+    <field name="model">deep.downtime.event</field>
+    <field name="arch" type="xml">
+      <form string="Downtime and breakdowns">
+        <header>
+          <button name="action_start" string="Start downtime" type="object" groups="deep_core.group_operator,deep_core.group_technician,deep_core.group_supervisor" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_close" string="Close and authorize restart" type="object" groups="deep_core.group_technician,deep_core.group_supervisor" invisible="state not in ['open']" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="workcenter_id"/>
+              <field name="workorder_id"/>
+              <field name="reason_id"/>
+              <field name="equipment_id"/>
+              <field name="maintenance_team_id"/>
+              <field name="technician_id"/>
+              <field name="start"/>
+            </group>
+            <group>
+              <field name="expected_end"/>
+              <field name="end"/>
+              <field name="duration_hours"/>
+              <field name="block_starts"/>
+              <field name="request_id"/>
+              <field name="leave_id"/>
+              <field name="root_cause"/>
+              <field name="corrective_action"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_downtime_event" model="ir.actions.act_window">
+    <field name="name">Downtime and breakdowns</field>
+    <field name="res_model">deep.downtime.event</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_downtime_event" name="Downtime and breakdowns" parent="menu_root" action="action_deep_downtime_event" sequence="20"/>
+  <record id="deep_preventive_plan_list" model="ir.ui.view">
+    <field name="name">deep.preventive.plan.list</field>
+    <field name="model">deep.preventive.plan</field>
+    <field name="arch" type="xml">
+      <list string="Preventive schedules">
+        <field name="name"/>
+        <field name="equipment_id"/>
+        <field name="workcenter_id"/>
+        <field name="next_date"/>
+        <field name="interval_days"/>
+        <field name="last_request_id"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_preventive_plan_form" model="ir.ui.view">
+    <field name="name">deep.preventive.plan.form</field>
+    <field name="model">deep.preventive.plan</field>
+    <field name="arch" type="xml">
+      <form string="Preventive schedules">
+        <header>
+          <button name="action_generate" string="Generate next native request" type="object" groups="deep_core.group_technician,deep_core.group_supervisor" class="oe_highlight"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="equipment_id"/>
+              <field name="workcenter_id"/>
+              <field name="maintenance_team_id"/>
+              <field name="technician_id"/>
+            </group>
+            <group>
+              <field name="interval_days"/>
+              <field name="next_date"/>
+              <field name="last_request_id"/>
+              <field name="active"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Instructions">
+              <field name="instructions"/>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_preventive_plan" model="ir.actions.act_window">
+    <field name="name">Preventive schedules</field>
+    <field name="res_model">deep.preventive.plan</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_preventive_plan" name="Preventive schedules" parent="menu_root" action="action_deep_preventive_plan" sequence="30"/>
+</odoo>

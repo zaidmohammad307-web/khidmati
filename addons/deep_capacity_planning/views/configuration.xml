@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="operation_skill_configuration" model="ir.ui.view">
+    <field name="name">operation.deep.skills</field>
+    <field name="model">mrp.routing.workcenter</field>
+    <field name="inherit_id" ref="deep_core.operation_planning_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='deep_operator_count']" position="after">
+        <field name="deep_skill_ids">
+          <list editable="bottom">
+            <field name="skill_id"/>
+            <field name="level_id"/>
+            <field name="operator_count"/>
+          </list>
+        </field>
+      </xpath>
+    </field>
+  </record>
+  <record id="workcenter_configuration" model="ir.ui.view">
+    <field name="name">workcenter.deep.labor</field>
+    <field name="model">mrp.workcenter</field>
+    <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet" position="inside">
+        <group string="Capacity Planning">
+          <field name="deep_required_operators"/>
+          <field name="deep_category"/>
+          <field name="deep_notes"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+</odoo>

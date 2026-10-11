@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_demand,Customer / Forecast Demand,model_deep_demand,deep_core.group_user,1,0,0,0
+planner_deep_demand,Customer / Forecast Demand,model_deep_demand,deep_core.group_planner,1,1,1,1
+manager_deep_demand,Customer / Forecast Demand,model_deep_demand,deep_core.group_manager,1,1,1,1
+read_deep_mps_plan,MPS Plans,model_deep_mps_plan,deep_core.group_user,1,0,0,0
+planner_deep_mps_plan,MPS Plans,model_deep_mps_plan,deep_core.group_planner,1,1,1,1
+manager_deep_mps_plan,MPS Plans,model_deep_mps_plan,deep_core.group_manager,1,1,1,1
+read_deep_mps_period,Planning Periods,model_deep_mps_period,deep_core.group_user,1,0,0,0
+planner_deep_mps_period,Planning Periods,model_deep_mps_period,deep_core.group_planner,1,1,1,0
+manager_deep_mps_period,Planning Periods,model_deep_mps_period,deep_core.group_manager,1,1,1,0
+read_deep_mps_line,MPS Balances,model_deep_mps_line,deep_core.group_user,1,0,0,0
+planner_deep_mps_line,MPS Balances,model_deep_mps_line,deep_core.group_planner,1,1,1,0
+manager_deep_mps_line,MPS Balances,model_deep_mps_line,deep_core.group_manager,1,1,1,0
+read_deep_material_requirement,Make / Buy Requirements,model_deep_material_requirement,deep_core.group_user,1,0,0,0
+planner_deep_material_requirement,Make / Buy Requirements,model_deep_material_requirement,deep_core.group_planner,1,1,1,0
+procurement_deep_material_requirement,Make / Buy Requirements,model_deep_material_requirement,deep_core.group_procurement,1,1,1,0
+manager_deep_material_requirement,Make / Buy Requirements,model_deep_material_requirement,deep_core.group_manager,1,1,1,0

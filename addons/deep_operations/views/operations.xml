@@ -1,0 +1,366 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_root" name="Operations" parent="deep_core.menu_root" sequence="35" groups="deep_core.group_user"/>
+  <record id="deep_production_department_list" model="ir.ui.view">
+    <field name="name">deep.production.department.list</field>
+    <field name="model">deep.production.department</field>
+    <field name="arch" type="xml">
+      <list string="Departments">
+        <field name="code"/>
+        <field name="name"/>
+        <field name="supervisor_id"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_production_department_form" model="ir.ui.view">
+    <field name="name">deep.production.department.form</field>
+    <field name="model">deep.production.department</field>
+    <field name="arch" type="xml">
+      <form string="Departments">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="code"/>
+            </group>
+            <group>
+              <field name="supervisor_id"/>
+              <field name="active"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Workcenter">
+              <field name="workcenter_ids">
+                <list>
+                  <field name="name"/>
+                  <field name="code"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_production_department" model="ir.actions.act_window">
+    <field name="name">Departments</field>
+    <field name="res_model">deep.production.department</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_production_department" name="Departments" parent="menu_root" action="action_deep_production_department" sequence="10"/>
+  <record id="deep_material_kit_list" model="ir.ui.view">
+    <field name="name">deep.material.kit.list</field>
+    <field name="model">deep.material.kit</field>
+    <field name="arch" type="xml">
+      <list string="Department material kits">
+        <field name="name"/>
+        <field name="production_id"/>
+        <field name="department_id"/>
+        <field name="required_date"/>
+        <field name="release_capacity"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_material_kit_form" model="ir.ui.view">
+    <field name="name">deep.material.kit.form</field>
+    <field name="model">deep.material.kit</field>
+    <field name="arch" type="xml">
+      <form string="Department material kits">
+        <header>
+          <button name="action_fill_requirements" string="Fill MO requirements" type="object" groups="deep_core.group_planner,deep_core.group_supervisor" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_request" string="Request preparation" type="object" groups="deep_core.group_planner,deep_core.group_supervisor" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_approve" string="Approve kit" type="object" groups="deep_core.group_supervisor" invisible="state not in ['requested']" class="oe_highlight"/>
+          <button name="action_prepare" string="Stage actual material" type="object" groups="deep_core.group_warehouse" invisible="state not in ['approved', 'prepared']" class="oe_highlight"/>
+          <button name="action_issue" string="Issue actual material" type="object" groups="deep_core.group_warehouse" invisible="state not in ['prepared']" class="oe_highlight"/>
+          <button name="action_cancel" string="Cancel" type="object" groups="deep_core.group_supervisor" invisible="state not in ['draft', 'requested', 'approved']"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="production_id" readonly="state != 'draft'"/>
+              <field name="department_id" readonly="state != 'draft'"/>
+              <field name="required_date"/>
+            </group>
+            <group>
+              <field name="release_capacity"/>
+              <field name="rack_id"/>
+              <field name="reason"/>
+              <field name="company_id" readonly="state != 'draft'"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Line">
+              <field name="line_ids">
+                <list editable="bottom">
+                  <field name="raw_id" readonly="parent.state != 'draft'"/>
+                  <field name="product_id"/>
+                  <field name="requested_qty" readonly="parent.state != 'draft'"/>
+                  <field name="staged_qty"/>
+                  <field name="issued_qty"/>
+                  <field name="returned_qty"/>
+                  <field name="rack_qty"/>
+                  <field name="shortage"/>
+                  <field name="stage_qty" readonly="parent.state not in ('approved','prepared')"/>
+                  <field name="issue_qty" readonly="parent.state != 'prepared'"/>
+                  <field name="lot_id" readonly="parent.state not in ('approved','prepared')"/>
+                  <button name="action_return" string="Return unused" type="object" groups="deep_core.group_warehouse"/>
+                </list>
+              </field>
+            </page>
+            <page string="Picking">
+              <field name="picking_ids">
+                <list>
+                  <field name="name"/>
+                  <field name="location_id"/>
+                  <field name="location_dest_id"/>
+                  <field name="state"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_material_kit" model="ir.actions.act_window">
+    <field name="name">Department material kits</field>
+    <field name="res_model">deep.material.kit</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_material_kit" name="Department material kits" parent="menu_root" action="action_deep_material_kit" sequence="20"/>
+  <record id="deep_shift_report_list" model="ir.ui.view">
+    <field name="name">deep.shift.report.list</field>
+    <field name="model">deep.shift.report</field>
+    <field name="arch" type="xml">
+      <list string="Shift reports">
+        <field name="name"/>
+        <field name="department_id"/>
+        <field name="production_id"/>
+        <field name="shift_start"/>
+        <field name="good_qty"/>
+        <field name="rework_qty"/>
+        <field name="scrap_qty"/>
+        <field name="downtime_minutes"/>
+        <field name="attainment"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_shift_report_form" model="ir.ui.view">
+    <field name="name">deep.shift.report.form</field>
+    <field name="model">deep.shift.report</field>
+    <field name="arch" type="xml">
+      <form string="Shift reports">
+        <header>
+          <button name="action_submit" string="Submit shift" type="object" groups="deep_core.group_operator" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_approve" string="Approve reported actuals" type="object" groups="deep_core.group_supervisor" invisible="state not in ['submitted']" class="oe_highlight"/>
+          <button name="action_reject" string="Reject" type="object" groups="deep_core.group_supervisor" invisible="state not in ['submitted']" class="oe_highlight"/>
+          <button name="action_export" string="Export XLSX" type="object" groups="deep_core.group_user"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="state != 'draft'"/>
+              <field name="department_id" readonly="state != 'draft'"/>
+              <field name="production_id" readonly="state != 'draft'"/>
+              <field name="workorder_id" readonly="state != 'draft'"/>
+              <field name="batch_id" readonly="state != 'draft'"/>
+              <field name="operator_id" readonly="state != 'draft'"/>
+              <field name="operator_count" readonly="state != 'draft'"/>
+              <field name="shift_start" readonly="state != 'draft'"/>
+              <field name="shift_end" readonly="state != 'draft'"/>
+              <field name="planned_qty" readonly="state != 'draft'"/>
+            </group>
+            <group>
+              <field name="good_qty" readonly="state != 'draft'"/>
+              <field name="rework_qty" readonly="state != 'draft'"/>
+              <field name="scrap_qty" readonly="state != 'draft'"/>
+              <field name="downtime_minutes" readonly="state != 'draft'"/>
+              <field name="labor_hours"/>
+              <field name="attainment"/>
+              <field name="quality_rate"/>
+              <field name="notes" readonly="state != 'draft'"/>
+              <field name="rejection_reason"/>
+              <field name="approved_by"/>
+              <field name="company_id" readonly="state != 'draft'"/>
+            </group>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_shift_report" model="ir.actions.act_window">
+    <field name="name">Shift reports</field>
+    <field name="res_model">deep.shift.report</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_shift_report" name="Shift reports" parent="menu_root" action="action_deep_shift_report" sequence="30"/>
+  <record id="deep_wip_handover_list" model="ir.ui.view">
+    <field name="name">deep.wip.handover.list</field>
+    <field name="model">deep.wip.handover</field>
+    <field name="arch" type="xml">
+      <list string="WIP handovers">
+        <field name="name"/>
+        <field name="production_id"/>
+        <field name="from_department_id"/>
+        <field name="to_department_id"/>
+        <field name="quantity"/>
+        <field name="receiver_id"/>
+        <field name="sent_at"/>
+        <field name="received_at"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_wip_handover_form" model="ir.ui.view">
+    <field name="name">deep.wip.handover.form</field>
+    <field name="model">deep.wip.handover</field>
+    <field name="arch" type="xml">
+      <form string="WIP handovers">
+        <header>
+          <button name="action_send" string="Send handover" type="object" groups="deep_core.group_operator" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_receive" string="Acknowledge receipt" type="object" groups="deep_core.group_operator" invisible="state not in ['sent']" class="oe_highlight"/>
+          <button name="action_reject" string="Reject receipt" type="object" groups="deep_core.group_operator" invisible="state not in ['sent']" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="state != 'draft'"/>
+              <field name="production_id" readonly="state != 'draft'"/>
+              <field name="batch_id" readonly="state != 'draft'"/>
+              <field name="from_department_id" readonly="state != 'draft'"/>
+              <field name="to_department_id" readonly="state != 'draft'"/>
+              <field name="quantity" readonly="state != 'draft'"/>
+            </group>
+            <group>
+              <field name="sender_id"/>
+              <field name="receiver_id" readonly="state != 'draft'"/>
+              <field name="sent_at"/>
+              <field name="received_at"/>
+              <field name="transit_hours"/>
+              <field name="notes"/>
+              <field name="company_id" readonly="state != 'draft'"/>
+            </group>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_wip_handover" model="ir.actions.act_window">
+    <field name="name">WIP handovers</field>
+    <field name="res_model">deep.wip.handover</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_wip_handover" name="WIP handovers" parent="menu_root" action="action_deep_wip_handover" sequence="40"/>
+  <record id="deep_work_instruction_list" model="ir.ui.view">
+    <field name="name">deep.work.instruction.list</field>
+    <field name="model">deep.work.instruction</field>
+    <field name="arch" type="xml">
+      <list string="Work instructions">
+        <field name="code"/>
+        <field name="name"/>
+        <field name="version"/>
+        <field name="effective_date"/>
+        <field name="valid_until"/>
+        <field name="approved_by"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_work_instruction_form" model="ir.ui.view">
+    <field name="name">deep.work.instruction.form</field>
+    <field name="model">deep.work.instruction</field>
+    <field name="arch" type="xml">
+      <form string="Work instructions">
+        <header>
+          <button name="action_submit" string="Submit for review" type="object" groups="deep_core.group_planner,deep_core.group_supervisor" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_approve" string="Approve version" type="object" groups="deep_core.group_supervisor" invisible="state not in ['review']" class="oe_highlight"/>
+          <button name="action_revision" string="Create new version" type="object" groups="deep_core.group_planner,deep_core.group_supervisor" invisible="state not in ['approved', 'obsolete']"/>
+          <button name="action_obsolete" string="Mark obsolete" type="object" groups="deep_core.group_supervisor" invisible="state not in ['approved']"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="state in ('approved','obsolete')"/>
+              <field name="code" readonly="state in ('approved','obsolete')"/>
+              <field name="version" readonly="state in ('approved','obsolete')"/>
+              <field name="operation_ids" widget="many2many_tags" readonly="state in ('approved','obsolete')"/>
+            </group>
+            <group>
+              <field name="effective_date" readonly="state in ('approved','obsolete')"/>
+              <field name="valid_until" readonly="state in ('approved','obsolete')"/>
+              <field name="approval_note" readonly="state in ('approved','obsolete')"/>
+              <field name="approved_by"/>
+              <field name="company_id" readonly="state in ('approved','obsolete')"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Body">
+              <field name="body" readonly="state in ('approved','obsolete')"/>
+            </page>
+            <page string="Attachment">
+              <field name="attachment_ids" widget="many2many_binary" readonly="state in ('approved','obsolete')"/>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_work_instruction" model="ir.actions.act_window">
+    <field name="name">Work instructions</field>
+    <field name="res_model">deep.work.instruction</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_work_instruction" name="Work instructions" parent="menu_root" action="action_deep_work_instruction" sequence="50"/>
+  <record id="deep_instruction_ack_list" model="ir.ui.view">
+    <field name="name">deep.instruction.ack.list</field>
+    <field name="model">deep.instruction.ack</field>
+    <field name="arch" type="xml">
+      <list string="Instruction acknowledgements" create="0" edit="0" delete="0">
+        <field name="instruction_id"/>
+        <field name="user_id"/>
+        <field name="workorder_id"/>
+        <field name="at"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_instruction_ack_form" model="ir.ui.view">
+    <field name="name">deep.instruction.ack.form</field>
+    <field name="model">deep.instruction.ack</field>
+    <field name="arch" type="xml">
+      <form string="Instruction acknowledgements" create="0" edit="0" delete="0">
+        <sheet>
+          <group>
+            <group>
+              <field name="instruction_id"/>
+              <field name="user_id"/>
+            </group>
+            <group>
+              <field name="workorder_id"/>
+              <field name="at"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_instruction_ack" model="ir.actions.act_window">
+    <field name="name">Instruction acknowledgements</field>
+    <field name="res_model">deep.instruction.ack</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_instruction_ack" name="Instruction acknowledgements" parent="menu_root" action="action_deep_instruction_ack" sequence="60"/>
+</odoo>

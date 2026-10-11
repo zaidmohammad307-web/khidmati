@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="sequence_kit" model="ir.sequence">
+    <field name="name">Department material kit</field>
+    <field name="code">deep.material.kit</field>
+    <field name="prefix">KIT/%(year)s/</field>
+    <field name="padding">5</field>
+  </record>
+</odoo>

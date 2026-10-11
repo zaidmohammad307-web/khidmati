@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="unit_label_paper" model="report.paperformat">
+    <field name="name">Serial QR Label 100x70 mm</field>
+    <field name="format">custom</field>
+    <field name="page_width">100</field>
+    <field name="page_height">70</field>
+    <field name="margin_top">3</field>
+    <field name="margin_bottom">3</field>
+    <field name="margin_left">3</field>
+    <field name="margin_right">3</field>
+    <field name="dpi">90</field>
+  </record>
+  <record id="action_unit_label" model="ir.actions.report">
+    <field name="name">Serial QR Labels</field>
+    <field name="model">deep.production.unit</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">deep_core.unit_label</field>
+    <field name="report_file">deep_core.unit_label</field>
+    <field name="paperformat_id" ref="unit_label_paper"/>
+  </record>
+  <template id="unit_label">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="u">
+        <div class="page" style="text-align:center;font-family:sans-serif;">
+          <img t-att-src="u.qr_url" style="width:35mm;height:35mm;"/>
+          <h3 t-esc="u.name"/>
+          <div t-esc="u.product_id.display_name"/>
+          <div>
+            <span t-esc="u.production_id.name"/> · <span t-esc="u.created_at"/>
+          </div>
+        </div>
+      </t>
+    </t>
+  </template>
+</odoo>

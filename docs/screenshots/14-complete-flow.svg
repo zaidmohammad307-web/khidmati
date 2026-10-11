@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1700" viewBox="0 0 1480 1700">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L9,5 L0,10" fill="#708896"/></marker></defs>
+<rect width="1480" height="1700" fill="#f3f6fa"/>
+<text x="60" y="56" fill="#087e82" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="bold">DEEP ELEMENTS · COMPLETE MANUFACTURING FLOW</text>
+<text x="60" y="105" fill="#122e45" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold">From SAP demand to a released serial unit</text>
+<text x="60" y="146" fill="#627989" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="normal">Implemented relationships · SAP connection requires your live VPN/server configuration</text>
+<rect x="60" y="190" width="650" height="190" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="60" y="190" width="6" height="190" rx="3" fill="#087e82"/>
+<text x="84" y="220" fill="#087e82" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="bold">PROCUREMENT &amp; LOGISTICS SOURCE</text>
+<text x="84" y="251" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">SAP Business One</text>
+<text x="84" y="284" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Items · partners · stock · open purchase supply</text>
+<text x="84" y="312" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Customer orders · optional BOM snapshots</text>
+<text x="84" y="340" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Server-side credentials · verified HTTPS</text>
+<rect x="770" y="190" width="650" height="190" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="770" y="190" width="6" height="190" rx="3" fill="#087e82"/>
+<text x="794" y="220" fill="#087e82" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="bold">PYTHON BACKEND / OWL FRONTEND</text>
+<text x="794" y="251" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Odoo planning and control</text>
+<text x="794" y="284" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Mapped stock/supply + native manufacturing receipts</text>
+<text x="794" y="312" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Firm demand · forecast · MPS · material/capacity checks</text>
+<text x="794" y="340" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Atomic refresh · freshness checks · frozen approvals</text>
+<polyline points="710,285 770,285" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="722" y="265" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="bold">VPN</text>
+<rect x="230" y="435" width="1020" height="145" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="230" y="435" width="6" height="145" rx="3" fill="#087e82"/>
+<text x="254" y="473" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Review, approve and release the plan</text>
+<text x="254" y="508" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Shortages and capacity reviewed with reasons; explicit native MO release</text>
+<text x="254" y="536" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Scenario previews stay isolated · BOM revisions require approval</text>
+<polyline points="1095,380 1095,411 740,411 740,435" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="60" y="635" width="425" height="135" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="60" y="635" width="6" height="135" rx="3" fill="#087e82"/>
+<text x="84" y="673" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Frame subassembly</text>
+<text x="84" y="708" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Native material issue and routing</text>
+<text x="84" y="736" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Post-production warehouse receipt</text>
+<rect x="527" y="635" width="425" height="135" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="527" y="635" width="6" height="135" rx="3" fill="#087e82"/>
+<text x="551" y="673" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Motor subassembly</text>
+<text x="551" y="708" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Native material issue and routing</text>
+<text x="551" y="736" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Post-production warehouse receipt</text>
+<rect x="995" y="635" width="425" height="135" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="995" y="635" width="6" height="135" rx="3" fill="#087e82"/>
+<text x="1019" y="673" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Electronics subassembly</text>
+<text x="1019" y="708" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Native material issue and routing</text>
+<text x="1019" y="736" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Post-production warehouse receipt</text>
+<polyline points="740,580 740,606 273,606 273,635" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="740,580 740,635" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="740,580 740,606 1207,606 1207,635" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="230" y="830" width="1020" height="150" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="230" y="830" width="6" height="150" rx="3" fill="#087e82"/>
+<text x="254" y="868" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Prepare the whole MO on its dedicated rack</text>
+<text x="254" y="903" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Stage the full requirement · issue only current department capacity</text>
+<text x="254" y="931" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Native linked moves · lot/serial checks · actual unused-material returns</text>
+<polyline points="273,770 273,802 740,802 740,830" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="740,770 740,830" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="1207,770 1207,802 740,802 740,830" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="60" y="1040" width="900" height="160" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="60" y="1040" width="6" height="160" rx="3" fill="#087e82"/>
+<text x="84" y="1078" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">13-station final assembly</text>
+<text x="84" y="1113" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">S01–S08: assembly · S09: actual serial identity</text>
+<text x="84" y="1141" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">S10–S11: preparation · S12: scanned typed QA</text>
+<text x="84" y="1169" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Current SOP acknowledgement and maintenance gates</text>
+<polyline points="740,980 740,1010 510,1010 510,1040" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="1015" y="1040" width="405" height="160" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="1015" y="1040" width="6" height="160" rx="3" fill="#735c9d"/>
+<text x="1039" y="1078" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Operational controls</text>
+<text x="1039" y="1113" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Shift reports · dual handovers</text>
+<text x="1039" y="1141" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Downtime · preventive work</text>
+<text x="1039" y="1169" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">NC / CAPA · delivery milestones</text>
+<rect x="60" y="1270" width="900" height="130" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="60" y="1270" width="6" height="130" rx="3" fill="#087e82"/>
+<text x="84" y="1308" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">S13 release → native finished stock → delivery</text>
+<text x="84" y="1343" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Passing same-serial test + completed repair + closed blocking cases</text>
+<text x="84" y="1371" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Actual eligible native receipts and shipments determine inventory</text>
+<polyline points="510,1200 510,1270" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="536" y="1240" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="bold">PASS</text>
+<rect x="1015" y="1270" width="405" height="130" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="1015" y="1270" width="6" height="130" rx="3" fill="#b46838"/>
+<text x="1039" y="1308" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Repair the same serial</text>
+<text x="1039" y="1343" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Assigned technician evidence</text>
+<text x="1039" y="1371" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Retest at S12 before release</text>
+<polyline points="960,1150 985,1150 985,1250 1218,1250 1218,1270" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1027" y="1238" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="bold">FAIL / HOLD</text>
+<polyline points="1218,1400 1450,1400 1450,1004 915,1004 915,1040" fill="none" stroke="#708896" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1280" y="985" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="bold">RETEST</text>
+<rect x="60" y="1475" width="1360" height="170" rx="18" fill="white" stroke="#d8e3ec" stroke-width="2"/>
+<rect x="60" y="1475" width="6" height="170" rx="3" fill="#2f8170"/>
+<text x="84" y="1505" fill="#2f8170" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="bold">SECURE DEPLOYMENT PROFILE</text>
+<text x="84" y="1536" fill="#132e43" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="bold">Protection across the flow</text>
+<text x="84" y="1569" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Browser HTTPS · verified PostgreSQL/SAP TLS · native TOTP support · roles and audit history</text>
+<text x="84" y="1597" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">AES-256-GCM backups · encrypted host storage for database, filestore, sessions and secrets</text>
+<text x="84" y="1625" fill="#566d7d" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="normal">Reported shift output and SAP snapshots do not create finished-stock receipts</text>
+<text x="60" y="1666" fill="#627989" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="normal">Actual live SAP/VPN reachability, disk encryption and user MFA enrollment must be verified on the deployment host.</text>
+</svg>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_material_risk,Material Criticality,model_deep_material_risk,deep_core.group_user,1,0,0,0
+planner_deep_material_risk,Material Criticality,model_deep_material_risk,deep_core.group_planner,1,1,1,0
+procurement_deep_material_risk,Material Criticality,model_deep_material_risk,deep_core.group_procurement,1,1,1,0
+manager_deep_material_risk,Material Criticality,model_deep_material_risk,deep_core.group_manager,1,1,1,0

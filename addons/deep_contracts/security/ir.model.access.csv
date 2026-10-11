@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_deep_customer_contract,Customer contracts,model_deep_customer_contract,deep_core.group_user,1,0,0,0
+planner_deep_customer_contract,Customer contracts,model_deep_customer_contract,deep_core.group_planner,1,1,1,1
+manager_deep_customer_contract,Customer contracts,model_deep_customer_contract,deep_core.group_manager,1,1,1,1
+read_deep_contract_milestone,Delivery milestones,model_deep_contract_milestone,deep_core.group_user,1,0,0,0
+planner_deep_contract_milestone,Delivery milestones,model_deep_contract_milestone,deep_core.group_planner,1,1,1,1
+warehouse_deep_contract_milestone,Delivery milestones,model_deep_contract_milestone,deep_core.group_warehouse,1,1,1,1
+manager_deep_contract_milestone,Delivery milestones,model_deep_contract_milestone,deep_core.group_manager,1,1,1,1

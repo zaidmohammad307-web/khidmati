@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="deep_operations_mo" model="ir.ui.view">
+    <field name="name">deep_operations_mo</field>
+    <field name="model">mrp.production</field>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="action_deep_material_kit" string="Department kits" type="object" groups="deep_core.group_planner,deep_core.group_supervisor"/>
+      </xpath>
+      <xpath expr="(//sheet//group)[1]" position="inside">
+        <field name="deep_priority"/>
+        <field name="deep_promise_date"/>
+      </xpath>
+      <xpath expr="//notebook" position="inside">
+        <page string="Department racks">
+          <field name="deep_kit_ids" readonly="1">
+            <list create="0">
+              <field name="name"/>
+              <field name="department_id"/>
+              <field name="rack_id"/>
+              <field name="release_capacity"/>
+              <field name="state"/>
+            </list>
+          </field>
+        </page>
+        <page string="Shift actuals">
+          <field name="deep_shift_report_ids" readonly="1">
+            <list create="0">
+              <field name="name"/>
+              <field name="department_id"/>
+              <field name="good_qty"/>
+              <field name="rework_qty"/>
+              <field name="scrap_qty"/>
+              <field name="state"/>
+            </list>
+          </field>
+        </page>
+        <page string="WIP handovers">
+          <field name="deep_handover_ids" readonly="1">
+            <list create="0">
+              <field name="name"/>
+              <field name="from_department_id"/>
+              <field name="to_department_id"/>
+              <field name="quantity"/>
+              <field name="state"/>
+            </list>
+          </field>
+        </page>
+      </xpath>
+    </field>
+  </record>
+  <record id="deep_operations_center" model="ir.ui.view">
+    <field name="name">deep_operations_center</field>
+    <field name="model">mrp.workcenter</field>
+    <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="(//sheet//group)[1]" position="inside">
+        <field name="deep_department_id"/>
+      </xpath>
+    </field>
+  </record>
+  <record id="deep_operations_workorder" model="ir.ui.view">
+    <field name="name">deep_operations_workorder</field>
+    <field name="model">mrp.workorder</field>
+    <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="action_deep_instructions" string="Read instructions" type="object"/>
+        <button name="action_deep_acknowledge" string="Acknowledge instruction" type="object" groups="deep_core.group_operator,deep_core.group_supervisor"/>
+      </xpath>
+    </field>
+  </record>
+  <record id="deep_operations_routing" model="ir.ui.view">
+    <field name="name">deep_operations_routing</field>
+    <field name="model">mrp.routing.workcenter</field>
+    <field name="inherit_id" ref="deep_core.operation_planning_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="(//group)[1]" position="inside">
+        <field name="deep_instruction_required"/>
+      </xpath>
+    </field>
+  </record>
+  <record id="deep_kit_return_form" model="ir.ui.view">
+    <field name="name">deep.kit.return.form</field>
+    <field name="model">deep.kit.return</field>
+    <field name="arch" type="xml">
+      <form string="Return actual unused stock">
+        <group>
+          <field name="kit_line_id"/>
+          <field name="quantity"/>
+          <field name="reason"/>
+        </group>
+        <footer>
+          <button name="action_return" string="Return actual unused stock" type="object" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+  <record id="deep_instruction_ack_wizard_form" model="ir.ui.view">
+    <field name="name">deep.instruction.ack.wizard.form</field>
+    <field name="model">deep.instruction.ack.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Acknowledge instruction">
+        <group>
+          <field name="workorder_id"/>
+          <field name="instruction_id"/>
+          <field name="body"/>
+          <field name="attachment_ids" widget="many2many_binary"/>
+          <field name="confirmed"/>
+        </group>
+        <footer>
+          <button name="action_acknowledge" string="Acknowledge instruction" type="object" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

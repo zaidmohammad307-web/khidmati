@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <menuitem id="menu_root" name="Quality improvement" parent="deep_core.menu_root" sequence="35" groups="deep_core.group_user"/>
+  <record id="deep_nonconformance_list" model="ir.ui.view">
+    <field name="name">deep.nonconformance.list</field>
+    <field name="model">deep.nonconformance</field>
+    <field name="arch" type="xml">
+      <list string="Nonconformance and CAPA">
+        <field name="name"/>
+        <field name="unit_id"/>
+        <field name="production_id"/>
+        <field name="severity"/>
+        <field name="blocking"/>
+        <field name="owner_id"/>
+        <field name="due_date"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_nonconformance_form" model="ir.ui.view">
+    <field name="name">deep.nonconformance.form</field>
+    <field name="model">deep.nonconformance</field>
+    <field name="arch" type="xml">
+      <form string="Nonconformance and CAPA">
+        <header>
+          <button name="action_contain" string="Contain" type="object" groups="deep_core.group_qa" invisible="state not in ['draft']" class="oe_highlight"/>
+          <button name="action_investigate" string="Investigate" type="object" groups="deep_core.group_qa" invisible="state not in ['containment']" class="oe_highlight"/>
+          <button name="action_actions" string="Assign actions" type="object" groups="deep_core.group_qa" invisible="state not in ['investigation']" class="oe_highlight"/>
+          <button name="action_verify" string="Verify completed actions" type="object" groups="deep_core.group_qa" invisible="state not in ['actions']" class="oe_highlight"/>
+          <button name="action_close" string="Close verified case" type="object" groups="deep_core.group_qa" invisible="state not in ['verification']" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="unit_id"/>
+              <field name="production_id"/>
+              <field name="session_id"/>
+              <field name="rework_id"/>
+              <field name="severity"/>
+              <field name="blocking"/>
+              <field name="owner_id"/>
+            </group>
+            <group>
+              <field name="due_date"/>
+              <field name="description"/>
+              <field name="containment"/>
+              <field name="root_cause"/>
+              <field name="verification"/>
+              <field name="verified_by"/>
+              <field name="closed_at"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Action">
+              <field name="action_ids">
+                <list editable="bottom">
+                  <field name="name"/>
+                  <field name="category"/>
+                  <field name="owner_id"/>
+                  <field name="due_date"/>
+                  <field name="completion_note"/>
+                  <field name="completed_at"/>
+                  <field name="state"/>
+                  <button name="action_done" string="Complete" type="object" invisible="state == 'done'"/>
+                </list>
+              </field>
+            </page>
+            <page string="Attachment">
+              <field name="attachment_ids" widget="many2many_binary"/>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_nonconformance" model="ir.actions.act_window">
+    <field name="name">Nonconformance and CAPA</field>
+    <field name="res_model">deep.nonconformance</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_nonconformance" name="Nonconformance and CAPA" parent="menu_root" action="action_deep_nonconformance" sequence="10"/>
+  <record id="deep_capa_action_list" model="ir.ui.view">
+    <field name="name">deep.capa.action.list</field>
+    <field name="model">deep.capa.action</field>
+    <field name="arch" type="xml">
+      <list string="Assigned CAPA actions">
+        <field name="name"/>
+        <field name="case_id"/>
+        <field name="category"/>
+        <field name="owner_id"/>
+        <field name="due_date"/>
+        <field name="completed_at"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="deep_capa_action_form" model="ir.ui.view">
+    <field name="name">deep.capa.action.form</field>
+    <field name="model">deep.capa.action</field>
+    <field name="arch" type="xml">
+      <form string="Assigned CAPA actions">
+        <header>
+          <button name="action_done" string="Complete with evidence" type="object" groups="deep_core.group_qa,deep_core.group_technician,deep_core.group_supervisor" invisible="state not in ['draft']" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="state == 'done'"/>
+              <field name="case_id" readonly="state == 'done'"/>
+              <field name="category" readonly="state == 'done'"/>
+              <field name="owner_id" readonly="state == 'done'"/>
+            </group>
+            <group>
+              <field name="due_date" readonly="state == 'done'"/>
+              <field name="completion_note" readonly="state == 'done'"/>
+              <field name="completed_at"/>
+              <field name="company_id" readonly="state == 'done'"/>
+            </group>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_deep_capa_action" model="ir.actions.act_window">
+    <field name="name">Assigned CAPA actions</field>
+    <field name="res_model">deep.capa.action</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_deep_capa_action" name="Assigned CAPA actions" parent="menu_root" action="action_deep_capa_action" sequence="20"/>
+</odoo>
