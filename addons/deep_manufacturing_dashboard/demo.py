@@ -2,7 +2,8 @@
 
 import os
 from datetime import timedelta
-from odoo import fields, Command
+
+from odoo import Command, fields
 
 
 def post_init_hook(env):
@@ -300,7 +301,7 @@ def seed_demo(env):
         ),
     )
     root.action_confirm()
-    for sub, bom in zip(subs, boms):
+    for sub, bom in zip(subs, boms, strict=True):
         mo = env["mrp.production"].create(
             {
                 "product_id": sub.id,

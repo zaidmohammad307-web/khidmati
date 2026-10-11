@@ -1,9 +1,32 @@
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+
 [tool.ruff.lint]
-select = ["E4", "E7", "E9", "F"]
+select = [
+    "E4", "E7", "E9", "F",  # pycodestyle errors and pyflakes
+    "W",                    # pycodestyle warnings
+    "I",                    # import order
+    "B",                    # bugbear
+    "UP",                   # pyupgrade
+    "C4",                   # comprehensions
+    "PIE",                  # misc. lints
+    "PLE",                  # pylint errors
+]
+ignore = [
+    # recordset.filtered(lambda ...) inside a loop is evaluated immediately, so the
+    # late-binding problem this rule guards against does not occur.
+    "B023",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Odoo registers models in import order, so __init__ imports must not be re-sorted.
+"**/__init__.py" = ["F401", "I001"]
+# Odoo manifests are a bare dict literal by design.
+"**/__manifest__.py" = ["B018"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["odoo"]
+
 [tool.ruff.format]
 quote-style = "double"
-[tool.ruff.lint.per-file-ignores]
-"**/__init__.py" = ["F401"]

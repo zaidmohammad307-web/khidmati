@@ -1,7 +1,9 @@
 import math
+
 from odoo import Command
 from odoo.exceptions import UserError
-from ..security import internal, require_role, lock
+
+from ..security import internal, lock, require_role
 
 
 class SerializationService:

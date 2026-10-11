@@ -1,12 +1,13 @@
 import importlib.util
 import json
-from unittest.mock import Mock, patch
-import unittest
 import tempfile
-from types import SimpleNamespace
+import unittest
 from pathlib import Path
-from _support import ROOT
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
+
 import requests
+from _support import ROOT
 
 spec = importlib.util.spec_from_file_location(
     "sap_transport", ROOT / "addons/deep_sap_b1/services/client.py"

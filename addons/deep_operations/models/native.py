@@ -1,7 +1,7 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import require_role, lock
+from odoo.addons.deep_core.security import lock, require_role
 from odoo.addons.deep_core.services.issued import net_issued
+from odoo.exceptions import UserError
 
 
 class Picking(models.Model):
@@ -17,8 +17,9 @@ class Move(models.Model):
 
     def _action_done(self, *args, **kwargs):
         moving = self.filtered(
-            lambda move: move.state not in ("done", "cancel")
-            and move.location_dest_id.usage == "internal"
+            lambda move: (
+                move.state not in ("done", "cancel") and move.location_dest_id.usage == "internal"
+            )
         )
         for raw in moving.move_dest_ids.filtered("raw_material_production_id"):
             arrivals = moving.filtered(

@@ -1,9 +1,15 @@
+import logging
 import re
+import time
 from datetime import timedelta
+
 from odoo import api, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_internal, require_role
 from odoo.exceptions import AccessError, UserError
-from odoo.addons.deep_core.security import internal, require_internal, require_role, lock
-from ..services.client import ServiceLayerClient, SAPError, base_url
+
+from ..services.client import SAPError, ServiceLayerClient, base_url
+
+_logger = logging.getLogger(__name__)
 
 
 class Managed(models.AbstractModel):
@@ -237,6 +243,7 @@ class Job(models.Model):
         internal(self).write(
             {"state": "running", "attempts": self.attempts + 1, "started_at": fields.Datetime.now()}
         )
+        started = time.monotonic()
         try:
             from ..services.synchronization import SynchronizationService
 
@@ -262,6 +269,13 @@ class Job(models.Model):
                     "error_code": False,
                 }
             )
+            _logger.info(
+                "SAP job %s (profile %s) refreshed in %.1fs: %s",
+                self.id,
+                self.profile_id.id,
+                time.monotonic() - started,
+                counts,
+            )
         except (SAPError, UserError, ValueError) as error:
             retryable = isinstance(error, SAPError) and error.retryable and self.attempts < 3
             code = error.code if isinstance(error, SAPError) else "DATA_CONFLICT"
@@ -281,6 +295,17 @@ class Job(models.Model):
             )
             internal(self.profile_id).write(
                 {"connection_state": "error", "status_message": code + ": " + message}
+            )
+            # Messages are the connector's sanitized texts; they never contain credentials.
+            _logger.warning(
+                "SAP job %s (profile %s) attempt %s %s after %.1fs: %s %s",
+                self.id,
+                self.profile_id.id,
+                self.attempts,
+                self.state,
+                time.monotonic() - started,
+                code,
+                message,
             )
         self.env["deep.audit.event"]._record(self, "sap_sync_" + self.state, reason=self.message)
         return True

@@ -1,6 +1,7 @@
 import csv
 import io
 import zipfile
+
 from odoo.exceptions import UserError
 
 
@@ -43,7 +44,13 @@ def parse_file(payload, filename, headers):
         if len(row) != len(headers):
             raise UserError(f"Row {number}: incorrect column count.")
         rows.append(
-            (number, {h: str(v).strip() if v is not None else "" for h, v in zip(headers, row)})
+            (
+                number,
+                {
+                    h: str(v).strip() if v is not None else ""
+                    for h, v in zip(headers, row, strict=True)
+                },
+            )
         )
     if not rows:
         raise UserError("The import has no data rows.")

@@ -1,6 +1,6 @@
 from odoo import api, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_role
 from odoo.exceptions import AccessError, UserError
-from odoo.addons.deep_core.security import internal, require_role, lock
 
 
 class Reason(models.Model):

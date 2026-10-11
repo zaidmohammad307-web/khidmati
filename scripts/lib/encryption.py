@@ -1,8 +1,9 @@
 """Versioned AES-256-GCM envelope. Authenticate before exposing restored plaintext."""
 
 import os
-from pathlib import Path
 import tempfile
+from pathlib import Path
+
 from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 

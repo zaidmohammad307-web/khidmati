@@ -1,6 +1,6 @@
 from odoo import api, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_internal
 from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import internal, require_internal, lock
 
 
 class Part(models.Model):

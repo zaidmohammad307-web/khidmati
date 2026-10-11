@@ -1,7 +1,7 @@
 import importlib.util
-from pathlib import Path
 import math
 import unittest
+from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
     "replenishment_math",

@@ -1,9 +1,9 @@
-from pathlib import Path
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
-from _support import valid_environment
 import entrypoint
+from _support import valid_environment
 
 
 class BootstrapTests(unittest.TestCase):

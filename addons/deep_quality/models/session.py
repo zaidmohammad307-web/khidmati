@@ -1,7 +1,8 @@
 from odoo import api, fields, models
-from odoo.exceptions import AccessError
 from odoo.addons.deep_core.security import require_internal
 from odoo.addons.deep_core.services.export import export_xlsx
+from odoo.exceptions import AccessError
+
 from ..services.quality import QualityService
 
 

@@ -1,6 +1,6 @@
 from odoo import fields, models
-from odoo.exceptions import UserError
 from odoo.addons.deep_core.security import lock
+from odoo.exceptions import UserError
 
 
 class Unit(models.Model):
@@ -67,9 +67,11 @@ class Move(models.Model):
 
     def _action_done(self, *args, **kwargs):
         outgoing = self.filtered(
-            lambda move: move.location_dest_id.usage == "customer"
-            and move.product_id.deep_qa_required
-            and move.quantity > 0
+            lambda move: (
+                move.location_dest_id.usage == "customer"
+                and move.product_id.deep_qa_required
+                and move.quantity > 0
+            )
         )
         for move in outgoing:
             lots = move.move_line_ids.lot_id

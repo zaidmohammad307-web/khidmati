@@ -1,7 +1,9 @@
 from urllib.parse import quote
+
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError
-from ..security import internal, require_internal, require_role, lock
+
+from ..security import internal, lock, require_internal, require_role
 from ..services.export import export_xlsx
 
 

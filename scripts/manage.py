@@ -2,10 +2,10 @@
 """Cross-platform setup and lifecycle CLI for the isolated Odoo Community pilot."""
 
 import argparse
-from pathlib import Path
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 from lib.backups import create_backup, restore_backup
 from lib.docker import Docker

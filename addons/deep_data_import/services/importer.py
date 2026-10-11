@@ -1,9 +1,11 @@
 """Import coordinator: native ORM operations, strict identities, full rollback on errors."""
 
 import math
+
 from odoo.exceptions import UserError
-from .parser import parse_file
+
 from .masters import MasterDataHandlers
+from .parser import parse_file
 from .routing import BomRoutingHandlers
 from .transactions import TransactionHandlers
 

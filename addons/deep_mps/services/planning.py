@@ -1,8 +1,10 @@
 from datetime import timedelta
-from odoo import fields, Command
-from odoo.exceptions import UserError
+
+from odoo import Command, fields
 from odoo.addons.deep_core.security import internal
-from .math import period_end, demand_total, bucket
+from odoo.exceptions import UserError
+
+from .math import bucket, demand_total, period_end
 
 
 class MPSService:

@@ -1,5 +1,6 @@
 from odoo import fields, models
 from odoo.exceptions import UserError
+
 from ..security import require_role
 from ..services.serialization import SerializationService
 
@@ -78,8 +79,9 @@ class Production(models.Model):
         rows = []
         for raw in self.move_raw_ids:
             moves = issues.filtered(
-                lambda move: raw in move.move_dest_ids
-                or raw in move.origin_returned_move_id.move_dest_ids
+                lambda move: (
+                    raw in move.move_dest_ids or raw in move.origin_returned_move_id.move_dest_ids
+                )
             )
 
             def convert(move):

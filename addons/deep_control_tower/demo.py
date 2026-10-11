@@ -2,7 +2,8 @@
 
 import os
 from datetime import timedelta
-from odoo import fields, Command
+
+from odoo import Command, fields
 
 
 def post_init_hook(env):
@@ -33,10 +34,12 @@ def post_init_hook(env):
         centers = env["mrp.workcenter"].search([("company_id", "=", env.company.id)])
         if code == "FA":
             centers = centers.filtered(
-                lambda center: center.code
-                and (
-                    center.code.startswith("FA")
-                    or (center.code.startswith("S") and center.code[1:].isdigit())
+                lambda center: (
+                    center.code
+                    and (
+                        center.code.startswith("FA")
+                        or (center.code.startswith("S") and center.code[1:].isdigit())
+                    )
                 )
             )
         else:

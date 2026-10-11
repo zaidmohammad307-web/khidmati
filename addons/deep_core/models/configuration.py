@@ -1,7 +1,9 @@
 import re
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from ..security import require_role, require_internal
+
+from ..security import require_internal, require_role
 
 
 class Family(models.Model):

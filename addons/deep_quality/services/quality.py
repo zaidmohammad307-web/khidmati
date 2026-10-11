@@ -1,7 +1,9 @@
 import re
+
 from odoo import fields
+from odoo.addons.deep_core.security import internal, lock, require_role
 from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import internal, require_role, lock
+
 from .evaluation import evaluate
 
 

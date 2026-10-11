@@ -1,15 +1,15 @@
 """Consistent database + filestore backups and restore to a fresh database only."""
 
-from datetime import datetime, timezone
 import hashlib
 import json
-from pathlib import Path, PurePosixPath
 import tarfile
 import tempfile
 import zipfile
+from datetime import UTC, datetime
+from pathlib import Path, PurePosixPath
 
-from .environment import NAME, read_environment, write_environment
 from .encryption import decrypt_file, encrypt_file, is_encrypted, load_key, private_directory
+from .environment import NAME, read_environment, write_environment
 
 EXPECTED_MEMBERS = {"database.dump", "filestore.tar.gz", "metadata.json"}
 
@@ -71,7 +71,7 @@ def work_directory(root, values):
 def create_backup(docker, root: Path, output: Path | None = None) -> Path:
     values = read_environment(root / ".env")
     key = backup_key(root, values)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     output = output or root / "backups" / f"{values['ODOO_DB_NAME']}-{now:%Y%m%dT%H%M%S%fZ}.deepenc"
     if output.exists():
         raise ValueError("Backup output already exists; choose another filename.")

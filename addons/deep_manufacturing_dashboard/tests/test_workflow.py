@@ -1,9 +1,10 @@
 import base64
 from datetime import timedelta
+
 from odoo import Command, fields
+from odoo.addons.deep_quality.services.quality import QualityService
 from odoo.exceptions import AccessError, UserError
 from odoo.tests import TransactionCase, tagged
-from odoo.addons.deep_quality.services.quality import QualityService
 
 
 @tagged("post_install", "-at_install")

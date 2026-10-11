@@ -1,12 +1,13 @@
 import os
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
+
 from _support import ROOT  # noqa: F401
-from lib.encryption import create_key, decrypt_file, encrypt_file, is_encrypted, load_key
-from lib.pki import setup_pki
 from cryptography import x509
 from cryptography.hazmat.primitives.asymmetric import padding
+from lib.encryption import create_key, decrypt_file, encrypt_file, is_encrypted, load_key
+from lib.pki import setup_pki
 
 
 class EncryptionTests(unittest.TestCase):

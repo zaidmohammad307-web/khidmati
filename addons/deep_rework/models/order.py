@@ -1,7 +1,8 @@
 from odoo import api, fields, models
-from odoo.exceptions import AccessError, UserError
-from odoo.addons.deep_core.security import internal, require_internal, require_role, lock
+from odoo.addons.deep_core.security import internal, lock, require_internal, require_role
 from odoo.addons.deep_core.services.export import export_xlsx
+from odoo.exceptions import AccessError, UserError
+
 from ..services.rework import ReworkService
 
 

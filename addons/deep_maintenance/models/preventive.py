@@ -1,6 +1,7 @@
 from datetime import timedelta
+
 from odoo import api, fields, models
-from odoo.addons.deep_core.security import internal, require_internal, require_role, lock
+from odoo.addons.deep_core.security import internal, lock, require_internal, require_role
 
 
 class PreventivePlan(models.Model):

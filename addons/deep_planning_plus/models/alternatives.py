@@ -1,6 +1,6 @@
 from odoo import fields, models
-from odoo.exceptions import AccessError, UserError
 from odoo.addons.deep_core.security import internal, require_role
+from odoo.exceptions import AccessError, UserError
 
 
 class Alternative(models.Model):

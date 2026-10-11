@@ -3,9 +3,9 @@
 
 import http.cookiejar
 import json
-from pathlib import Path
-import sys
 import ssl
+import sys
+from pathlib import Path
 from urllib.error import URLError
 from urllib.request import HTTPCookieProcessor, HTTPSHandler, Request, build_opener
 

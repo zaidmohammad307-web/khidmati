@@ -1,6 +1,6 @@
-from odoo import api, fields, models, Command
+from odoo import Command, api, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_internal, require_role
 from odoo.exceptions import AccessError, UserError
-from odoo.addons.deep_core.security import internal, require_internal, require_role, lock
 
 
 class Kit(models.Model):
@@ -61,8 +61,10 @@ class Kit(models.Model):
                 lambda move: move.state not in ("done", "cancel")
             )
             assigned = raw.filtered(
-                lambda move: move.bom_line_id.operation_id.workcenter_id.deep_department_id
-                == record.department_id
+                lambda move: (
+                    move.bom_line_id.operation_id.workcenter_id.deep_department_id
+                    == record.department_id
+                )
             )
             # Unassigned BOM components can be kitted by the chosen department; never silently omit them.
             other = self.search(

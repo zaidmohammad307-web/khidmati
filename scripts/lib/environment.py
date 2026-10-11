@@ -1,10 +1,10 @@
 """Manage the local .env file without executing it as shell code."""
 
 import os
-from pathlib import Path
 import re
 import secrets
 import tempfile
+from pathlib import Path
 
 SECRET_KEYS = (
     "POSTGRES_PASSWORD",

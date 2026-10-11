@@ -1,8 +1,8 @@
 import configparser
 import os
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from _support import ROOT, valid_environment
 from configuration import (

@@ -1,7 +1,7 @@
 from odoo import api, fields, models
-from odoo.exceptions import AccessError, UserError
 from odoo.addons.deep_core.security import internal, require_role
 from odoo.addons.deep_core.services.export import export_xlsx
+from odoo.exceptions import AccessError, UserError
 
 
 class ShiftReport(models.Model):

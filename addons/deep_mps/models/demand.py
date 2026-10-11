@@ -1,6 +1,6 @@
 from odoo import api, fields, models
+from odoo.addons.deep_core.security import internal, require_internal
 from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import require_internal, internal
 
 
 class Demand(models.Model):

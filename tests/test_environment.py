@@ -1,6 +1,6 @@
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from _support import ROOT
 from lib.environment import SECRET_KEYS, read_environment, setup_environment, validate_environment
@@ -17,7 +17,7 @@ class EnvironmentTests(unittest.TestCase):
             root = self.root(directory)
             self.assertTrue(setup_environment(root))
             values = read_environment(root / ".env")
-            self.assertEqual(len(set(values[key] for key in SECRET_KEYS)), len(SECRET_KEYS))
+            self.assertEqual(len({values[key] for key in SECRET_KEYS}), len(SECRET_KEYS))
             validate_environment(values)
 
     def test_rerunning_setup_preserves_credentials_and_bytes(self):

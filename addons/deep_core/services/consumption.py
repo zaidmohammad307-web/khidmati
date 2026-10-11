@@ -1,5 +1,6 @@
 from odoo.exceptions import UserError
-from ..security import require_role, lock
+
+from ..security import lock, require_role
 
 
 class ConsumptionService:

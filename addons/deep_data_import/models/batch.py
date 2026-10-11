@@ -1,11 +1,13 @@
 import base64
 import hashlib
 import json
+
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import require_role, require_internal, internal, lock
+from odoo.addons.deep_core.security import internal, lock, require_internal, require_role
 from odoo.addons.deep_core.services.export import export_xlsx
-from ..services.importer import ImportService, HEADERS
+from odoo.exceptions import UserError
+
+from ..services.importer import HEADERS, ImportService
 
 
 class Batch(models.Model):

@@ -1,9 +1,9 @@
 """Use argument arrays and fixed cwd for cross-platform Docker Compose commands."""
 
-from contextlib import contextmanager
-from pathlib import Path
 import shutil
 import subprocess
+from contextlib import contextmanager
+from pathlib import Path
 
 
 class Docker:

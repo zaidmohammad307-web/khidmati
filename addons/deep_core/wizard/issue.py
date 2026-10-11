@@ -1,6 +1,7 @@
-from odoo import fields, models, Command
+from odoo import Command, fields, models
 from odoo.exceptions import UserError
-from ..security import require_role, lock
+
+from ..security import lock, require_role
 from ..services.consumption import ConsumptionService
 from ..services.issued import net_issued
 
@@ -60,9 +61,11 @@ class Issue(models.TransientModel):
                 raise UserError("This issue exceeds the remaining native MO component requirement.")
         # Use the upstream pick-components chain whenever it already exists.
         pickings = mo.picking_ids.filtered(
-            lambda p: p.state not in ("done", "cancel")
-            and p.location_id == source
-            and p.location_dest_id == target
+            lambda p: (
+                p.state not in ("done", "cancel")
+                and p.location_id == source
+                and p.location_dest_id == target
+            )
         )
         picking = pickings[:1]
         if not picking:

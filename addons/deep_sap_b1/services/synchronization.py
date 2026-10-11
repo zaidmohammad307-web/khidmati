@@ -1,9 +1,11 @@
 import hashlib
 import json
+
 from odoo import fields
 from odoo.addons.deep_core.security import internal
+
 from .client import SAPError
-from .normalization import document_lines, open_quantity, number, sap_date
+from .normalization import document_lines, number, open_quantity, sap_date
 
 
 class SynchronizationService:

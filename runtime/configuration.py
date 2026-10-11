@@ -2,10 +2,10 @@
 
 import configparser
 import os
-from pathlib import Path
 import re
 import tempfile
-from typing import Mapping
+from collections.abc import Mapping
+from pathlib import Path
 
 IDENTIFIER = re.compile(r"^[a-z][a-z0-9_]{0,62}$")
 MODULES = re.compile(r"^[a-z][a-z0-9_]*(?:,[a-z][a-z0-9_]*)*$")

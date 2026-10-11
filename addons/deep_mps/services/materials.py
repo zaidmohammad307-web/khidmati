@@ -1,7 +1,9 @@
 from datetime import timedelta
+
 from odoo import fields
-from odoo.exceptions import UserError
 from odoo.addons.deep_core.security import internal, lock
+from odoo.exceptions import UserError
+
 from .math import lot_size
 
 

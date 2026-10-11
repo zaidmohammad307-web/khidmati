@@ -1,7 +1,7 @@
 from odoo import Command
-from odoo.exceptions import UserError
 from odoo.addons.deep_core.security import internal, lock
 from odoo.addons.deep_core.services.issued import net_issued
+from odoo.exceptions import UserError
 
 
 class TransferService:
@@ -21,8 +21,9 @@ class TransferService:
         # Reservations for the same MO must move with the physical component kit.
         if kind == "stage":
             for picking in mo.picking_ids.filtered(
-                lambda picking: picking.state not in ("done", "cancel")
-                and picking.location_id == source
+                lambda picking: (
+                    picking.state not in ("done", "cancel") and picking.location_id == source
+                )
             ):
                 picking.move_ids._do_unreserve()
         quants = (
@@ -124,9 +125,11 @@ class TransferService:
         # Make unconsumed stock available without modifying posted consumption.
         line.raw_id._do_unreserve()
         origin = line.move_ids.filtered(
-            lambda move: move.state == "done"
-            and move.location_id == kit.rack_id
-            and not move.origin_returned_move_id
+            lambda move: (
+                move.state == "done"
+                and move.location_id == kit.rack_id
+                and not move.origin_returned_move_id
+            )
         )[:1]
         self._move(kit, line, quantity, source, kit.rack_id, "return", returned=origin)
         line.raw_id._action_assign()

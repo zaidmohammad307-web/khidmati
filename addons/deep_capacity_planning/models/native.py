@@ -1,4 +1,5 @@
 from odoo import fields, models
+
 from ..services.math import operation_minutes
 
 

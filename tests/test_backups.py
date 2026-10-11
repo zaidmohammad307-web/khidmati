@@ -1,10 +1,10 @@
 import io
 import json
-from pathlib import Path
 import tarfile
 import tempfile
 import unittest
 import zipfile
+from pathlib import Path
 
 from _support import ROOT
 from lib.backups import checksum, unpack_backup, validate_filestore
@@ -81,9 +81,10 @@ class BackupTests(unittest.TestCase):
                     validate_filestore(path)
 
     def test_restore_cannot_overwrite_active_database(self):
+        from unittest.mock import Mock
+
         from lib.backups import restore_backup
         from lib.environment import setup_environment
-        from unittest.mock import Mock
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

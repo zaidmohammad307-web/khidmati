@@ -1,6 +1,6 @@
 from odoo import fields, models
-from odoo.exceptions import UserError
 from odoo.addons.deep_core.security import internal
+from odoo.exceptions import UserError
 
 
 class Session(models.Model):

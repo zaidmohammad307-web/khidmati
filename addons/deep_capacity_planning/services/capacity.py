@@ -1,6 +1,8 @@
 from datetime import datetime, time, timedelta
+
 import pytz
 from odoo.addons.deep_core.security import internal
+
 from .math import operation_minutes
 
 

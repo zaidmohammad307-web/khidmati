@@ -1,13 +1,15 @@
 """Create a private local CA and explicit server certificates without shell OpenSSL."""
 
-from datetime import datetime, timedelta, timezone
 import ipaddress
 import os
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.x509.oid import NameOID, ExtendedKeyUsageOID
+from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
+
 from .encryption import private_directory
 
 
@@ -43,14 +45,14 @@ def setup_pki(root, hostname="localhost"):
             raise ValueError(
                 "Existing web certificate has a different hostname. Renew it deliberately; setup never overwrites keys."
             )
-        if certificate.not_valid_after_utc <= datetime.now(timezone.utc) + timedelta(days=7):
+        if certificate.not_valid_after_utc <= datetime.now(UTC) + timedelta(days=7):
             raise ValueError("The web certificate needs renewal; see docs/SECURITY.md.")
         return False
     if any(present):
         raise ValueError(
             "Incomplete TLS key set. Restore the full set or move it aside before generating a new CA."
         )
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     ca_key = _key()
     subject = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "Deep manufacturing private CA")])
     ca = (

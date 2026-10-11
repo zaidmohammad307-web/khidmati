@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import AccessError
+
 from ..security import internal, require_internal
 
 

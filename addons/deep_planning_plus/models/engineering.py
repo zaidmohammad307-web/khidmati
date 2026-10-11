@@ -1,8 +1,9 @@
 import hashlib
 import json
+
 from odoo import api, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_internal, require_role
 from odoo.exceptions import AccessError, UserError
-from odoo.addons.deep_core.security import internal, require_internal, require_role, lock
 
 
 class Change(models.Model):

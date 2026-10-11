@@ -1,6 +1,6 @@
-from odoo import fields, models, Command
+from odoo import Command, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_role
 from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import require_role, internal, lock
 
 
 class Unit(models.Model):
@@ -148,8 +148,8 @@ class Move(models.Model):
 
     def _action_done(self, *args, **kwargs):
         self.filtered(
-            lambda m: m.production_id
-            and m.product_id == m.production_id.product_id
-            and not m.scrap_id
+            lambda m: (
+                m.production_id and m.product_id == m.production_id.product_id and not m.scrap_id
+            )
         ).production_id._deep_gate()
         return super()._action_done(*args, **kwargs)

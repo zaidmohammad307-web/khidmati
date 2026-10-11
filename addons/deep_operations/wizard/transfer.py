@@ -1,6 +1,6 @@
 from odoo import fields, models
+from odoo.addons.deep_core.security import lock, require_role
 from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import require_role, lock
 
 
 class MaterialReturn(models.TransientModel):

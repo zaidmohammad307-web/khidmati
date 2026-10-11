@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.addons.deep_core.security import require_role
 

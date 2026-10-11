@@ -1,6 +1,6 @@
-from odoo import api, fields, models, Command
+from odoo import Command, api, fields, models
+from odoo.addons.deep_core.security import internal, lock, require_role
 from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import internal, require_role, lock
 
 
 class WarehouseMap(models.Model):

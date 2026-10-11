@@ -1,6 +1,6 @@
 from odoo import fields, models
-from odoo.exceptions import AccessError, UserError
 from odoo.addons.deep_core.security import lock
+from odoo.exceptions import AccessError, UserError
 
 
 class Picking(models.Model):
@@ -17,8 +17,10 @@ class Picking(models.Model):
             if any(move.product_id != line.product_id for move in picking.move_ids):
                 raise UserError("Deliver only the product assigned to this milestone.")
             outgoing = picking.move_ids.filtered(
-                lambda move: move.location_dest_id.usage == "customer"
-                and move.state not in ("done", "cancel")
+                lambda move: (
+                    move.location_dest_id.usage == "customer"
+                    and move.state not in ("done", "cancel")
+                )
             )
             actual = sum(
                 move.product_uom._compute_quantity(move.quantity, line.product_id.uom_id)
@@ -69,9 +71,11 @@ class Move(models.Model):
 
     def _action_done(self, *args, **kwargs):
         moves = self.filtered(
-            lambda move: move.state not in ("done", "cancel")
-            and move.location_dest_id.usage == "customer"
-            and move.picking_id.deep_contract_line_id
+            lambda move: (
+                move.state not in ("done", "cancel")
+                and move.location_dest_id.usage == "customer"
+                and move.picking_id.deep_contract_line_id
+            )
         )
         for line in moves.picking_id.deep_contract_line_id:
             lock(line)

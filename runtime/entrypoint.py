@@ -1,12 +1,12 @@
 """Launch the upstream Odoo CLI. No manufacturing business logic lives here."""
 
 import logging
-from contextlib import closing
 import os
-from pathlib import Path
 import subprocess
 import sys
 import time
+from contextlib import closing
+from pathlib import Path
 
 from configuration import (
     ConfigurationError,

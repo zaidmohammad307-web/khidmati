@@ -1,7 +1,8 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.addons.deep_core.security import require_role, lock
+from odoo.addons.deep_core.security import lock, require_role
 from odoo.addons.deep_core.services.export import export_xlsx
+from odoo.exceptions import UserError
+
 from ..services.capacity import CapacityService
 
 

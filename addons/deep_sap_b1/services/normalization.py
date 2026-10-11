@@ -2,6 +2,7 @@
 
 import math
 from datetime import date
+
 from .client import SAPError
 
 

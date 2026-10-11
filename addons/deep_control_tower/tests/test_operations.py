@@ -1,9 +1,10 @@
 from datetime import timedelta
+
 from odoo import Command, fields
+from odoo.addons.deep_manufacturing_dashboard.tests import test_workflow as original
+from odoo.addons.deep_quality.services.quality import QualityService
 from odoo.exceptions import AccessError, UserError
 from odoo.tests import TransactionCase, tagged
-from odoo.addons.deep_quality.services.quality import QualityService
-from odoo.addons.deep_manufacturing_dashboard.tests import test_workflow as original
 
 
 @tagged("post_install", "-at_install")
@@ -95,9 +96,11 @@ class TestOperations(TransactionCase):
         self.assertFalse(isinstance(result, dict), str(result))
         # Three-step manufacturing receipts must reach Stock before customer delivery.
         for picking in mo.picking_ids.filtered(
-            lambda picking: picking.state not in ("done", "cancel")
-            and picking.location_id == mo.location_dest_id
-            and picking.location_dest_id == self.warehouse.lot_stock_id
+            lambda picking: (
+                picking.state not in ("done", "cancel")
+                and picking.location_id == mo.location_dest_id
+                and picking.location_dest_id == self.warehouse.lot_stock_id
+            )
         ):
             picking.action_assign()
             for move in picking.move_ids:

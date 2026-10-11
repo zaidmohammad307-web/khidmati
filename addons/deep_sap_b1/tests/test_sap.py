@@ -1,10 +1,12 @@
 from copy import deepcopy
 from datetime import timedelta
 from unittest.mock import MagicMock, patch
+
 from odoo import Command, fields
+from odoo.addons.deep_core.security import internal
 from odoo.exceptions import AccessError, UserError
 from odoo.tests import TransactionCase, tagged
-from odoo.addons.deep_core.security import internal
+
 from ..services.client import SAPError
 
 
